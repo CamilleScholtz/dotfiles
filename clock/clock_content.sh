@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Define colors
-white='\e[0;39m'
-pink='\e[1;35m'
+while true; do
+	# Get the time
+	time=$(date +'%A, %I:%M %p')
 
-# Get the time
-time=$(date +'%A, %I:%M %p')
+	# Send content to clock_button.sh
+	echo "^fg(#FF99A1)^i(/home/kamiru/.scripts/clock/icon.xbm)^fg(#E8DFD6)  $time"
 
-# Send content to clock_button.sh
-echo -e -n "$pink¼$white  $time"
+	sleep 3
+done

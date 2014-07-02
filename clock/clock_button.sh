@@ -4,11 +4,11 @@
 color=$(cat ~/.Xresources | grep background | tail -c 8)
 
 # Kill old clocks
-pkill -f "urxvt -name clock_button"*
+pkill -f "dzen2 -p -dock -title-name clock_button"*
 
 # Determine the right width of the button
 day=$(date +'%A' | wc -c)
-width=$(expr $day + 12)
+width=$(expr $day \* 13 + 72)
 
 # Spawn clock
-exec urxvt -name clock_button -geometry ${width}x1 -internalBorder 10 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -c -t sh ~/.scripts/clock/clock_content.sh & disown
+sh /home/kamiru/.scripts/clock/clock_content.sh | dzen2 -p -dock -title-name clock_button -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 34
