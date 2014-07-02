@@ -1,7 +1,4 @@
 #!/bin/bash
 
-# Define colors
-pink='\e[1;35m'
-
-# Send content to clock_button.sh
-echo -e -n "$pink½"
+# Send content to music_button.sh
+echo "^fg(#FF99A1)^i(/home/kamiru/.scripts/music/icon.xbm)"
