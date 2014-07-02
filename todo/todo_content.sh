@@ -8,4 +8,4 @@ white='\e[1;38m'
 count=&(cat /home/kamiru/Dropbox/todo/todo.txt | sed '/^\s*$/d' | wc -l)
 
 # Send content to clock_button.sh
-echo -e "$count things in todo list  $pink¾"
+echo -e  "$count things in todo list  $pink¾"
