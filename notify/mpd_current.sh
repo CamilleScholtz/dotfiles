@@ -4,7 +4,7 @@
 current=$(mpc current)
 
 # Combine all the variables into a single output and send this to notify.sh
-echo Song changed to: $current > ~/.scripts/notify/text
+echo Song changed to: $current > /home/kamiru/.scripts/notify/text
 
 # Tell notify.sh that it needs to display a notication
-exec sh ~/.scripts/notify/notify.sh
+exec sh /home/kamiru/.scripts/notify/notify.sh
