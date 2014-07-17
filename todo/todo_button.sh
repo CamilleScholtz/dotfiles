@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# Get color from .Xresources
-color=$(cat ~/.Xresources | grep background | tail -c 8)
-
 # Kill old buttons
-pkill -f "urxvt -name todo_button"*
+pkill -f "dzen2 -p -dock -title-name todo_button"*
 
-# Spawn todo button
-exec urxvt -name todo_button -geometry 20x1 -internalBorder 10 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -t -c sh ~/.scripts/todo/todo_content.sh & disown
+# Spawn music button
+bash /home/onodera/.scripts/todo/todo_content.sh | dzen2 -p -dock -title-name todo_button -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w 162 -h 34 -e 'button1=exec:bash /home/onodera/.scripts/todo/todo_popup.sh;'

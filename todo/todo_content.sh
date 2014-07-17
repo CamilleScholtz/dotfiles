@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Define colors
-pink='\e[1;35m'
-white='\e[1;38m'
+while true; do
+	# Get items
+	todo=$(cat /home/onodera/.scripts/todo/text | sed '/^\s*$/d' | wc -l)
 
-# Get number of todo's
-count=&(cat /home/kamiru/Dropbox/todo/todo.txt | sed '/^\s*$/d' | wc -l)
+	# Send content to todo_button.sh
+	echo "^fg(#E8DFD6)$todo things todo  ^fg(#FF99A1)^i(/home/onodera/.scripts/todo/icon.xbm)"
 
-# Send content to clock_button.sh
-echo -e  "$count things in todo list  $pink¾"
+	sleep 3
+done
