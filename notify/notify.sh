@@ -22,6 +22,6 @@ width=$(expr $count - 1 + $gook)
 color=$(cat /home/onodera/.Xresources | grep background | tail -c 8)
 
 # Spawn new notification, and kill it after 4 seconds, give it the the term-name Notification so other programs (like FVWM) can interact with it
-urxvt -name notification -geometry "$width"x1 -internalBorder 10 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e echo -n $text & disown
+urxvt -name notification -geometry "$width"x1 -internalBorder 10 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e echo -n "$text" & disown
 sleep 4
 pkill -f "urxvt -name notification"
