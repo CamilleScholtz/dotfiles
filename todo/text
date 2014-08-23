@@ -1,38 +1,4 @@
-+Drama          Find some drama list thingy (mydramalist?)
-+Drama		Watch Nodame Cantabile
-+Drama		Watch Boku no Aruku Michi
-+Drama		Watch Bara no Nai Hanaya
-+Drama		Watch Marry Him If You Dare
+write reminders here.
+The script propbably doesn't work perfect if there are less than 10 reminders.
 
-+Documentary	Watch This Is What Winning Look Like
-+Documentary	Watch VICE, VICE News & VICE Japan stuff
-
-+Fashion        Cop dotted socks
-+Fashion        Cop jap jacket
-+Fashion        Cop new womans pants
-+Fashion        Maybe cop jap pans
-+Fashion        Cop some punpun tee's
-
-+Life		Get secret garden rintone
-
-+Movie          Watch Sweet Poolside
-+Movie          Watch the movie with world's end girlfriend OST
-+Movie		Watch Chronicle of a Blood Merchant
-+Movie +Drama   Find a way to see all asian-wiki dramas/movies by release date
-
-+Music          Download The Yellow Sea OST
-+Music          Download Chingoo OST
-+Music          Download all drama OSTs
-+Music          Tag and download all music
-+Music		Download Goose house music
-+Music		Download all dem soundcloud music (ryanhemsworth, shhsecretsongs, tfr-royal, bluesatellite, tennysonmusic,  etc.)
-+Music		Fix world end's girlfriend tag (')
-
-+Rice           Upload dotfiles to Github
-+Rice		Make starpage
-+Rice		Remove todo_popup_conten.sh
-+Rice		Change todo text format (with syntax highlighting if possible)
-+Rice		Make todo urxvt ne popup static and change the position
-+Rice		Fix music popup char width (both latin and jap)
-
-+Variety	Watch Now On My Way to Meet You
+blank lines aren't counted.
