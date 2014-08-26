@@ -4,4 +4,4 @@
 echo "Torrent finished: $@" > /home/onodera/.scripts/notify/text
 
 # Tell notify.sh that it needs to display a notication
-exec bash /home/onodera/.scripts/notify/notify.sh
+exec bash /home/onodera/.scripts/notify/notify.sh & disown

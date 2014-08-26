@@ -17,7 +17,7 @@ white='\e[1;38m'
 white2='\e[1;37m'
 black='\e[0;30m'
 
-# Define the lenght of the red part
+# Define the lenght of the elapsed part
 case $percent in
 [0-2])
 	bar="$black──────────────────────────────"

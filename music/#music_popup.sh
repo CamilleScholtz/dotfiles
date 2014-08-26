@@ -1,11 +1,8 @@
 #!/bin/bash
 
 # TODO: Fix albumart not changing
-#	Fix urxvt not closing after song change
 #	Fix cursor thingy
 #	Show an arrow
-#	Use a failsave close method
-#	Disable spawning more than one popup
 
 # Get the cover path name
 path=$(mpc -f "%file%" | head -n 1 | cut -f1-2 -d "/")

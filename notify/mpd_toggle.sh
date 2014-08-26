@@ -6,7 +6,8 @@ toggle=$(mpc toggle | grep -o "ERROR")
 # Send "in use" notification and kills script if error is found
 if [[ -n $toggle ]]; then
         echo "Audio device currently in use"  > /home/onodera/.scripts/notify/text
-	exec bash /home/onodera/.scripts/notify/notify.sh
+	exec bash /home/onodera/.scripts/notify/notify.sh & disown
+	exit 0
 fi
 
 # Get current playing song from MPD
@@ -23,4 +24,4 @@ else
 fi
 
 # Tell notify.sh that it needs to display a notication
-exec bash /home/onodera/.scripts/notify/notify.sh
+exec bash /home/onodera/.scripts/notify/notify.sh & disown
