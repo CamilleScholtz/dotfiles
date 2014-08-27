@@ -11,6 +11,10 @@ url=http://a.pomf.se/$pomffile
 # Display notification
 bash /home/onodera/.scripts/notify/capture_pomf.sh $url
 
+# Copy link to clipboard
+echo $url | xclip -selection primary
+echo $url | xclip -selection clipboard
+
 # Print url in terminal (if used)
 echo $url
 
