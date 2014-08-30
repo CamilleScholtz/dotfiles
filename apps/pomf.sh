@@ -9,7 +9,7 @@ pomffile=$(echo "$output" | grep -Eo '"url":"[A-Za-z0-9]+.png",' | sed 's/"url":
 url=http://a.pomf.se/$pomffile
 
 # Display notification
-bash /home/onodera/.scripts/notify/capture_pomf.sh $url
+bash $HOME/.scripts/notify/capture_pomf.sh $url
 
 # Copy link to clipboard
 echo $url | xclip -selection primary

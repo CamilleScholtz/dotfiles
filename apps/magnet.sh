@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Choose the direcotry where the torrent will be saved
-cd /home/onodera/Downloads || exit
+cd $HOME/Downloads || exit
 
 [[ "$1" =~ xt=urn:btih:([^&/]+) ]] || exit
 

@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# TODO: add failed notification
+
 options="--alphabetical --ask --color y --nospinner --tree"
 
-while true $# -gt 0; do
+while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-h|--help)
 			echo "-h         show help"
@@ -20,97 +22,116 @@ while true $# -gt 0; do
 			echo "-E         edit make.conf"
 			exit 0
 			;;
-		-i|--install)
+		-i)
 			shift
-			if true $# -ge 1; then
-				sudo emerge $options $1
+			if [[ $# -ge 1 ]]; then
+				sudo emerge $options $@
+				if [[ $? -eq 0 ]]; then
+					bash $HOME/.scripts/notify/arya_install.sh $@ & disown
+				fi
 			else
-				echo "no packages provided"
+				echo "No packages provided."
 				exit 1
 			fi
 			shift
 			;;
-		-I|--uninstall)
+		-I)
 			shift
-			if true $# -ge 1; then
-				sudo emerge $options --unmerge $1
+			if [[ $# -ge 1 ]]; then
+				sudo emerge $options --unmerge $@
+				if [[ $? -eq 0 ]]; then
+					bash $HOME/.scripts/notify/arya_uninstall.sh $@ & disown
+				fi
 			else
-				echo "no packages provided"
+				echo "No packages provided."
 				exit 1
 			fi
 			shift
 			;;
-		-u|--upgrade)
+		-u)
 			sudo emerge $options --update --newuse --deep @world
+			if [[ $? -eq 0 ]]; then
+				bash $HOME/.scripts/notify/arya_update.sh & disown
+			fi
 			exit 0
 			;;
-		-U|--update)
+		-U)
 			sudo emerge $options --sync
+			if [[ $? -eq 0 ]]; then
+				bash $HOME/.scripts/notify/arya_update.sh & disown
+			fi
 			exit 0
 			;;
 		-Uu)
 			sudo emerge $options --sync && sudo emerge $options --update --newuse --deep @world
+			if [[ $? -eq 0 ]]; then
+				bash $HOME/.scripts/notify/arya_update.sh & disown
+			fi
 			exit 0
 			;;
-		-c|--clean)
+		-c)
 			sudo emerge $options --depclean
 			exit 0
 			;;
-		-C|--cleanbuild)
+		-C)
 			sudo emerge $options --depclean --with-bdeps n && sudo eclean --destructive distfiles && sudo eclean --destructive packages
 			exit 0
 			;;
-		-s|--search)
+		-s)
 			shift
-                        if true $# -ge 1; then
-				emerge $options --search $1
+			if [[ $# -ge 1 ]]; then
+				emerge $options --search $@
 			else
-				echo "no search terms provided"
+				echo "No search terms provided."
                                 exit 1
                         fi
                         shift
 			;;
-		-S|--searchcommand)
+		-S)
 			shift
-			if true $# -ge 1; then
-				equery b $1
+			if [[ $# -ge 1 ]]; then
+				equery b $@
 			else
-				echo "no search terms provided"
+				echo "No search terms provided."
 				exit 1
 			fi
 			shift
 			;;
-		-f|--flags)
+		-f)
 			shift
-			if true $# -ge 1; then
-				equery u $1
+			if [[ $# -ge 1 ]]; then
+				equery u $@
 			else
-				echo "no search terms provided"
+				echo "No search terms provided."
 				exit 1
 			fi
 			shift
 			;;
-		-d|depends)
+		-d)
 			shift
-			if true $# -ge 1; then
-				equery g $1
+			if [[ $# -ge 1 ]]; then
+				equery g $@
 			else
-				echo "no search terms provided"
+				echo "No search terms provided."
 				exit 1
 			fi
 			shift
 			;;
-		-e|--editpackage)
-			sudo ne /etc/portage/package.use
+		-e)
+			sudo $EDITOR /etc/portage/package.use
 			exit 0
 			;;
-		-E|--editmake)
-			sudo ne /etc/portage/make.conf
+		-E)
+			sudo $EDITOR /etc/portage/make.conf
 			exit 0
 			;;
 		*)
-			echo "invalid option, use -h for help"
-			exit 0
+			echo "Invalid option, use -h for help."
+			break
 			;;
 	esac
 done
+
+if [[ $# -eq 0 ]]; then
+	echo "No option provided, use -h for help."
+fi
