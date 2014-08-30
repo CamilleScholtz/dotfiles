@@ -1,27 +1,29 @@
 #!/bin/bash
 
+options="--alphabetical --ask --color y --nospinner --tree"
+
 while true $# -gt 0; do
 	case "$1" in
 		-h|--help)
-			echo "-h, --help                show brief help"
-			echo "-i, --install             install packages"
-			echo "-I, --uninstall           uninstall packages"
-			echo "-u, --upgrade             upgrade all packages"
-			echo "-U, --update              updates the portage tree with the latest ebuilds"
-			echo "-c, --clean               remove no longer needed packages"
-			echo "-C, --cleanbuild          also remove build dependencies and more"
-			echo "-s, --search              search for packages by name"
-			echo "-S, --searchcommand       search for packages by command"
-			echo "-f, --flags               show useflags of package"
-			echo "-d, --depends             show dependencies of package"
-			echo "-e, --editpackage         edit package.use"
-			echo "-E, --editmake            edit make.conf"
+			echo "-h         show help"
+			echo "-i pkg     install"
+			echo "-I pkg     uninstall"
+			echo "-u         update/newuse @world"
+			echo "-U         sync database"
+			echo "-c         clean dependencies"
+			echo "-C         clean dependencies and build-dependencies"
+			echo "-s pkg     search"
+			echo "-S pkg     search for file/command"
+			echo "-f pkg     list USE flags"
+			echo "-d pkg     list dependencies"
+			echo "-e         edit package.use"
+			echo "-E         edit make.conf"
 			exit 0
 			;;
 		-i|--install)
 			shift
 			if true $# -ge 1; then
-				sudo emerge --alphabetical --ask --color y --nospinner $1
+				sudo emerge $options $1
 			else
 				echo "no packages provided"
 				exit 1
@@ -31,7 +33,7 @@ while true $# -gt 0; do
 		-I|--uninstall)
 			shift
 			if true $# -ge 1; then
-				sudo emerge --alphabetical --ask --color y --nospinner --unmerge $1
+				sudo emerge $options --unmerge $1
 			else
 				echo "no packages provided"
 				exit 1
@@ -39,29 +41,29 @@ while true $# -gt 0; do
 			shift
 			;;
 		-u|--upgrade)
-			sudo emerge --alphabetical --ask --color y --nospinner --update --newuse --deep @world
+			sudo emerge $options --update --newuse --deep @world
 			exit 0
 			;;
 		-U|--update)
-			sudo emerge --alphabetical --ask --color y --nospinner --sync
+			sudo emerge $options --sync
 			exit 0
 			;;
 		-Uu)
-			sudo emerge --alphabetical --ask --color y --nospinner --sync && sudo emerge --alphabetical --ask --color y --nospinner --update --newuse --deep @world
+			sudo emerge $options --sync && sudo emerge $options --update --newuse --deep @world
 			exit 0
 			;;
 		-c|--clean)
-			sudo emerge --alphabetical --ask --color y --nospinner --depclean
+			sudo emerge $options --depclean
 			exit 0
 			;;
 		-C|--cleanbuild)
-			sudo emerge --alphabetical --ask --color y --nospinner --depclean --with-bdeps n && sudo eclean --destructive distfiles && sudo eclean --destructive packages
+			sudo emerge $options --depclean --with-bdeps n && sudo eclean --destructive distfiles && sudo eclean --destructive packages
 			exit 0
 			;;
 		-s|--search)
 			shift
                         if true $# -ge 1; then
-				emerge --alphabetical --ask --color y --nospinner --search $1
+				emerge $options --search $1
 			else
 				echo "no search terms provided"
                                 exit 1
@@ -91,7 +93,7 @@ while true $# -gt 0; do
 		-d|depends)
 			shift
 			if true $# -ge 1; then
-				equery d $1
+				equery g $1
 			else
 				echo "no search terms provided"
 				exit 1
@@ -107,7 +109,8 @@ while true $# -gt 0; do
 			exit 0
 			;;
 		*)
-			break
+			echo "invalid option, use -h for help"
+			exit 0
 			;;
 	esac
 done
