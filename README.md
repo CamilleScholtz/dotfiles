@@ -32,7 +32,7 @@ My very own "notification system" using URxvt and some scripts, currently displa
 * mpd (toggling pause/play, and song changes)
 * scrot (both for screen shots and window shots)
 * pomf (also displays the url)
-* rtorrent (When a torrent finished downloading)
+* rtorrent (When a torrent finishes downloading)
 * transmission (^)
 * arya/emerge (when finishing (un)installing programs, and updating @world)
 
