@@ -2,7 +2,7 @@
 
 # TODO: add failed notification
 
-options="--alphabetical --ask --color y --nospinner --tree"
+options="--alphabetical --ask --color y --nospinner"
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -20,7 +20,7 @@ while [[ $# -gt 0 ]]; do
 			echo "-d pkg     list dependencies"
 			echo "-e         edit package.use"
 			echo "-E         edit make.conf"
-			exit 0
+			exit
 			;;
 		-i)
 			shift
@@ -29,9 +29,10 @@ while [[ $# -gt 0 ]]; do
 				if [[ $? -eq 0 ]]; then
 					bash $HOME/.scripts/notify/arya_install.sh $@ & disown
 				fi
+				exit
 			else
 				echo "No packages provided."
-				exit 1
+				exit
 			fi
 			shift
 			;;
@@ -42,9 +43,10 @@ while [[ $# -gt 0 ]]; do
 				if [[ $? -eq 0 ]]; then
 					bash $HOME/.scripts/notify/arya_uninstall.sh $@ & disown
 				fi
+				exit
 			else
 				echo "No packages provided."
-				exit 1
+				exit
 			fi
 			shift
 			;;
@@ -53,37 +55,35 @@ while [[ $# -gt 0 ]]; do
 			if [[ $? -eq 0 ]]; then
 				bash $HOME/.scripts/notify/arya_update.sh & disown
 			fi
-			exit 0
+			exit
 			;;
 		-U)
 			sudo emerge $options --sync
-			if [[ $? -eq 0 ]]; then
-				bash $HOME/.scripts/notify/arya_update.sh & disown
-			fi
-			exit 0
+			exit
 			;;
 		-Uu)
 			sudo emerge $options --sync && sudo emerge $options --update --newuse --deep @world
 			if [[ $? -eq 0 ]]; then
 				bash $HOME/.scripts/notify/arya_update.sh & disown
 			fi
-			exit 0
+			exit
 			;;
 		-c)
 			sudo emerge $options --depclean
-			exit 0
+			exit
 			;;
 		-C)
 			sudo emerge $options --depclean --with-bdeps n && sudo eclean --destructive distfiles && sudo eclean --destructive packages
-			exit 0
+			exit
 			;;
 		-s)
 			shift
 			if [[ $# -ge 1 ]]; then
 				emerge $options --search $@
+				exit
 			else
 				echo "No search terms provided."
-                                exit 1
+                                exit
                         fi
                         shift
 			;;
@@ -91,9 +91,10 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -ge 1 ]]; then
 				equery b $@
+				exit
 			else
 				echo "No search terms provided."
-				exit 1
+				exit
 			fi
 			shift
 			;;
@@ -101,9 +102,10 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -ge 1 ]]; then
 				equery u $@
+				exit
 			else
 				echo "No search terms provided."
-				exit 1
+				exit
 			fi
 			shift
 			;;
@@ -111,23 +113,24 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -ge 1 ]]; then
 				equery g $@
+				exit
 			else
 				echo "No search terms provided."
-				exit 1
+				exit
 			fi
 			shift
 			;;
 		-e)
 			sudo $EDITOR /etc/portage/package.use
-			exit 0
+			exit
 			;;
 		-E)
 			sudo $EDITOR /etc/portage/make.conf
-			exit 0
+			exit
 			;;
 		*)
 			echo "Invalid option, use -h for help."
-			break
+			exit
 			;;
 	esac
 done

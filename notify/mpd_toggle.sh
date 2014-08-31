@@ -7,7 +7,7 @@ toggle=$(mpc toggle | grep -o "ERROR")
 if [[ -n $toggle ]]; then
         echo "Audio device currently in use"  > $HOME/.scripts/notify/text
 	exec bash $HOME/.scripts/notify/notify.sh & disown
-	exit 0
+	exit
 fi
 
 # Get current playing song from MPD
