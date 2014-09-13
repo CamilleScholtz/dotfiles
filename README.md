@@ -17,6 +17,10 @@ apps/pomf
 ---------
 My very own pomf.se screenshot upload script. With notification support.
 
+apps/rmscrot
+---------
+Removes all images (scrots) in $HOME
+
 clock
 -----
 Just a simple dzen2 clock, I position the clock with MVWM.
