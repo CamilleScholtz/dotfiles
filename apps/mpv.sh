@@ -10,7 +10,7 @@ fi
 url=$(echo $@ | grep "http:\|https:")
 
 if [[ -n $url ]]; then
-	mpv --no-resume-playback --cookies --cookies-file $HOME/.mpv/cookie.txt $(youtube-dl -g  --cookies $HOME/.mpv/cookie.txt $1) "$@"
+	mpv --no-resume-playback --cookies --cookies-file $HOME/.mpv/cookie.txt $(youtube-dl -g --cookies $HOME/.mpv/cookie.txt $1) "$@"
 else
 	mpv "$@"
 fi
