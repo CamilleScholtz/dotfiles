@@ -33,10 +33,6 @@ while [[ $# -gt 0 ]]; do
 		-t)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# Get escapism status
-				active=$(cat $HOME/.scripts/neet/text.patch | grep -i "$*" | grep "*")
-				watching=$(cat $HOME/.scripts/neet/text.patch | grep -i "$*" | grep "+")
-
 				# Fuzzy logic vars
 				max=0
 				answer=
@@ -63,6 +59,11 @@ while [[ $# -gt 0 ]]; do
 
 				# Clean up answer
 				case=$(echo $answer | cut -c 3-)
+
+				# Get escapism status
+				active=$(cat $HOME/.scripts/neet/text.patch | grep "$case" | grep "*")
+				watching=$(cat $HOME/.scripts/neet/text.patch | grep "$case" | grep "+")
+
 
 				# TODO: Make max 1 $active escapism
 				if [[ -n $active ]]; then
@@ -86,10 +87,6 @@ while [[ $# -gt 0 ]]; do
 		-T)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# Get escapism status
-				watching=$(cat $HOME/.scripts/neet/text.patch | grep -i "$*" | grep "+")
-				backlog=$(cat $HOME/.scripts/neet/text.patch | grep -i "$*" | grep "-")
-
 				# Fuzzy logic vars
 				max=0
 				answer=
@@ -116,6 +113,10 @@ while [[ $# -gt 0 ]]; do
 
 				# Clean up answer
 				case=$(echo $answer | cut -c 3-)
+
+				# Get escapism status
+				watching=$(cat $HOME/.scripts/neet/text.patch | grep "$case" | grep "+")
+				backlog=$(cat $HOME/.scripts/neet/text.patch | grep "$case" | grep "-")
 
 				if [[ -n $watching ]]; then
 					echo -e "${brown}- $case"
@@ -140,7 +141,6 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -ge 1 ]]; then
 				# TODO: Add an option so the user can set the episodes watched with numbers
 				# TODO: Fix 100+ episode total
-
 				# Fuzzy logic vars
 				max=0
 				answer=
@@ -149,7 +149,7 @@ while [[ $# -gt 0 ]]; do
 				IFS=$'\n'
 				shopt -s nocasematch
 				set -f
-
+ 
 				# Fuzzy logic
 				for line in $(cat $HOME/.scripts/neet/text.patch); do
 					match=0
@@ -166,7 +166,7 @@ while [[ $# -gt 0 ]]; do
 				done
 
 				# Clean up answer
-				case=$(echo $answer | cut -c 3-)
+				case=$(echo $answer | head -c -10 | cut -c 3-)
 
 				# Get last watched episode and total episode count
 				watching=$(cat $HOME/.scripts/neet/text.patch | grep "$case" | grep -o "([0-9][0-9]" | tail -c 3)
@@ -180,7 +180,6 @@ while [[ $# -gt 0 ]]; do
 				echo "Watching $case episode $increment."
 				sed -i "s|* $case ($watching/$total)|* $case ($increment/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
-	
 			else
 				# TODO: Add an option so the user can set the episodes watched with numbers
 				# TODO: Fix 100+ episode total
