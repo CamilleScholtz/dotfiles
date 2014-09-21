@@ -158,7 +158,6 @@ while [[ $# -gt 0 ]]; do
 		+)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# TODO: Add an option so the user can set the episodes watched with numbers
 				# TODO: Fix 100+ episode total/watching
 				# TODO: Fix 10- episode total/watching
 				# Increment watched count
@@ -182,7 +181,6 @@ while [[ $# -gt 0 ]]; do
 		-)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# TODO: Add an option so the user can set the episodes watched with numbers
 				# TODO: Fix 100+ episode total/watching
 				# TODO: Fix 10- episode total/watching
 				# Increment watched count
