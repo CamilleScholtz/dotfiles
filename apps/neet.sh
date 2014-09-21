@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
+# TODO: Add another echo above echo
 
 # Define colors
 white="\e[39m"
-red="\e[35m"
-brown="\e[33m"
+red="\e[1;35m"
+brown="\e[1;33m"
 
 while [[ $# -gt 0 ]]; do
 	# Fuzzy logic vars
@@ -73,22 +74,19 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-l)
-			# TODO: Add syntax highlighting same as vim
 			echo "$active"
-			echo "$watching"
+			echo -e "$red$watching"
 			exit
 			;;
 		-L)
-			# TODO: Add syntax highlighting same as vim
 			echo "$active"
-			echo "$watching"
-			echo "$backlog"
+			echo -e "$red$watching"
+			echo -e "$brown$backlog"
 			exit
 			;;
 		-sb)
 			shift
 			if [[ $# -eq 1 ]]; then
-				# TODO: Make max 1 $active escapism
 				echo -e "$brown-$white $case"
 				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -101,7 +99,6 @@ while [[ $# -gt 0 ]]; do
 		-sw)
 			shift
 			if [[ $# -eq 1 ]]; then
-				# TODO: Make max 1 $active escapism
 				echo -e "$red+$white $case"
 				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -114,9 +111,16 @@ while [[ $# -gt 0 ]]; do
 		-sa)
 			shift
 			if [[ $# -eq 1 ]]; then
-				# TODO: Make max 1 $active escapism
-				echo "* $case"
-				sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+				count=$(echo $active | wc -w)
+				if [[ $count -ge 2 ]]; then
+					echo -e "$red+ $active"
+					echo "* $case"
+					sed -i "s|. $active|+ $active|g" $HOME/.scripts/neet/text.patch
+					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+				else
+					echo "* $case"
+					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+				fi
 				exit
 			else
 				echo "No escapism provided."
@@ -126,6 +130,7 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-e)
 			shift
+			# TODO: Fix wrong fuzzy results because numbers
 			if [[ $# -eq 1 ]]; then
 				echo "Please provide escapism and watched episodes."
 				exit
@@ -134,8 +139,14 @@ while [[ $# -gt 0 ]]; do
 				for end; do true; done
 
 				# Echo and send to text
-				# TODO: add up/down arrow support
-				echo -e "$red↑$white $casenoep ($end/$total)"
+				if [[ $end -gt $last ]]; then
+					echo -e "$red↑$white $casenoep ($end/$total)"
+				elif [[ $end -lt $last ]]; then
+					echo -e "$brown↓$white $casenoep ($end/$total)"
+				else
+					# TODO: Replace space with something interesting
+					echo "  $casenoep ($end/$total)"
+				fi
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
 			else
