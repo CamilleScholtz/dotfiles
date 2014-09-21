@@ -1,7 +1,7 @@
 scripts
 =======
 
-Various scripts I made, README.md is WIP.
+Various scripts I made, README.md is WIP. Check out https://github.com/lainscerealexpe/scripts for more widgets.
 
 apps/arya
 ---------
@@ -12,6 +12,9 @@ EDIT: Now with 100% more notification support!
 apps/mpv
 ---------
 Mpv wrapper, it automaticly launches mpv with youtube-dl if an url is found, otherwise it will just launch vanilla mpv.
+
+apps/neet
+My NEET cli app, it tracks my escapism and stuff. SUPER WIP
 
 apps/pomf
 ---------
