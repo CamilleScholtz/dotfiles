@@ -61,12 +61,13 @@ while [[ $# -gt 0 ]]; do
 
 	case "$1" in
 		-h|--help)
+			# TODO: Clean this
 			echo "-h         show help"
 			echo "-l         list all currently watching escapism"
 			echo "-L         list all escapism"
-			echo "-t esc     toggle escapism active/watching status"
-			echo "-T esc     toggle escapism watching/backlog status"
-			echo "-e esc     set watching episode #"
+			echo "-s* esc    set status of escapism"
+			echo "  ^ b/w/a  backlog/watching/active"
+			echo "-e         set watching episode #"
 			echo "+ (esc)    increment watching episode #"
 			echo "- (esc)    decrenebt watching episode #"
 			exit
@@ -84,43 +85,39 @@ while [[ $# -gt 0 ]]; do
 			echo "$backlog"
 			exit
 			;;
-		-t)
+		-sb)
 			shift
-			if [[ $# -ge 1 ]]; then
+			if [[ $# -eq 1 ]]; then
 				# TODO: Make max 1 $active escapism
-				if [[ -n $active ]]; then
-					echo -e "$red+$white $case"
-					sed -i "s|* $case|+ $case|g" $HOME/.scripts/neet/text.patch
-					exit
-				elif [[ -n $watchingcase ]]; then
-					echo "* $case"
-					sed -i "s|+ $case|* $case|g" $HOME/.scripts/neet/text.patch
-					exit
-				else
-					echo "Escapism not found."
-					exit
-				fi
+				echo -e "$brown-$white $case"
+				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
+				exit
 			else
 				echo "No escapism provided."
 				exit
 			fi
 			shift
 			;;
-		-T)
+		-sw)
 			shift
-			if [[ $# -ge 1 ]]; then
-				if [[ -n $watchingcase ]]; then
-					echo -e "$brown-$white $case"
-					sed -i "s|+ $case|- $case|g" $HOME/.scripts/neet/text.patch
-					exit
-				elif [[ -n $backlogcase ]]; then
-					echo -e "$red+$white $case"
-					sed -i "s|- $case|+ $case|g" $HOME/.scripts/neet/text.patch
-					exit
-				else
-					echo "Escapism not found."
-					exit
-				fi
+			if [[ $# -eq 1 ]]; then
+				# TODO: Make max 1 $active escapism
+				echo -e "$red+$white $case"
+				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
+				exit
+			else
+				echo "No escapism provided."
+				exit
+			fi
+			shift
+			;;
+		-sa)
+			shift
+			if [[ $# -eq 1 ]]; then
+				# TODO: Make max 1 $active escapism
+				echo "* $case"
+				sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+				exit
 			else
 				echo "No escapism provided."
 				exit
@@ -129,14 +126,18 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-e)
 			shift
-			if [[ $# -ge 1 ]]; then
-				if [[ 1 -gt 2 ]]; then
-					
-					exit
-				else
-					echo "Escapism not found."
-					exit
-				fi
+			if [[ $# -eq 1 ]]; then
+				echo "Please provide escapism and watched episodes."
+				exit
+			elif [[ $2 -ge 2 ]]; then
+				# Get last parameter (aka episode number)
+				for end; do true; done
+
+				# Echo and send to text
+				# TODO: add up/down arrow support
+				echo -e "$red↑$white $casenoep ($end/$total)"
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $HOME/.scripts/neet/text.patch
+				exit
 			else
 				echo "No escapism provided."
 				exit
