@@ -14,6 +14,7 @@ apps/mpv
 Mpv wrapper, it automaticly launches mpv with youtube-dl if an url is found, otherwise it will just launch vanilla mpv.
 
 apps/neet
+---------
 My NEET cli app, it tracks my escapism and stuff. SUPER WIP
 
 apps/pomf
