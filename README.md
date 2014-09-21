@@ -32,6 +32,10 @@ music
 -----
 Music button, on hover a popup appears with info about the song, artist & album, also shows album art with feh. Again these windows are placed with MVWM.
 
+neet
+----
+A button that shows my current watching series/animu with episode count.
+
 notify
 ------
 My very own "notification system" using URxvt and some scripts, currently displays notfications for:
@@ -48,8 +52,3 @@ It's very easy to make notifications for other programs if you can get the info 
 pager
 -----
 This is not actually a pager, but just a button with an icon next to fvwmpager, pure eye-candy.
-
-reminder
-----
-A window that show number of lines in your todo text file. Still very WIP.
-
