@@ -4,11 +4,10 @@
 pkill -f "dzen2 -p -dock -title-name neet_button"*
 
 # Calculate the withd of the spawned neet button
-# TODO: Fix "40" in $width
 # TODO: Fix $width when escapism name is changed
 current=$(cat $HOME/.scripts/neet/text.patch | grep "*" | cut -c 3-)
 count=$(echo $current | wc -c)
-width=$(expr $count \* 8 + 115)
+width=$(expr $count \* 8 + 40)
 
 # Spawn escapism button
 sleep 0.2

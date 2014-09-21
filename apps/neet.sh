@@ -130,8 +130,8 @@ while [[ $# -gt 0 ]]; do
 		-e)
 			shift
 			if [[ $# -ge 1 ]]; then
-				if [[ 1 -gt 2  ]]; then
-					echo fuck
+				if [[ 1 -gt 2 ]]; then
+					
 					exit
 				else
 					echo "Escapism not found."
