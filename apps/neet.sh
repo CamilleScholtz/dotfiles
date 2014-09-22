@@ -13,25 +13,36 @@ while [[ $# -gt 0 ]]; do
 	max=0
 	answer=
 
-	# Make newlines the only separator (need to read whole lines in the fuzzy logic for loop)
+	# Make newlines the only separator (the fuzzy logic loop needs to read whole lines)
 	IFS=$'\n'
 	set -f
 
-	# Fuzzy logic
+	# Make bash case insensitive for fuzzy logic
 	shopt -s nocasematch
+
+	# Fuzzy logic
 	for line in $(cat $HOME/.scripts/neet/text.patch); do
 				match=0
 
+		# Set default seperator value again (for the next loop to work)
 		IFS=$' \t\n'
+
 		for words in $@; do
 			[[ $line = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
 		done
 
+		# And make newkines the only seperator again
+		IFS=$'\n'
+
+		# Check which line has the most matches
+		# TODO: does match neet a $ here?
 		if [[ match -gt $max ]]; then
 			max=$match
 			answer=$line
 		fi
 	done
+
+	# Make bash case sensitive again
 	shopt -u nocasematch
 
 	# Clean up answer
@@ -52,10 +63,14 @@ while [[ $# -gt 0 ]]; do
 	watchingcase=$(echo $watching | grep "$case")
 	backlogcase=$(echo $backlog | grep "$case")
 
+	# TODO: Fix 100+ episode total/watching
+	# TODO: Fix 10- episode total/watching
 	# Get last watched episode and total episode count
 	last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
 	total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
 
+	# TODO: Fix 100+ episode total/watching
+	# TODO: Fix 10- episode total/watching
 	# Last/total episode count of active escapism
 	lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
 	totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
@@ -158,8 +173,6 @@ while [[ $# -gt 0 ]]; do
 		+)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# TODO: Fix 100+ episode total/watching
-				# TODO: Fix 10- episode total/watching
 				# Increment watched count
 				increment=$(expr $last + 1)
 
@@ -181,9 +194,7 @@ while [[ $# -gt 0 ]]; do
 		-)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# TODO: Fix 100+ episode total/watching
-				# TODO: Fix 10- episode total/watching
-				# Increment watched count
+				# Decrement watched count
 				decrement=$(expr $last - 1)
 
 				# Echo and send to text
@@ -191,7 +202,7 @@ while [[ $# -gt 0 ]]; do
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
 			else
-				# Increment watched count
+				# Decrement watched count
 				decrement=$(expr $lastactive - 1)
 
 				# Echo and send to text
