@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
-# TODO: Add episode cap
+# TODO: Test if cap works
+# TODO: Add 0 cap
+# TODO: If statement [][][] doesn't work
 
 # Define colors
 white="\e[39m"
@@ -49,10 +51,12 @@ while [[ $# -gt 0 ]]; do
 	case=$(echo $answer | cut -c 3-)
 
 	# Case without episode info
-	casenoep=$(echo $case | head -c -10)
+	# TODO: check if 9 or 10 is correct
+	casenoep=$(echo $case | head -c -9)
 
 	# Case of active escapism
-	caseactive=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | head -c -10 | cut -c 3-)
+	# TODO: check if 9 or 10 is correct
+	caseactive=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | head -c -9 | cut -c 3-)
 
 	# Get escapism status
 	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
@@ -63,15 +67,27 @@ while [[ $# -gt 0 ]]; do
 	watchingcase=$(echo $watching | grep "$case")
 	backlogcase=$(echo $backlog | grep "$case")
 
-	morelast=$(echo $case | grep -o "([0-9][0-9][09]/")
-	moretotal=$(echo $case | grep -o "/[0-9][0-9][09])")
+	# Check if epsidode is < 10 or > 100
+	# TODO: Optimize this
+	lesslast=$(echo $case | grep -o "([0-9]/")
+	morelast=$(echo $case | grep -o "([0-9][0-9][0-9]/")
+	lesstotal=$(echo $case | grep -o "/[0-9])")
+	moretotal=$(echo $case | grep -o "/[0-9][0-9][0-9])")
+	lesslastactive=$(echo $active | grep -o "([0-9]/")
+	morelastactive=$(echo $active | grep -o "([0-9][0-9][0-9]/")
+	lesstotalactive=$(echo $active | grep -o "/[0-9])")
+	moretotalactive=$(echo $active | grep -o "/[0-9][0-9][0-9])")
 
 	# Get last watched episode and total episode count
 	# TODO: Doesn't work
 	if [[ -n $morelast ]]; then
 		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 3)
-		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)	
+		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)
+	elif [[ -n $lesslast ]]; then
+		# TODO: make both 2/3 for consitency?
+		last=$(echo $case | grep -o "([0-9]" | tail -c 3)
+		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 3)
 	else
 		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
@@ -82,10 +98,35 @@ while [[ $# -gt 0 ]]; do
 	if [[ -n $moretotal ]]; then
 		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 2)
-		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 2)
+	elif [[ -n $lesstotal ]]; then
+		# TODO: make both 2/3 for consitency?
+		total=$(echo $case | grep -o "[0-9])" | head -c 2)
 	else
 		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
+	fi
+
+		# TODO: Doesn't work
+	if [[ -n $morelastactive ]]; then
+		# TODO: make both 2/3 for consitency?
+		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)
+	elif [[ -n $lesslastactive ]]; then
+		# TODO: make both 2/3 for consitency?
+		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 3)
+	else
+		# TODO: make both 2/3 for consitency?
+		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
+	fi
+
+	# TODO: Doesn't work
+	if [[ -n $moretotalactive ]]; then
+		# TODO: make both 2/3 for consitency?
+		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 2)
+	elif [[ -n $lesstotalactive ]]; then
+		# TODO: make both 2/3 for consitency?
+		totalactive=$(echo $active | grep -o "[0-9])" | head -c 2)
+	else
+		# TODO: make both 2/3 for consitency?
 		totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
 	fi
 
@@ -116,7 +157,7 @@ while [[ $# -gt 0 ]]; do
 		-sb)
 			shift
 			if [[ $# -eq 1 ]]; then
-				echo "neet changes:"
+				echo "NEET changed:"
 				echo -e "$brown-$white $case"
 				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -129,7 +170,7 @@ while [[ $# -gt 0 ]]; do
 		-sw)
 			shift
 			if [[ $# -eq 1 ]]; then
-				echo "neet changes:"
+				echo "NEET changed:"
 				echo -e "$red+$white $case"
 				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -144,14 +185,14 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -eq 1 ]]; then
 				count=$(echo $active | wc -w)
 				if [[ $count -ge 2 ]]; then
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$red+ $active"
 					echo "* $case"
 					sed -i "s|. $active|+ $active|g" $HOME/.scripts/neet/text.patch
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
 					exit
 				else
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo "* $case"
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
 					exit
@@ -175,15 +216,15 @@ while [[ $# -gt 0 ]]; do
 
 				# Echo and send to text.patch
 				if [[ $end -gt $last ]]; then
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$red↑$white $casenoep ($end/$total)"
 					exit
 				elif [[ $end -lt $last ]]; then
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$brown↓$white $casenoep ($end/$total)"
 					exit
 				else
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo "❘ $casenoep ($end/$total)"
 					exit
 				fi
@@ -204,7 +245,7 @@ while [[ $# -gt 0 ]]; do
 					increment=$(expr $last + 1)
 
 					# Echo and send to text
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$red↑$white $casenoep ($increment/$total)"
 					sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
 					exit
@@ -219,7 +260,7 @@ while [[ $# -gt 0 ]]; do
 					increment=$(expr $lastactive + 1)
 
 					# Echo and send to text
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$red↑$white $caseactive ($increment/$totalactive)"
 					sed -i "s|$caseactive ($lastactive/$totalactive)|$caseactive ($increment/$totalactive)|g" $HOME/.scripts/neet/text.patch
 					exit
@@ -239,7 +280,7 @@ while [[ $# -gt 0 ]]; do
 					decrement=$(expr $last - 1)
 
 					# Echo and send to text
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$brown↓$white $casenoep ($decrement/$total)"
 					sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
 					exit
@@ -254,7 +295,7 @@ while [[ $# -gt 0 ]]; do
 					decrement=$(expr $lastactive - 1)
 
 					# Echo and send to text
-					echo "neet changes:"
+					echo "NEET changed:"
 					echo -e "$brown↓$white $caseactive ($decrement/$totalactive)"
 					sed -i "s|* $caseactive ($lastactive/$totalactive)|* $caseactive ($decrement/$totalactive)|g" $HOME/.scripts/neet/text.patch
 					exit
