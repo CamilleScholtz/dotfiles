@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
-# TODO: Replace all head/tail with cut?
 
 # Define colors
 white="\e[39m"
@@ -22,7 +21,7 @@ while [[ $# -gt 0 ]]; do
 
 	# Fuzzy logic
 	for line in $(cat $HOME/.scripts/neet/text.patch); do
-				match=0
+		match=0
 
 		# Set default seperator value again (for the next loop to work)
 		IFS=$' \t\n'
@@ -35,7 +34,6 @@ while [[ $# -gt 0 ]]; do
 		IFS=$'\n'
 
 		# Check which line has the most matches
-		# TODO: does match neet a $ here?
 		if [[ $match -gt $max ]]; then
 			max=$match
 			answer=$line
@@ -45,67 +43,24 @@ while [[ $# -gt 0 ]]; do
 	# Make bash case sensitive again
 	shopt -u nocasematch
 
-	# Clean up answer
-	case=$(echo $answer | cut -c 3-)
+	if [[ $# -eq 1 ]]; then
+		# Clean up answer (oh no actually don't, just use cat)
+		case=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3-)
+	else
+		# Clean up answer
+		case=$(echo $answer | cut -c 3-)
+	fi
 
 	# Case without episode info
-	casenoep=$(echo $case | cut -f1 -d "(" | head -c -1)
+	casenoep=$(echo $case | cut -f 1 -d "(" | head -c -2)
 
-	# Case of active escapism
-	caseactive=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3- | cut -f1 -d "(" | head -c -1)
+	# Case with only episode info
+	episode=$(echo $case | grep -o -P "(?<=\().*(?=\))")
 
-	# Get escapism status
-	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
-	watching=$(cat $HOME/.scripts/neet/text.patch | grep "+")
-	backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-")
+	# Get last watched and total episode info from $episode
+	last=$(echo $episode | cut -f 1 -d "/")
+	total=$(echo $episode | cut -f 2 -d "/")
 
-	# Get escapism case status
-	watchingcase=$(echo $watching | grep "$case")
-	backlogcase=$(echo $backlog | grep "$case")
-
-	# Check if epsidode is <= 10 or => 100
-	# TODO: Optimize this (cut?)
-	lesslast=$(echo $case | grep -o "([0-9]/")
-	morelast=$(echo $case | grep -o "([0-9][0-9][0-9]/")
-	lesstotal=$(echo $case | grep -o "/[0-9])")
-	moretotal=$(echo $case | grep -o "/[0-9][0-9][0-9])")
-	lesslastactive=$(echo $active | grep -o "([0-9]/")
-	morelastactive=$(echo $active | grep -o "([0-9][0-9][0-9]/")
-	lesstotalactive=$(echo $active | grep -o "/[0-9])")
-	moretotalactive=$(echo $active | grep -o "/[0-9][0-9][0-9])")
-
-	# Get last watched episode and total episode count
-	if [[ -n $morelast ]]; then
-		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 4)
-	elif [[ -n $lesslast ]]; then
-		last=$(echo $case | grep -o "([0-9]" | tail -c 2)
-	else
-		last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
-	fi
-
-	if [[ -n $moretotal ]]; then
-		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 3)
-	elif [[ -n $lesstotal ]]; then
-		total=$(echo $case | grep -o "[0-9])" | head -c 1)
-	else
-		total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
-	fi
-
-	if [[ -n $morelastactive ]]; then
-		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 4)
-	elif [[ -n $lesslastactive ]]; then
-		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 2)
-	else
-		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
-	fi
-
-	if [[ -n $moretotalactive ]]; then
-		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 4)
-	elif [[ -n $lesstotalactive ]]; then
-		totalactive=$(echo $active | grep -o "[0-9])" | head -c 1)
-	else
-		totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
-	fi
 
 	case "$1" in
 		-h|--help)
@@ -121,11 +76,21 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-l)
+			# Get escapism status
+			active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
+			watching=$(cat $HOME/.scripts/neet/text.patch | grep "+")
+
 			echo "$active"
 			echo -e "$red$watching"
 			exit
 			;;
 		-L)
+			# Get escapism status
+			active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
+			watching=$(cat $HOME/.scripts/neet/text.patch | grep "+")
+			backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-")
+
+
 			echo "$active"
 			echo -e "$red$watching"
 			echo -e "$brown$backlog"
@@ -184,10 +149,7 @@ while [[ $# -gt 0 ]]; do
 		-e)
 			shift
 			# TODO: Fix wrong fuzzy results because numbers
-			if [[ $# -eq 1 ]]; then
-				echo "Please provide escapism and watched episodes."
-				exit
-			elif [[ $2 -ge 2 ]]; then
+			if [[ $2 -ge 2 ]]; then
 				# Get last parameter (aka episode number)
 				for end; do true; done
 
@@ -202,10 +164,13 @@ while [[ $# -gt 0 ]]; do
 					exit
 				else
 					echo "NEET changed:"
-					echo "❘ $casenoep ($end/$total)"
+					echo "‖ $casenoep ($end/$total)"
 					exit
 				fi
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $HOME/.scripts/neet/text.patch
+				exit
+			elif [[ $# -eq 1 ]]; then
+				echo "Please provide escapism and watched episodes."
 				exit
 			else
 				echo "No escapism provided."
@@ -215,71 +180,37 @@ while [[ $# -gt 0 ]]; do
 			;;
 		+)
 			shift
-			if [[ $# -ge 1 ]]; then
-				# Set cap
-				if [[ $last -lt $total ]]; then
-						# Increment watched count
-						increment=$(expr $last + 1)
+			# Set cap
+			if [[ $last -lt $total ]]; then
+				# Increment watched count
+				increment=$(expr $last + 1)
 
-						# Echo and send to text
-						echo "NEET changed:"
-						echo -e "$red↑$white $casenoep ($increment/$total)"
-						sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
-						exit
-				else
-					echo "TODO: mesagge here"
-					exit
-				fi
+				# Echo and send to text
+				echo "NEET changed:"
+				echo -e "$red↑$white $casenoep ($increment/$total)"
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
+				exit
 			else
-				# Set cap
-				if [[ $lastactive -lt $totalactive ]]; then
-					# Increment watched count
-					increment=$(expr $lastactive + 1)
-
-					# Echo and send to text
-					echo "NEET changed:"
-					echo -e "$red↑$white $caseactive ($increment/$totalactive)"
-					sed -i "s|$caseactive ($lastactive/$totalactive)|$caseactive ($increment/$totalactive)|g" $HOME/.scripts/neet/text.patch
-					exit
-				else
-					echo "TODO: mesagge here"
-					exit
-				fi
+				echo "Completed escapism!"
+				exit
 			fi
 			shift
 			;;
 		-)
 			shift
-			if [[ $# -ge 1 ]]; then
-				# Set cap
-				if [[ $last -gt 0 ]]; then
-					# Decrement watched count
-					decrement=$(expr $last - 1)
+			# Set cap
+			if [[ $last -gt 0 ]]; then
+				# Decrement watched count
+				decrement=$(expr $last - 1)
 
-					# Echo and send to text
-					echo "NEET changed:"
-					echo -e "$brown↓$white $casenoep ($decrement/$total)"
-					sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
-					exit
-				else
-					echo "TODO: mesagge here"
-					exit
-				fi
+				# Echo and send to text
+				echo "NEET changed:"
+				echo -e "$brown↓$white $casenoep ($decrement/$total)"
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
+				exit
 			else
-				# Set cap
-				if [[ $lastactive -gt 0 ]]; then
-					# Decrement watched count
-					decrement=$(expr $lastactive - 1)
-
-					# Echo and send to text
-					echo "NEET changed:"
-					echo -e "$brown↓$white $caseactive ($decrement/$totalactive)"
-					sed -i "s|* $caseactive ($lastactive/$totalactive)|* $caseactive ($decrement/$totalactive)|g" $HOME/.scripts/neet/text.patch
-					exit
-				else
-					echo "TODO: mesagge here"
-					exit
-				fi
+				echo "Can't go lower than 0!"
+				exit
 			fi
 			shift
 			;;
