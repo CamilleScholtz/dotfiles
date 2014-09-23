@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
-# TODO: If statement [][][] doesn't work
+# TODO: Replace all head/tail with cut?
 
 # Define colors
 white="\e[39m"
@@ -36,7 +36,7 @@ while [[ $# -gt 0 ]]; do
 
 		# Check which line has the most matches
 		# TODO: does match neet a $ here?
-		if [[ match -gt $max ]]; then
+		if [[ $match -gt $max ]]; then
 			max=$match
 			answer=$line
 		fi
@@ -49,12 +49,10 @@ while [[ $# -gt 0 ]]; do
 	case=$(echo $answer | cut -c 3-)
 
 	# Case without episode info
-	# TODO: check if 9 or 10 is correct
-	casenoep=$(echo $case | head -c -9)
+	casenoep=$(echo $case | cut -f1 -d "(" | head -c -1)
 
 	# Case of active escapism
-	# TODO: check if 9 or 10 is correct
-	caseactive=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | head -c -9 | cut -c 3-)
+	caseactive=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3- | cut -f1 -d "(" | head -c -1)
 
 	# Get escapism status
 	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
@@ -65,8 +63,8 @@ while [[ $# -gt 0 ]]; do
 	watchingcase=$(echo $watching | grep "$case")
 	backlogcase=$(echo $backlog | grep "$case")
 
-	# Check if epsidode is < 10 or > 100
-	# TODO: Optimize this
+	# Check if epsidode is <= 10 or => 100
+	# TODO: Optimize this (cut?)
 	lesslast=$(echo $case | grep -o "([0-9]/")
 	morelast=$(echo $case | grep -o "([0-9][0-9][0-9]/")
 	lesstotal=$(echo $case | grep -o "/[0-9])")
@@ -77,51 +75,35 @@ while [[ $# -gt 0 ]]; do
 	moretotalactive=$(echo $active | grep -o "/[0-9][0-9][0-9])")
 
 	# Get last watched episode and total episode count
-	# TODO: Doesn't work
 	if [[ -n $morelast ]]; then
-		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 4)
 	elif [[ -n $lesslast ]]; then
-		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9]" | tail -c 2)
 	else
-		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
 	fi
 
-	# TODO: Doesn't work
 	if [[ -n $moretotal ]]; then
-		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 3)
 	elif [[ -n $lesstotal ]]; then
-		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9])" | head -c 1)
 	else
-		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
 	fi
 
-		# TODO: Doesn't work
 	if [[ -n $morelastactive ]]; then
-		# TODO: make both 2/3 for consitency?
 		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 4)
 	elif [[ -n $lesslastactive ]]; then
-		# TODO: make both 2/3 for consitency?
 		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 2)
 	else
-		# TODO: make both 2/3 for consitency?
 		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
 	fi
 
-	# TODO: Doesn't work
 	if [[ -n $moretotalactive ]]; then
-		# TODO: make both 2/3 for consitency?
 		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 4)
 	elif [[ -n $lesstotalactive ]]; then
-		# TODO: make both 2/3 for consitency?
 		totalactive=$(echo $active | grep -o "[0-9])" | head -c 1)
 	else
-		# TODO: make both 2/3 for consitency?
 		totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
 	fi
 
