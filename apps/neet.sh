@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
-# TODO: Add another echo above echo
+# TODO: Add episode cap
 
 # Define colors
 white="\e[39m"
@@ -63,17 +63,31 @@ while [[ $# -gt 0 ]]; do
 	watchingcase=$(echo $watching | grep "$case")
 	backlogcase=$(echo $backlog | grep "$case")
 
-	# TODO: Fix 100+ episode total/watching
-	# TODO: Fix 10- episode total/watching
-	# Get last watched episode and total episode count
-	last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
-	total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
+	morelast=$(echo $case | grep -o "([0-9][0-9][09]/")
+	moretotal=$(echo $case | grep -o "/[0-9][0-9][09])")
 
-	# TODO: Fix 100+ episode total/watching
-	# TODO: Fix 10- episode total/watching
-	# Last/total episode count of active escapism
-	lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
-	totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
+	# Get last watched episode and total episode count
+	# TODO: Doesn't work
+	if [[ -n $morelast ]]; then
+		# TODO: make both 2/3 for consitency?
+		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 3)
+		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)	
+	else
+		# TODO: make both 2/3 for consitency?
+		last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
+		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
+	fi
+
+	# TODO: Doesn't work
+	if [[ -n $moretotal ]]; then
+		# TODO: make both 2/3 for consitency?
+		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 2)
+		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 2)
+	else
+		# TODO: make both 2/3 for consitency?
+		total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
+		totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
+	fi
 
 	case "$1" in
 		-h|--help)
@@ -85,7 +99,7 @@ while [[ $# -gt 0 ]]; do
 			echo "  ^ b/w/a  backlog/watching/active"
 			echo "-e         set watching episode #"
 			echo "+ (esc)    increment watching episode #"
-			echo "- (esc)    decrenebt watching episode #"
+			echo "- (esc)    decrement watching episode #"
 			exit
 			;;
 		-l)
@@ -102,6 +116,7 @@ while [[ $# -gt 0 ]]; do
 		-sb)
 			shift
 			if [[ $# -eq 1 ]]; then
+				echo "neet changes:"
 				echo -e "$brown-$white $case"
 				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -114,6 +129,7 @@ while [[ $# -gt 0 ]]; do
 		-sw)
 			shift
 			if [[ $# -eq 1 ]]; then
+				echo "neet changes:"
 				echo -e "$red+$white $case"
 				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -128,13 +144,17 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -eq 1 ]]; then
 				count=$(echo $active | wc -w)
 				if [[ $count -ge 2 ]]; then
+					echo "neet changes:"
 					echo -e "$red+ $active"
 					echo "* $case"
 					sed -i "s|. $active|+ $active|g" $HOME/.scripts/neet/text.patch
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+					exit
 				else
+					echo "neet changes:"
 					echo "* $case"
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+					exit
 				fi
 				exit
 			else
@@ -153,14 +173,19 @@ while [[ $# -gt 0 ]]; do
 				# Get last parameter (aka episode number)
 				for end; do true; done
 
-				# Echo and send to text
+				# Echo and send to text.patch
 				if [[ $end -gt $last ]]; then
+					echo "neet changes:"
 					echo -e "$red↑$white $casenoep ($end/$total)"
+					exit
 				elif [[ $end -lt $last ]]; then
+					echo "neet changes:"
 					echo -e "$brown↓$white $casenoep ($end/$total)"
+					exit
 				else
-					# TODO: Replace space with something interesting
-					echo "  $casenoep ($end/$total)"
+					echo "neet changes:"
+					echo "❘ $casenoep ($end/$total)"
+					exit
 				fi
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -173,42 +198,70 @@ while [[ $# -gt 0 ]]; do
 		+)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# Increment watched count
-				increment=$(expr $last + 1)
+				# Set cap
+				if [[ $last -le $total ]]; then
+					# Increment watched count
+					increment=$(expr $last + 1)
 
-				# Echo and send to text
-				echo -e "$red↑$white $casenoep ($increment/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
-				exit
+					# Echo and send to text
+					echo "neet changes:"
+					echo -e "$red↑$white $casenoep ($increment/$total)"
+					sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
+					exit
+				else
+					echo "TODO: mesagge here"
+					exit
+				fi
 			else
-				# Increment watched count
-				increment=$(expr $lastactive + 1)
+				# Set cap
+				if [[ $last -le $total ]]; then
+					# Increment watched count
+					increment=$(expr $lastactive + 1)
 
-				# Echo and send to text
-				echo -e "$red↑$white $caseactive ($increment/$totalactive)"
-				sed -i "s|$caseactive ($lastactive/$totalactive)|$caseactive ($increment/$totalactive)|g" $HOME/.scripts/neet/text.patch
-				exit
+					# Echo and send to text
+					echo "neet changes:"
+					echo -e "$red↑$white $caseactive ($increment/$totalactive)"
+					sed -i "s|$caseactive ($lastactive/$totalactive)|$caseactive ($increment/$totalactive)|g" $HOME/.scripts/neet/text.patch
+					exit
+				else
+					echo "TODO: mesagge here"
+					exit
+				fi
 			fi
 			shift
 			;;
 		-)
 			shift
 			if [[ $# -ge 1 ]]; then
-				# Decrement watched count
-				decrement=$(expr $last - 1)
+				# Set cap
+				if [[ $last -le $total ]]; then
+					# Decrement watched count
+					decrement=$(expr $last - 1)
 
-				# Echo and send to text
-				echo -e "$brown↓$white $casenoep ($decrement/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
-				exit
+					# Echo and send to text
+					echo "neet changes:"
+					echo -e "$brown↓$white $casenoep ($decrement/$total)"
+					sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
+					exit
+				else
+					echo "TODO: mesagge here"
+					exit
+				fi
 			else
-				# Decrement watched count
-				decrement=$(expr $lastactive - 1)
+				# Set cap
+				if [[ $last -le $total ]]; then
+					# Decrement watched count
+					decrement=$(expr $lastactive - 1)
 
-				# Echo and send to text
-				echo -e "$brown↓$white $caseactive ($decrement/$totalactive)"
-				sed -i "s|* $caseactive ($lastactive/$totalactive)|* $caseactive ($decrement/$totalactive)|g" $HOME/.scripts/neet/text.patch
-				exit
+					# Echo and send to text
+					echo "neet changes:"
+					echo -e "$brown↓$white $caseactive ($decrement/$totalactive)"
+					sed -i "s|* $caseactive ($lastactive/$totalactive)|* $caseactive ($decrement/$totalactive)|g" $HOME/.scripts/neet/text.patch
+					exit
+				else
+					echo "TODO: mesagge here"
+					exit
+				fi
 			fi
 			shift
 			;;
