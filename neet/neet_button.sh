@@ -27,4 +27,4 @@ while true; do
 done |
 
 # Spawn escapism button
-dzen2 -p -dock -title-name neet_button -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 -e 'button1=exec:urxvt -e $EDITOR $HOME/.scripts/neet/text.patch;' & disown
+dzen2 -p -dock -title-name neet_button -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 -e 'button1=exec:bash $HOME/.scripts/neet/neet_popup.sh;' & disown

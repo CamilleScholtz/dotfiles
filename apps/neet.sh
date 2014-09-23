@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
+# TODO: Fix "
 
 # Define colors
 white="\e[39m"
@@ -26,7 +27,7 @@ while [[ $# -gt 0 ]]; do
 		# Set default seperator value again (for the next loop to work)
 		IFS=$' \t\n'
 
-		for words in $@; do
+		for words in "$@"; do
 			[[ $line = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
 		done
 
@@ -62,7 +63,7 @@ while [[ $# -gt 0 ]]; do
 	total=$(echo $episode | cut -f 2 -d "/")
 
 
-	case "$1" in
+	case $1 in
 		-h|--help)
 			# TODO: Clean this
 			echo "-h         show help"
