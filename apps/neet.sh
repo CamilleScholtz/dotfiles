@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # TODO: Alphabeticaly sort list
-# TODO: Test if cap works
-# TODO: Add 0 cap
 # TODO: If statement [][][] doesn't work
 
 # Define colors
@@ -82,25 +80,22 @@ while [[ $# -gt 0 ]]; do
 	# TODO: Doesn't work
 	if [[ -n $morelast ]]; then
 		# TODO: make both 2/3 for consitency?
-		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 3)
-		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)
+		last=$(echo $case | grep -o "([0-9][0-9][0-9]" | tail -c 4)
 	elif [[ -n $lesslast ]]; then
 		# TODO: make both 2/3 for consitency?
-		last=$(echo $case | grep -o "([0-9]" | tail -c 3)
-		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 3)
+		last=$(echo $case | grep -o "([0-9]" | tail -c 2)
 	else
 		# TODO: make both 2/3 for consitency?
 		last=$(echo $case | grep -o "([0-9][0-9]" | tail -c 3)
-		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
 	fi
 
 	# TODO: Doesn't work
 	if [[ -n $moretotal ]]; then
 		# TODO: make both 2/3 for consitency?
-		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 2)
+		total=$(echo $case | grep -o "[0-9][0-9][0-9])" | head -c 3)
 	elif [[ -n $lesstotal ]]; then
 		# TODO: make both 2/3 for consitency?
-		total=$(echo $case | grep -o "[0-9])" | head -c 2)
+		total=$(echo $case | grep -o "[0-9])" | head -c 1)
 	else
 		# TODO: make both 2/3 for consitency?
 		total=$(echo $case | grep -o "[0-9][0-9])" | head -c 2)
@@ -109,10 +104,10 @@ while [[ $# -gt 0 ]]; do
 		# TODO: Doesn't work
 	if [[ -n $morelastactive ]]; then
 		# TODO: make both 2/3 for consitency?
-		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 3)
+		lastactive=$(echo $active | grep -o "([0-9][0-9][0-9]" | tail -c 4)
 	elif [[ -n $lesslastactive ]]; then
 		# TODO: make both 2/3 for consitency?
-		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 3)
+		lastactive=$(echo $active | grep -o "([0-9]" | tail -c 2)
 	else
 		# TODO: make both 2/3 for consitency?
 		lastactive=$(echo $active | grep -o "([0-9][0-9]" | tail -c 3)
@@ -121,10 +116,10 @@ while [[ $# -gt 0 ]]; do
 	# TODO: Doesn't work
 	if [[ -n $moretotalactive ]]; then
 		# TODO: make both 2/3 for consitency?
-		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 2)
+		totalactive=$(echo $active | grep -o "[0-9][0-9][0-9])" | head -c 4)
 	elif [[ -n $lesstotalactive ]]; then
 		# TODO: make both 2/3 for consitency?
-		totalactive=$(echo $active | grep -o "[0-9])" | head -c 2)
+		totalactive=$(echo $active | grep -o "[0-9])" | head -c 1)
 	else
 		# TODO: make both 2/3 for consitency?
 		totalactive=$(echo $active | grep -o "[0-9][0-9])" | head -c 2)
@@ -240,22 +235,22 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -ge 1 ]]; then
 				# Set cap
-				if [[ $last -le $total ]]; then
-					# Increment watched count
-					increment=$(expr $last + 1)
+				if [[ $last -lt $total ]]; then
+						# Increment watched count
+						increment=$(expr $last + 1)
 
-					# Echo and send to text
-					echo "NEET changed:"
-					echo -e "$red↑$white $casenoep ($increment/$total)"
-					sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
-					exit
+						# Echo and send to text
+						echo "NEET changed:"
+						echo -e "$red↑$white $casenoep ($increment/$total)"
+						sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
+						exit
 				else
 					echo "TODO: mesagge here"
 					exit
 				fi
 			else
 				# Set cap
-				if [[ $last -le $total ]]; then
+				if [[ $lastactive -lt $totalactive ]]; then
 					# Increment watched count
 					increment=$(expr $lastactive + 1)
 
@@ -275,7 +270,7 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -ge 1 ]]; then
 				# Set cap
-				if [[ $last -le $total ]]; then
+				if [[ $last -gt 0 ]]; then
 					# Decrement watched count
 					decrement=$(expr $last - 1)
 
@@ -290,7 +285,7 @@ while [[ $# -gt 0 ]]; do
 				fi
 			else
 				# Set cap
-				if [[ $last -le $total ]]; then
+				if [[ $lastactive -gt 0 ]]; then
 					# Decrement watched count
 					decrement=$(expr $lastactive - 1)
 
