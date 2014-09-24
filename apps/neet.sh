@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# TODO: Alphabeticaly sort list
 # TODO: Fix "
+# TODO: Add sorting
+# TODO: Add comment in -l and -L
 
 # Define colors
 white="\e[39m"
@@ -62,10 +63,14 @@ while [[ $# -gt 0 ]]; do
 	last=$(echo $episode | cut -f 1 -d "/")
 	total=$(echo $episode | cut -f 2 -d "/")
 
+	# Get escapism status
+	# TODO: Add comment in -l and -L
+	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
+	watching=$(cat $HOME/.scripts/neet/text.patch | grep "+" | sort)
+	backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-" | sort)
 
 	case $1 in
 		-h|--help)
-			# TODO: Clean this
 			echo "-h         show help"
 			echo "-l         list all currently watching escapism"
 			echo "-L         list all escapism"
@@ -77,21 +82,11 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-l)
-			# Get escapism status
-			active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
-			watching=$(cat $HOME/.scripts/neet/text.patch | grep "+")
-
 			echo "$active"
 			echo -e "$red$watching"
 			exit
 			;;
 		-L)
-			# Get escapism status
-			active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
-			watching=$(cat $HOME/.scripts/neet/text.patch | grep "+")
-			backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-")
-
-
 			echo "$active"
 			echo -e "$red$watching"
 			echo -e "$brown$backlog"
@@ -100,7 +95,7 @@ while [[ $# -gt 0 ]]; do
 		-sb)
 			shift
 			if [[ $# -eq 1 ]]; then
-				echo "NEET changed:"
+				echo "neet.sh changed:"
 				echo -e "$brown-$white $case"
 				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -113,7 +108,7 @@ while [[ $# -gt 0 ]]; do
 		-sw)
 			shift
 			if [[ $# -eq 1 ]]; then
-				echo "NEET changed:"
+				echo "neet.sh changed:"
 				echo -e "$red+$white $case"
 				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
 				exit
@@ -128,14 +123,14 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -eq 1 ]]; then
 				count=$(echo $active | wc -w)
 				if [[ $count -ge 2 ]]; then
-					echo "NEET changed:"
+					echo "neet.sh changed:"
 					echo -e "$red+ $active"
 					echo "* $case"
 					sed -i "s|. $active|+ $active|g" $HOME/.scripts/neet/text.patch
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
 					exit
 				else
-					echo "NEET changed:"
+					echo "neet.sh changed:"
 					echo "* $case"
 					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
 					exit
@@ -149,22 +144,21 @@ while [[ $# -gt 0 ]]; do
 			;;
 		-e)
 			shift
-			# TODO: Fix wrong fuzzy results because numbers
 			if [[ $2 -ge 2 ]]; then
 				# Get last parameter (aka episode number)
 				for end; do true; done
 
 				# Echo and send to text.patch
 				if [[ $end -gt $last ]]; then
-					echo "NEET changed:"
+					echo "neet.sh changed:"
 					echo -e "$red↑$white $casenoep ($end/$total)"
 					exit
 				elif [[ $end -lt $last ]]; then
-					echo "NEET changed:"
+					echo "neet.sh changed:"
 					echo -e "$brown↓$white $casenoep ($end/$total)"
 					exit
 				else
-					echo "NEET changed:"
+					echo "neet.sh changed:"
 					echo "‖ $casenoep ($end/$total)"
 					exit
 				fi
@@ -187,12 +181,12 @@ while [[ $# -gt 0 ]]; do
 				increment=$(expr $last + 1)
 
 				# Echo and send to text
-				echo "NEET changed:"
+				echo "neet.sh changed:"
 				echo -e "$red↑$white $casenoep ($increment/$total)"
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
 			else
-				echo "Completed escapism!"
+				echo "Escapism completed!"
 				exit
 			fi
 			shift
@@ -205,7 +199,7 @@ while [[ $# -gt 0 ]]; do
 				decrement=$(expr $last - 1)
 
 				# Echo and send to text
-				echo "NEET changed:"
+				echo "neet.sh changed:"
 				echo -e "$brown↓$white $casenoep ($decrement/$total)"
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
