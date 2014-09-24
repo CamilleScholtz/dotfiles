@@ -4,7 +4,7 @@
 #	Fix cursor thingy
 #	Show an arrow
 
-# Get the cover path name
+# Get the cover path
 path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
 
 # Get color from .Xresources

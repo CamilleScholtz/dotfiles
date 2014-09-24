@@ -3,21 +3,23 @@
 # TODO: fix the non-latin character bug
 # TODO: fix some latin characters getting cut off
 
+# Define colors
+foreground="\e[0;39m"
+black="\e[0;30m"
+brown="\e[0;33m"
+green="\e[1;32m"
+red="\e[1;35m"
+white="\e[1;37m"
+
 # Get MPD track data
 album=$(mpc -f "%album%" | head -n 1 | head -c 22)
-artist=$(mpc -f "%artist%" | head -n 1 | head -c 29)
 date=$(mpc -f "%date%" | head -n 1)
+artist=$(mpc -f "%artist%" | head -n 1 | head -c 29)
 title=$(mpc -f "%title%" | head -n 1 | head -c 29)
+genre=$(mpc -f "%genre%" | head -n 1 | head -c 29)
 
 # Get progress % of song
 percent=$(mpc | grep -o "[(0-9][0-9]%" | grep -o "[0-9]*")
-
-# Define colors
-# TODO: Make color same as ncmpcpp
-# TODO: Make color codes same as neet.sh
-white="\e[1;38m"
-white2="\e[1;37m"
-black="\e[0;30m"
 
 # Define the lenght of the elapsed part
 case $percent in
@@ -117,12 +119,12 @@ case $percent in
 esac
 
 # Send content to music_popup.sh
-echo -e "		    $white$date - $album"
-echo -e ""
-echo -e "		    $white$artist"
-echo -e ""
-echo -e "		    $white$title"
-echo -e ""
-echo -e ""
-echo -e ""
-echo -e "		    $white2$bar"
+echo -e "$black                 |  ${foreground}Album: $brown$album"
+echo -e "$black                 |  ${foreground}Date: $brown$date"
+echo -e "$black                 |"
+echo -e "$black                 |  ${foreground}Genre: $brown$genre"
+echo -e "$black                 |"
+echo -e "$black                 |  ${foreground}Artist: $green$artist"
+echo -e "$black                 |  ${foreground}Track: $red$title"
+echo -e "$black                 |"
+echo -e "$black                 |  $white$bar"

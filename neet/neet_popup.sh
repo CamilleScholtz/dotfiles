@@ -1,7 +1,7 @@
 #!/bin/bash
 
 case=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3-| cut -f 1 -d "(" | head -c -2)
-episode=$(echo $case | grep -o -P "(?<=\().*(?=\))" | cut -f 1 -d "/")
+episode=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | grep -o -P "(?<=\().*(?=\))" | cut -f 1 -d "/")
 
 # Fuzzy logic vars
 max=0
@@ -25,7 +25,7 @@ for directory in $(ls $HOME/Downloads); do
 		[[ $directory = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
 	done
 
-	# And make newkines the only seperator again
+	# And make newlines the only seperator again
 	IFS=$'\n'
 
 	# Check which line has the most matches
@@ -35,5 +35,10 @@ for directory in $(ls $HOME/Downloads); do
 	fi
 done
 
+# Restore all these bash things to the default value
+IFS=$' \t\n'
+set +f
+shopt -u nocasematch
+
 # Launch mpv
-mpv "$HOME/Downloads/$answer/"*.E16.*.mkv
+mpv "$HOME/Downloads/$answer/"*E$episode*.mkv

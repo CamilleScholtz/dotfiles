@@ -18,14 +18,17 @@ url=http://a.pomf.se/$pomffile
 echo $url | xclip -selection primary
 echo $url | xclip -selection clipboard
 
-# Print url in terminal (if used)
-echo $url
-
 if [[ $# -eq 0 ]]; then
+	# Print url in terminal (if used)
+	echo Screen has been pomfed: $url
+
 	# Remove file
 	rm -f $file
 	
 	# Display notification
 	sleep 0.1
 	bash $HOME/.scripts/notify/capture_pomf.sh $url & disown
+else
+	# Print url in terminal
+	echo File has been uploaded: $url
 fi

@@ -3,11 +3,12 @@
 # TODO: Fix "
 # TODO: Add sorting
 # TODO: Add comment in -l and -L
+# TODO: Fix fuzzy logic not working because episode numbers
 
 # Define colors
-white="\e[39m"
-red="\e[1;35m"
+foreground="\e[0;39m"
 brown="\e[1;33m"
+red="\e[1;35m"
 
 while [[ $# -gt 0 ]]; do
 	# Fuzzy logic vars
@@ -32,7 +33,7 @@ while [[ $# -gt 0 ]]; do
 			[[ $line = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
 		done
 
-		# And make newkines the only seperator again
+		# And make newlines the only seperator again
 		IFS=$'\n'
 
 		# Check which line has the most matches
@@ -42,7 +43,9 @@ while [[ $# -gt 0 ]]; do
 		fi
 	done
 
-	# Make bash case sensitive again
+	# Restore all these bash things to the default value
+	IFS=$' \t\n'
+	set +f
 	shopt -u nocasematch
 
 	if [[ $# -eq 1 ]]; then
