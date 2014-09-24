@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Take scrot
-file=$(scrot '%Y-%m-%d_scrot.png' -e 'echo -n $f')
+# Check if the user wants to take a scrot or if the user wants to upload an image/file
+if [[ $# -eq 0 ]]; then
+	# Take scrot
+	file=$(scrot '%Y-%m-%d_scrot.png' -e 'echo -n $f')
+else
+	# Get file
+	file="$@"
+fi
 
 # Upload it and grab the url
 output=$(curl --silent -sf -F files[]="@$file" "http://pomf.se/upload.php")
@@ -15,9 +21,11 @@ echo $url | xclip -selection clipboard
 # Print url in terminal (if used)
 echo $url
 
-# Remove file
-rm -f $file
-
-# Display notification
-sleep 0.1
-bash $HOME/.scripts/notify/capture_pomf.sh $url & disown
+if [[ $# -eq 0 ]]; then
+	# Remove file
+	rm -f $file
+	
+	# Display notification
+	sleep 0.1
+	bash $HOME/.scripts/notify/capture_pomf.sh $url & disown
+fi
