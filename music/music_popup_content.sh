@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# TODO: Fix the non-latin character bug
-# TODO: Fix some latin characters getting cut off
-# TODO: Fix missing bar and |
-
 # Define colors
 foreground="\e[0;39m"
 black="\e[0;30m"
@@ -13,11 +9,11 @@ red="\e[1;35m"
 white="\e[1;37m"
 
 # Get MPD track data
-album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
+album=$(mpc -f "%album%" | head -n 1 | cut -c -$(expr 23 + $(mpc -f "%album%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
 date=$(mpc -f "%date%" | head -n 1)
-artist=$(mpc -f "%artist%" | head -n 1 | cut -c -29)
-title=$(mpc -f "%title%" | head -n 1 | cut -c -29)
-genre=$(mpc -f "%genre%" | head -n 1 | cut -c -29)
+artist=$(mpc -f "%artist%" | head -n 1 | cut -c -$(expr 22 + $(mpc -f "%artist%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
+title=$(mpc -f "%title%" | head -n 1 | cut -c -$(expr 22 + $(mpc -f "%title%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
+track=$(mpc -f "%track%" | head -n 1)
 
 # Get progress % of song
 percent=$(mpc | grep -o "[(0-9][0-9]%" | grep -o "[0-9]*")
@@ -123,7 +119,7 @@ esac
 echo -e "$black                 |  ${foreground}Album: $brown$album"
 echo -e "$black                 |  ${foreground}Date: $brown$date"
 echo -e "$black                 |"
-echo -e "$black                 |  ${foreground}Genre: $brown$genre"
+echo -e "$black                 |  ${foreground}Track: $brown$track"
 echo -e "$black                 |"
 echo -e "$black                 |  ${foreground}Artist: $green$artist"
 echo -e "$black                 |  ${foreground}Track: $red$title"

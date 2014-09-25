@@ -16,7 +16,7 @@ width=$(expr $(echo $text | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3 + $count - 1
 exist=$(pgrep -f "urxvt -name notification" | wc -w)
 
 # Get oldest notification numbers
-last0=$(ps -p $(pgrep -f -o "urxvt -name notification") -o args 2>/dev/null | grep -o "[0-9]" | head -1)
+last0=$(ps -p $(pgrep -f -o "urxvt -name notification") -o args 2>/dev/null | grep -o "[0-9]" | head -n 1)
 last1=$(expr $last0 + 1)
 last2=$(expr $last0 + 2)
 last3=$(expr $last0 + 3)
