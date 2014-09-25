@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# TODO: Fix albumart not changing
-#	Fix cursor thingy
-#	Show an arrow
-
-# Get the cover path
-path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
+# TODO: Fix cursor thingy
+# TODO: Show an arrow
 
 # Get color from .Xresources
 color=$(cat $HOME/.Xresources | grep background | tail -c 8)
@@ -19,7 +15,24 @@ if [[ -n $exist ]]; then
 fi
 
 # Spawn the popup
-urxvt -name music_popup -geometry 50x9 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -t -c bash $HOME/.scripts/music/music_popup_content.sh & disown
+urxvt -name music_popup -geometry 50x9 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -n 1 -t -c bash $HOME/.scripts/music/music_popup_content.sh & disown
 
-# Spawn the album art
-exec feh -N -g 128x128+49+877 "$HOME/Music/$path/cover_popup.png" & disown
+album=$(mpc -f "%album%")
+
+# Spawn the album art, respawn album art if album changes
+while true; do
+	albumupdate=$(mpc -f "%album%")
+
+	if [[ $album != $albumupdate ]]; then
+		album=$(mpc -f "%album%")
+		albumupdate=$album
+
+		# Get the cover path
+		path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
+
+		feh -N -g 128x128+49+877 "$HOME/Music/$path/cover_popup.png" & disown
+		echo yay
+	fi
+ 
+	sleep 1
+done
