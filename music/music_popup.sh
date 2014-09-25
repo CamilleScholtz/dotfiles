@@ -17,21 +17,34 @@ fi
 # Spawn the popup
 urxvt -name music_popup -geometry 50x9 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -n 1 -t -c bash $HOME/.scripts/music/music_popup_content.sh & disown
 
-album=$(mpc -f "%album%")
+# Get the cover path
+path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
 
-# Spawn the album art, respawn album art if album changes
+# Spawn the album art
+feh -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
+
+album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
+
+# Respawn album art if album changes
 while true; do
-	albumupdate=$(mpc -f "%album%")
+	albumupdate=$(mpc -f "%album%" | head -n 1 | cut -c -22)
 
-	if [[ $album != $albumupdate ]]; then
-		album=$(mpc -f "%album%")
+	echo $album
+	echo $albumupdate
+
+	if [[ $albumupdate  != $album ]]; then
+		album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
 		albumupdate=$album
 
-		# Get the cover path
+		# Kill the old album art
+		pkill -n "feh"
+
+		# Get the updated cover path
 		path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
 
-		feh -N -g 128x128+49+877 "$HOME/Music/$path/cover_popup.png" & disown
-		echo yay
+		# Respawn new album art
+		feh -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
+		echo changed
 	fi
  
 	sleep 1

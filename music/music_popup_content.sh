@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# TODO: fix the non-latin character bug
-# TODO: fix some latin characters getting cut off
+# TODO: Fix the non-latin character bug
+# TODO: Fix some latin characters getting cut off
+# TODO: Fix missing bar and |
 
 # Define colors
 foreground="\e[0;39m"
@@ -12,11 +13,11 @@ red="\e[1;35m"
 white="\e[1;37m"
 
 # Get MPD track data
-album=$(mpc -f "%album%" | head -n 1 | head -c 22)
+album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
 date=$(mpc -f "%date%" | head -n 1)
-artist=$(mpc -f "%artist%" | head -n 1 | head -c 29)
-title=$(mpc -f "%title%" | head -n 1 | head -c 29)
-genre=$(mpc -f "%genre%" | head -n 1 | head -c 29)
+artist=$(mpc -f "%artist%" | head -n 1 | cut -c -29)
+title=$(mpc -f "%title%" | head -n 1 | cut -c -29)
+genre=$(mpc -f "%genre%" | head -n 1 | cut -c -29)
 
 # Get progress % of song
 percent=$(mpc | grep -o "[(0-9][0-9]%" | grep -o "[0-9]*")
