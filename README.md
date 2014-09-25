@@ -35,7 +35,7 @@ Music button, on hover a popup appears with info about the song, artist & album,
 
 neet
 ----
-A button that shows my current watching series/animu with episode count.
+A button that shows my current watching series/animu with episode count. Now also launches currently watching episode on click!!! wow!!
 
 notify
 ------
