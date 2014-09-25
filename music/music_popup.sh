@@ -9,8 +9,9 @@ color=$(cat $HOME/.Xresources | grep background | tail -c 8)
 # Kill popup if popup is already open
 exist=$(pgrep -f "urxvt -name music_popup")
 if [[ -n $exist ]]; then
-	pkill -n "feh"
-	pkill -fn "urxvt -name music_popup"*
+	pkill -f -o "bash $HOME/.scripts/music/music_popup.sh"
+	pkill -f -o "feh --title music_art"*
+	pkill -f -o "urxvt -name music_popup"*
 	exit
 fi
 
@@ -21,30 +22,26 @@ urxvt -name music_popup -geometry 50x9 -internalBorder 13 -hold -cursorUnderline
 path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
 
 # Spawn the album art
-feh -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
+feh --title music_art -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
 
-album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
+current=$(mpc -f "%album%" | head -n 1 | cut -c -22)
 
 # Respawn album art if album changes
 while true; do
-	albumupdate=$(mpc -f "%album%" | head -n 1 | cut -c -22)
+	new=$(mpc -f "%album%" | head -n 1 | cut -c -22)
 
-	echo $album
-	echo $albumupdate
-
-	if [[ $albumupdate  != $album ]]; then
-		album=$(mpc -f "%album%" | head -n 1 | cut -c -22)
-		albumupdate=$album
+	if [[ $current != $new ]]; then
+		current=$(mpc -f "%album%" | head -n 1 | cut -c -22)
+		new=$album
 
 		# Kill the old album art
-		pkill -n "feh"
+		pkill -f -o "feh --title music_art"*
 
 		# Get the updated cover path
 		path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
 
 		# Respawn new album art
-		feh -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
-		echo changed
+		feh --title music_art -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
 	fi
  
 	sleep 1
