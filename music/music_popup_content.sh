@@ -9,10 +9,17 @@ red="\e[1;35m"
 white="\e[1;37m"
 
 # Get MPD track data
-album=$(mpc -f "%album%" | head -n 1 | cut -c -$(expr 23 + $(mpc -f "%album%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
+albumcount=$(expr $(mpc -f "%album%" | head -n 1 | cut -c -23 | pcregrep -o "[^\x00-\x7F]" | wc -m) / 2)
+album=$(mpc -f "%album%" | head -n 1 | cut -c -$(expr 23  + $albumcount))
+
 date=$(mpc -f "%date%" | head -n 1)
-artist=$(mpc -f "%artist%" | head -n 1 | cut -c -$(expr 22 + $(mpc -f "%artist%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
-title=$(mpc -f "%title%" | head -n 1 | cut -c -$(expr 22 + $(mpc -f "%title%" | pcregrep -o "[^\x00-\x7F]" | wc -m) / 3))
+
+artistcount=$(expr $(mpc -f "%artist%" | head -n 1 | cut -c -22 | pcregrep -o "[^\x00-\x7F]" | wc -m) / 2)
+artist=$(mpc -f "%artist%" | head -n 1 | cut -c -$(expr 22 + $artistcount))
+
+titlecount=$(expr $(mpc -f "%title%" | head -n 1 | cut -c -23 | pcregrep -o "[^\x00-\x7F]" | wc -m) / 2)
+title=$(mpc -f "%title%" | head -n 1 | cut -c -$(expr 23 + $titlecount))
+
 track=$(mpc -f "%track%" | head -n 1)
 
 # Get progress % of song
@@ -116,12 +123,12 @@ case $percent in
 esac
 
 # Send content to music_popup.sh
-echo -e "$black                 |  ${foreground}Album: $brown$album"
-echo -e "$black                 |  ${foreground}Date: $brown$date"
-echo -e "$black                 |"
-echo -e "$black                 |  ${foreground}Track: $brown$track"
-echo -e "$black                 |"
-echo -e "$black                 |  ${foreground}Artist: $green$artist"
-echo -e "$black                 |  ${foreground}Track: $red$title"
-echo -e "$black                 |"
-echo -e "$black                 |  $white$bar"
+echo -e "$black                 │  ${foreground}Album: $brown$album"
+echo -e "$black                 │  ${foreground}Date: $brown$date"
+echo -e "$black                 │"
+echo -e "$black                 │  ${foreground}Track: $brown$track"
+echo -e "$black                 │"
+echo -e "$black                 │  ${foreground}Artist: $green$artist"
+echo -e "$black                 │  ${foreground}Title: $red$title"
+echo -e "$black                 │"
+echo -e "$black                 │  $white$bar"
