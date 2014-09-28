@@ -41,4 +41,4 @@ set +f
 shopt -u nocasematch
 
 # Launch mpv
-mpv "$HOME/Downloads/$answer/"*E$episode*.mkv
+mpv --fullscreen "$HOME/Downloads/$answer/"*E$episode*.mkv

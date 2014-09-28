@@ -4,6 +4,9 @@
 # TODO: Add sorting
 # TODO: Add comment in -l and -L
 # TODO: Fix fuzzy logic not working because episode numbers
+# TODO: Add -e
+# TODO: Add "want to remove this escapism" to cap
+# TODO: Automaticly replace escapism with drama/movie/etc.
 
 # Define colors
 foreground="\e[0;39m"
@@ -77,9 +80,10 @@ while [[ $# -gt 0 ]]; do
 			echo "-h         show help"
 			echo "-l         list all currently watching escapism"
 			echo "-L         list all escapism"
+			echo "-e         edit escapism list with $EDITOR"
 			echo "-s* esc    set status of escapism"
 			echo "  ^ b/w/a  backlog/watching/active"
-			echo "-e         set watching episode #"
+			echo "-w         set watching episode #"
 			echo "+ (esc)    increment watching episode #"
 			echo "- (esc)    decrement watching episode #"
 			exit
@@ -145,7 +149,7 @@ while [[ $# -gt 0 ]]; do
 			fi
 			shift
 			;;
-		-e)
+		-w)
 			shift
 			if [[ $2 -ge 2 ]]; then
 				# Get last parameter (aka episode number)
