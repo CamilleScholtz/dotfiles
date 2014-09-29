@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Fix $track sometimes diplaying XX/XX ans sometimes only XX
+
 # Define colors
 foreground="\e[0;39m"
 black="\e[0;30m"
@@ -9,7 +11,7 @@ red="\e[1;35m"
 white="\e[1;37m"
 
 # Get MPD track data
-albumcount=$(expr $(mpc -f "%album%" | head -n 1 | cut -c -23 | pcregrep -o "[^\x00-\x7F]" | wc -m) / 2)
+albumcount=$(expr $(mpc -f "%album%" | head -n 1 | cut -c -23 | pcregrep -o "[^\x00-\x7F]" | wc -m) / 2 - 2)
 album=$(mpc -f "%album%" | head -n 1 | cut -c -$(expr 23  + $albumcount))
 
 date=$(mpc -f "%date%" | head -n 1)

@@ -3,15 +3,18 @@
 # TODO: Fix "
 # TODO: Add sorting
 # TODO: Add comment in -l and -L
+# TODO: Add comment in + cap
 # TODO: Fix fuzzy logic not working because episode numbers
-# TODO: Add -e
-# TODO: Add "want to remove this escapism" to cap
 # TODO: Automaticly replace escapism with drama/movie/etc.
+# TODO: Add add option
+# TODO: Add remove option
 
 # Define colors
 foreground="\e[0;39m"
 brown="\e[1;33m"
+green="\e[1;32m"
 red="\e[1;35m"
+red2="\e[1;31m"
 
 while [[ $# -gt 0 ]]; do
 	# Fuzzy logic vars
@@ -75,6 +78,10 @@ while [[ $# -gt 0 ]]; do
 	watching=$(cat $HOME/.scripts/neet/text.patch | grep "+" | sort)
 	backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-" | sort)
 
+	# Check if the escapism is a drama or animu or... etc.
+	# TODO: FIx this
+	escapism=$(cat $HOME/.scripts/neet/text.patch | sed "/$casenoep/q" | grep "#" | tail -n 1 | cut -c 3-)
+
 	case $1 in
 		-h|--help)
 			echo "-h         show help"
@@ -83,9 +90,9 @@ while [[ $# -gt 0 ]]; do
 			echo "-e         edit escapism list with $EDITOR"
 			echo "-s* esc    set status of escapism"
 			echo "  ^ b/w/a  backlog/watching/active"
-			echo "-w         set watching episode #"
-			echo "+ (esc)    increment watching episode #"
-			echo "- (esc)    decrement watching episode #"
+			echo "-w         set watching episode number"
+			echo "+ (esc)    increment watching episode number by 1"
+			echo "- (esc)    decrement watching episode number by 1"
 			exit
 			;;
 		-l)
@@ -97,6 +104,10 @@ while [[ $# -gt 0 ]]; do
 			echo "$active"
 			echo -e "$red$watching"
 			echo -e "$brown$backlog"
+			exit
+			;;
+		-e)
+			vim $HOME/.scripts/neet/text.patch
 			exit
 			;;
 		-sb)
@@ -193,8 +204,23 @@ while [[ $# -gt 0 ]]; do
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
 			else
-				echo "Escapism completed!"
-				exit
+				# TODO: Fix this
+				echo "$escapism"
+				echo -e -n "completed! Would you like to remove this escapism? [${green}Yes$foreground/${red2}No$foreground] "
+				while true; do
+					read -r response
+					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+						sed -i "/$casenoep/d" $HOME/.scripts/neet/text.patch
+						exit
+					elif [[ $response =~ ^([nN][oO]|[nN])$ ]]; then
+						exit
+					elif [[ -z $response ]]; then
+						exit
+					else
+						echo -e -n "Sorry, response '$response' not understood. [${green}Yes$foreground/${red2}No$foreground] "
+						continue
+					fi
+				done
 			fi
 			shift
 			;;
