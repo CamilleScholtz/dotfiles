@@ -1,7 +1,21 @@
 #!/bin/bash
 
+# Get the escapism name
 case=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3-| cut -f 1 -d "(" | head -c -2)
+
+# Get the currenly watching episode number
 episode=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | grep -o -P "(?<=\().*(?=\))" | cut -f 1 -d "/")
+
+# Add a 0 to numbers under 10, so 1 will become 01
+if [[ $episode -eq 0 ]]; then
+	episode=01
+elif [[ $episode -le 9 ]]; then
+	for number in {1..9}; do
+		if [[ $number -eq $episode ]]; then
+			episode=0$number
+		fi
+	done
+fi
 
 # Fuzzy logic vars
 max=0

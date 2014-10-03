@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# TODO: Fix "
 # TODO: Add sorting
-# TODO: Add comment in -l and -L
-# TODO: Add comment in + cap
 # TODO: Fix fuzzy logic not working because episode numbers
 # TODO: Automaticly replace escapism with drama/movie/etc.
 # TODO: Add add option
 # TODO: Add remove option
+# TODO: Replace -w with +10/-10?
 
 # Define colors
 foreground="\e[0;39m"
@@ -73,14 +71,13 @@ while [[ $# -gt 0 ]]; do
 	total=$(echo $episode | cut -f 2 -d "/")
 
 	# Get escapism status
-	# TODO: Add comment in -l and -L
 	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
 	watching=$(cat $HOME/.scripts/neet/text.patch | grep "+" | sort)
 	backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-" | sort)
 
 	# Check if the escapism is a drama or animu or... etc.
 	# TODO: FIx this
-	escapism=$(cat $HOME/.scripts/neet/text.patch | sed "/$casenoep/q" | grep "#" | tail -n 1 | cut -c 3-)
+	escapism=$(cat $HOME/.scripts/neet/text.patch | sed "/$casenoep/d" | grep "#" | tail -n 1 | cut -c 3-)
 
 	case $1 in
 		-h|--help)
@@ -96,11 +93,13 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-l)
+			echo "neet.sh watching list:"
 			echo "$active"
 			echo -e "$red$watching"
 			exit
 			;;
 		-L)
+			echo "neet.sh watching & backlog list:"
 			echo "$active"
 			echo -e "$red$watching"
 			echo -e "$brown$backlog"
@@ -204,9 +203,7 @@ while [[ $# -gt 0 ]]; do
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
 				exit
 			else
-				# TODO: Fix this
-				echo "$escapism"
-				echo -e -n "completed! Would you like to remove this escapism? [${green}Yes$foreground/${red2}No$foreground] "
+				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${red2}No$foreground] "
 				while true; do
 					read -r response
 					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then

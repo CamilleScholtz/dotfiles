@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO: Fix $track sometimes diplaying XX/XX ans sometimes only XX
+# TODO: Use skroll
 
 # Define colors
 foreground="\e[0;39m"
@@ -25,106 +26,13 @@ title=$(mpc -f "%title%" | head -n 1 | cut -c -$(expr 23 + $titlecount))
 track=$(mpc -f "%track%" | head -n 1)
 
 # Get progress % of song
-percent=$(mpc | grep -o "[(0-9][0-9]%" | grep -o "[0-9]*")
+elapsed=$(bc <<< "sclae=2; $(mpc | grep -o "[(0-9][0-9]%" | grep -o '[0-9]*')/3.333")
+togo=$(expr 30 - $elapsed)
 
-# Define the lenght of the elapsed part
-case $percent in
-[0-2])
-	bar="$black──────────────────────────────"
-	;;
-[3-5])
-	bar="─$black─────────────────────────────"
-	;;
-[6-9])
-	bar="──$black────────────────────────────"
-	;;
-1[0-2])
-	bar="───$black───────────────────────────"
-	;;
-1[3-5])
-	bar="────$black──────────────────────────"
-	;;
-1[6-9])
-	bar="─────$black─────────────────────────"
-	;;
-2[0-2])
-	bar="──────$black────────────────────────"
-	;;
-2[3-5])
-	bar="───────$black───────────────────────"
-	;;
-2[6-9])
-	bar="────────$black──────────────────────"
-	;;
-3[0-2])
-	bar="─────────$black─────────────────────"
-	;;
-3[3-5])
-	bar="──────────$black────────────────────"
-	;;
-3[6-9])
-	bar="───────────$black───────────────────"
-	;;
-4[0-2])
-	bar="────────────$black──────────────────"
-	;;
-4[3-5])
-	bar="─────────────$black─────────────────"
-	;;
-4[6-9])
-	bar="──────────────$black────────────────"
-	;;
-5[0-2])
-	bar="───────────────$black───────────────"
-	;;
-5[3-5])
-	bar="────────────────$black──────────────"
-	;;
-5[6-9])
-	bar="─────────────────$black─────────────"
-	;;
-6[0-2])
-	bar="──────────────────$black────────────"
-	;;
-6[3-5])
-	bar="───────────────────$black───────────"
-	;;
-6[6-9])
-	bar="────────────────────$black──────────"
-	;;
-7[0-2])
-	bar="─────────────────────$black─────────"
-	;;
-7[3-5])
-	bar="──────────────────────$black────────"
-	;;
-7[6-9])
-	bar="───────────────────────$black───────"
-	;;
-8[0-2])
-	bar="────────────────────────$black──────"
-	;;
-8[3-5])
-	bar="─────────────────────────$black─────"
-	;;
-8[6-9])
-	bar="──────────────────────────$black────"
-	;;
-9[0-2])
-	bar="───────────────────────────$black───"
-	;;
-9[3-5])
-	bar="────────────────────────────$black──"
-	;;
-9[6-9])
-	bar="─────────────────────────────$black─"
-	;;
-100)
-	bar="──────────────────────────────$black"
-	;;
-esac
+# Create bar
+bar1=$(eval "printf '─%.0s' {0..$elapsed}")
+bar2=$(eval "printf '─%.0s' {0..$togo}")
 
-# Send content to music_popup.sh
 echo -e "$black                 │  ${foreground}Album: $brown$album"
 echo -e "$black                 │  ${foreground}Date: $brown$date"
 echo -e "$black                 │"
@@ -133,4 +41,4 @@ echo -e "$black                 │"
 echo -e "$black                 │  ${foreground}Artist: $green$artist"
 echo -e "$black                 │  ${foreground}Title: $red$title"
 echo -e "$black                 │"
-echo -e "$black                 │  $white$bar"
+echo -e "$black                 │  $white$bar1$black$bar2"
