@@ -16,7 +16,7 @@ if [[ -n $exist ]]; then
 fi
 
 # Spawn the popup
-urxvt -name music_popup -geometry 50x9 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e watch -n 1 -t -c bash $HOME/.scripts/music/music_popup_content.sh & disown
+urxvt -name music_popup -sl 0 -geometry 50x9 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e bash $HOME/.scripts/music/music_popup_content.sh & disown
 
 # Get the cover path
 path=$(mpc -f "%file%" | head -n 1 | cut -f 1-2 -d "/")
@@ -44,5 +44,5 @@ while true; do
 		feh --title music_art -N -g 128x128+52+880 "$HOME/Music/$path/cover_popup.png" & disown
 	fi
  
-	sleep 1
+	sleep 0.5
 done
