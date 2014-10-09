@@ -5,7 +5,9 @@ Various scripts I made, README.md is WIP. Check out https://github.com/lainscere
 
 apps/arya
 ---------
-Emerge wrapper for Gentoo. Just a very simple bash script but it does the job. I wanted to copy the simple syntax of Arch's Pacman & Aura.
+~~Emerge wrapper for Gentoo. Just a very simple bash script but it does the job. I wanted to copy the simple syntax of Arch's Pacman & Pacuar.~~
+
+It's now a Pacman/Pacaur wrapper for Arch, Just a very simple bas script but it does the job, I wanted to make the simple Pacman/Pacaur syntax even simpler.
 
 EDIT: Now with 100% more notification support!
 
