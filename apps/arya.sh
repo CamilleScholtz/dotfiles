@@ -2,31 +2,22 @@
 
 # TODO: add failed notification
 
-# Set options every command will use
-options="--alphabetical --ask --color y --nospinner"
-
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		-h|--help)
-			echo "-h         show help"
-			echo "-i pkg     install"
-			echo "-I pkg     uninstall"
-			echo "-u         update/newuse @world"
-			echo "-U         sync database"
-			echo "-c         clean dependencies"
-			echo "-C         clean dependencies and build-dependencies"
+			echo "-h         help"
+			echo " + pkg     install"
+			echo " - pkg     uninstall"
+			echo "-u         update"
+			echo "-c         clean"
 			echo "-s pkg     search"
-			echo "-S pkg     search for file/command"
-			echo "-f pkg     list USE flags"
-			echo "-d pkg     list dependencies"
-			echo "-e         edit package.use"
-			echo "-E         edit make.conf"
+			echo "-i pkg     info"
 			exit
 			;;
-		-i)
+		+)
 			shift
 			if [[ $# -ge 1 ]]; then
-				sudo emerge $options $@
+				pacaur -S $@
 				if [[ $? -eq 0 ]]; then
 					bash $HOME/.scripts/notify/arya_install.sh $@ & disown
 				fi
@@ -37,10 +28,10 @@ while [[ $# -gt 0 ]]; do
 			fi
 			shift
 			;;
-		-I)
+		-)
 			shift
 			if [[ $# -ge 1 ]]; then
-				sudo emerge $options --unmerge $@
+				pacaur -Rs $@
 				if [[ $? -eq 0 ]]; then
 					bash $HOME/.scripts/notify/arya_uninstall.sh $@ & disown
 				fi
@@ -52,35 +43,26 @@ while [[ $# -gt 0 ]]; do
 			shift
 			;;
 		-u)
-			sudo emerge $options --update --newuse --deep @world
-			if [[ $? -eq 0 ]]; then
-				bash $HOME/.scripts/notify/arya_update.sh & disown
-			fi
-			exit
-			;;
-		-U)
-			sudo emerge $options --sync
-			exit
-			;;
-		-Uu)
-			sudo emerge $options --sync && sudo emerge $options --update --newuse --deep @world
+			pacaur -Syyu
 			if [[ $? -eq 0 ]]; then
 				bash $HOME/.scripts/notify/arya_update.sh & disown
 			fi
 			exit
 			;;
 		-c)
-			sudo emerge $options --depclean
-			exit
-			;;
-		-C)
-			sudo emerge $options --depclean --with-bdeps n && sudo eclean --destructive distfiles && sudo eclean --destructive packages
+			if [[ -z $(pacaur -Qdtq) ]]; then
+				echo "No orphaned packages found."
+				exit
+			else
+				pacaur -Qdtq | pacaur -Rs -
+				exit
+			fi
 			exit
 			;;
 		-s)
 			shift
 			if [[ $# -ge 1 ]]; then
-				emerge $options --search $@
+				pacaur -Ss $@
 				exit
 			else
 				echo "No search terms provided."
@@ -88,46 +70,16 @@ while [[ $# -gt 0 ]]; do
                         fi
                         shift
 			;;
-		-S)
+		-i)
 			shift
 			if [[ $# -ge 1 ]]; then
-				equery b $@
+				pacaur -Si $@
 				exit
 			else
 				echo "No search terms provided."
 				exit
 			fi
 			shift
-			;;
-		-f)
-			shift
-			if [[ $# -ge 1 ]]; then
-				equery u $@
-				exit
-			else
-				echo "No search terms provided."
-				exit
-			fi
-			shift
-			;;
-		-d)
-			shift
-			if [[ $# -ge 1 ]]; then
-				equery g $@
-				exit
-			else
-				echo "No search terms provided."
-				exit
-			fi
-			shift
-			;;
-		-e)
-			sudo $EDITOR /etc/portage/package.use
-			exit
-			;;
-		-E)
-			sudo $EDITOR /etc/portage/make.conf
-			exit
 			;;
 		*)
 			echo "Invalid option, use -h for help."

@@ -5,7 +5,7 @@ foreground=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
 red=$(cat $HOME/.Xresources | grep color13 | tail -c 8)
 
 # Kill old neet buttons
-pkill -f "dzen2 -p -dock -title-name neet_button"*
+pkill -f "dzen2 -title-name neet_button"*
 
 # Sleep because otherwise mvwm will fuck up
 sleep 0.1
@@ -21,10 +21,11 @@ while true; do
 	current=$(cat $HOME/.scripts/neet/text.patch | grep "*" | cut -c 3-)
 
 	# Send content to neet_button.sh
-	echo "^fg($foreground)$current ^fg($red)^i($HOME/.scripts/neet/icon.xbm)"
+	echo "^fg($foreground)$current ^fg($red)^i($HOME/.scripts/neet/neet_icon.xbm)"
 
 	sleep 30
 done |
 
+# TODO: Fix new geometry width
 # Spawn escapism button
-dzen2 -p -dock -title-name neet_button -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 -e 'button1=exec:bash $HOME/.scripts/neet/neet_popup.sh;' & disown
+dzen2 -title-name neet_button -p -geometry -216-160 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 -e 'button1=exec:bash $HOME/.scripts/neet/neet_popup.sh;' & disown

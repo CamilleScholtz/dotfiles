@@ -2,7 +2,7 @@
 
 # Display notification
 bash $HOME/.scripts/notify/capture_scrot.sh & disown
-sleep 0.1
+sleep 0.2
 
 # Take screenshot
 scrot
