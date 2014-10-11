@@ -19,7 +19,7 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -ge 1 ]]; then
 				pacaur -S $@
 				if [[ $? -eq 0 ]]; then
-					bash $HOME/.scripts/notify/arya_install.sh $@ & disown
+					bash $SCRIPTS/notify/arya_install.sh $@ & disown
 				fi
 				exit
 			else
@@ -33,7 +33,7 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -ge 1 ]]; then
 				pacaur -Rs $@
 				if [[ $? -eq 0 ]]; then
-					bash $HOME/.scripts/notify/arya_uninstall.sh $@ & disown
+					bash $SCRIPTS/notify/arya_uninstall.sh $@ & disown
 				fi
 				exit
 			else
@@ -45,7 +45,7 @@ while [[ $# -gt 0 ]]; do
 		-u)
 			pacaur -Syyu
 			if [[ $? -eq 0 ]]; then
-				bash $HOME/.scripts/notify/arya_update.sh & disown
+				bash $SCRIPTS/notify/arya_update.sh & disown
 			fi
 			exit
 			;;

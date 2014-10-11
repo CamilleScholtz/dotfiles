@@ -3,10 +3,10 @@
 # TODO: Fix fucking stacking errors
 
 # Get color from .Xresources
-color=$(cat $HOME/.Xresources | grep background | tail -c 8)
+color=$(cat $DOTFILES/Xresources | grep background | tail -c 8)
 
 # Get the notification text
-text=$(cat $HOME/.scripts/notify/text)
+text=$(cat $SCRIPTS/notify/text)
 
 # Calculate the width of the spawned notification
 count=$(echo $text | wc -m)
@@ -24,20 +24,20 @@ last4=$(expr $last0 + 4)
 
 # Move old notifications
 if [[ $exist -eq 1 ]]; then
-	wmctrl -x -r notification$last0 -e "0,-1,96,-1,-1"
+	wmctrl -x -r notification$last0 -e "0,-1,90,-1,-1"
 elif [[ $exist -eq 2 ]]; then
-	wmctrl -x -r notification$last0 -e "0,-1,146,-1,-1"
-	wmctrl -x -r notification$last1 -e "0,-1,96,-1,-1"
+	wmctrl -x -r notification$last0 -e "0,-1,140,-1,-1"
+	wmctrl -x -r notification$last1 -e "0,-1,90,-1,-1"
 elif [[ $exist -eq 3 ]]; then
-	wmctrl -x -r notification$last0 -e "0,-1,196,-1,-1"
-	wmctrl -x -r notification$last1 -e "0,-1,146,-1,-1"
-	wmctrl -x -r notification$last2 -e "0,-1,96,-1,-1"
+	wmctrl -x -r notification$last0 -e "0,-1,190,-1,-1"
+	wmctrl -x -r notification$last1 -e "0,-1,140,-1,-1"
+	wmctrl -x -r notification$last2 -e "0,-1,90,-1,-1"
 elif [[ $exist -eq 4 ]]; then
-	pkill -f "urxvt -name notification$last0"
+	pkill -o -f "urxvt -name notification"
 
-	wmctrl -x -r notification$last1 -e "0,-1,196,-1,-1"
-	wmctrl -x -r notification$last2 -e "0,-1,146,-1,-1"
-	wmctrl -x -r notification$last3 -e "0,-1,96,-1,-1"
+	wmctrl -x -r notification$last1 -e "0,-1,190,-1,-1"
+	wmctrl -x -r notification$last2 -e "0,-1,140,-1,-1"
+	wmctrl -x -r notification$last3 -e "0,-1,90,-1,-1"
 
 	urxvt -name notification$last4 -geometry "$width"x1 -internalBorder 13 -hold -cursorUnderline -cursorColor $color -cursorColor2 $color -e echo -n "$text" & disown
 	sleep 5

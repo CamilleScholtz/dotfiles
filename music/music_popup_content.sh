@@ -8,7 +8,7 @@ foreground="\e[0;39m"
 black="\e[0;30m"
 brown="\e[0;33m"
 green="\e[1;32m"
-red="\e[1;35m"
+magenta="\e[1;35m"
 white="\e[1;37m"
 
 while true; do
@@ -41,7 +41,7 @@ while true; do
 	echo -e    "$black                 │  ${foreground}Track: $brown$track"
 	echo -e    "$black                 │"
 	echo -e    "$black                 │  ${foreground}Artist: $green$artist"
-	echo -e    "$black                 │  ${foreground}Title: $red$title"
+	echo -e    "$black                 │  ${foreground}Title: $magenta$title"
 	echo -e    "$black                 │"
 	echo -e -n "$black                 │  $white$bar1$black$bar2"
 

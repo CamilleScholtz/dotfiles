@@ -27,7 +27,7 @@ while [[ $# -gt 0 ]]; do
 	shopt -s nocasematch
 
 	# Fuzzy logic
-	for line in $(cat $HOME/.scripts/neet/text.patch); do
+	for line in $(cat $SCRIPTS/neet/text.patch); do
 		match=0
 
 		# Set default seperator value again (for the next loop to work)
@@ -54,7 +54,7 @@ while [[ $# -gt 0 ]]; do
 
 	if [[ $# -eq 1 ]]; then
 		# Clean up answer (oh no actually don't, just use cat)
-		case=$(cat $HOME/.scripts/neet/text.patch | grep -i "*" | cut -c 3-)
+		case=$(cat $SCRIPTS/neet/text.patch | grep -i "*" | cut -c 3-)
 	else
 		# Clean up answer
 		case=$(echo $answer | cut -c 3-)
@@ -71,13 +71,13 @@ while [[ $# -gt 0 ]]; do
 	total=$(echo $episode | cut -f 2 -d "/")
 
 	# Get escapism status
-	active=$(cat $HOME/.scripts/neet/text.patch | grep "*")
-	watching=$(cat $HOME/.scripts/neet/text.patch | grep "+" | sort)
-	backlog=$(cat $HOME/.scripts/neet/text.patch | grep "-" | sort)
+	active=$(cat $SCRIPTS/neet/text.patch | grep "*")
+	watching=$(cat $SCRIPTS/neet/text.patch | grep "+" | sort)
+	backlog=$(cat $SCRIPTS/neet/text.patch | grep "-" | sort)
 
 	# Check if the escapism is a drama or animu or... etc.
 	# TODO: FIx this
-	escapism=$(cat $HOME/.scripts/neet/text.patch | sed "/$casenoep/d" | grep "#" | tail -n 1 | cut -c 3-)
+	escapism=$(cat $SCRIPTS/neet/text.patch | sed "/$casenoep/d" | grep "#" | tail -n 1 | cut -c 3-)
 
 	case $1 in
 		-h|--help)
@@ -106,7 +106,7 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-e)
-			vim $HOME/.scripts/neet/text.patch
+			vim $SCRIPTS/neet/text.patch
 			exit
 			;;
 		-sb)
@@ -114,7 +114,7 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -eq 1 ]]; then
 				echo "neet.sh changed:"
 				echo -e "$brown-$white $case"
-				sed -i "s|. $case|- $case|g" $HOME/.scripts/neet/text.patch
+				sed -i "s|. $case|- $case|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "No escapism provided."
@@ -127,7 +127,7 @@ while [[ $# -gt 0 ]]; do
 			if [[ $# -eq 1 ]]; then
 				echo "neet.sh changed:"
 				echo -e "$red+$white $case"
-				sed -i "s|. $case|+ $case|g" $HOME/.scripts/neet/text.patch
+				sed -i "s|. $case|+ $case|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "No escapism provided."
@@ -143,13 +143,13 @@ while [[ $# -gt 0 ]]; do
 					echo "neet.sh changed:"
 					echo -e "$red+ $active"
 					echo "* $case"
-					sed -i "s|. $active|+ $active|g" $HOME/.scripts/neet/text.patch
-					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+					sed -i "s|. $active|+ $active|g" $SCRIPTS/neet/text.patch
+					sed -i "s|. $case|* $case|g" $SCRIPTS/neet/text.patch
 					exit
 				else
 					echo "neet.sh changed:"
 					echo "* $case"
-					sed -i "s|. $case|* $case|g" $HOME/.scripts/neet/text.patch
+					sed -i "s|. $case|* $case|g" $SCRIPTS/neet/text.patch
 					exit
 				fi
 				exit
@@ -179,7 +179,7 @@ while [[ $# -gt 0 ]]; do
 					echo "‖ $casenoep ($end/$total)"
 					exit
 				fi
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $HOME/.scripts/neet/text.patch
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			elif [[ $# -eq 1 ]]; then
 				echo "Please provide escapism and watched episodes."
@@ -200,14 +200,14 @@ while [[ $# -gt 0 ]]; do
 				# Echo and send to text
 				echo "neet.sh changed:"
 				echo -e "$red↑$white $casenoep ($increment/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $HOME/.scripts/neet/text.patch
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${red2}No$foreground] "
 				while true; do
 					read -r response
 					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
-						sed -i "/$casenoep/d" $HOME/.scripts/neet/text.patch
+						sed -i "/$casenoep/d" $SCRIPTS/neet/text.patch
 						exit
 					elif [[ $response =~ ^([nN][oO]|[nN])$ ]]; then
 						exit
@@ -231,7 +231,7 @@ while [[ $# -gt 0 ]]; do
 				# Echo and send to text
 				echo "neet.sh changed:"
 				echo -e "$brown↓$white $casenoep ($decrement/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $HOME/.scripts/neet/text.patch
+				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "Can't go lower than 0!"

@@ -28,7 +28,7 @@ if [[ $# -eq 0 ]]; then
 	
 	# Display notification
 	sleep 0.1
-	bash $HOME/.scripts/notify/capture_pomf.sh $url & disown
+	bash $SCRIPTS/notify/capture_pomf.sh $url & disown
 else
 	pomffile=$(echo "$output" | grep -Eo '"url":"[A-Za-z0-9]+.[a-z]",' | sed 's/"url":"//;s/",//')
 	url=http://a.pomf.se/$pomffile

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define colors
-red=$(cat $HOME/.Xresources | grep color13 | tail -c 8)
+magenta=$(cat $DOTFILES/Xresources | grep color13 | tail -c 8)
 
 # Kill old music button
 pkill -f "dzen2 -title-name music_button"*
@@ -10,7 +10,7 @@ pkill -f "dzen2 -title-name music_button"*
 sleep 0.1
 
 # Send content to music_button.sh
-echo "^fg($red)^i($HOME/.scripts/music/music_icon.xbm)" |
+echo "^fg($magenta)^i($SCRIPTS/music/music_icon.xbm)" |
 
 # Spawn music button
-dzen2  -title-name music_button -p -geometry +40-160 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w 40 -h 40 -e 'button1=exec:bash $HOME/.scripts/music/music_popup.sh;' & disown
+dzen2  -title-name music_button -p -geometry +40-160 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w 40 -h 40 -e 'button1=exec:bash $SCRIPTS/music/music_popup.sh;' & disown

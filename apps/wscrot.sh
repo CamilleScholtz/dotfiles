@@ -4,4 +4,4 @@
 scrot -b -s
 
 # Display notification
-bash $HOME/.scripts/notify/capture_wscrot.sh & disown
+bash $SCRIPTS/notify/capture_wscrot.sh & disown
