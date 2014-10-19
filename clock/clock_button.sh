@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define colors
-foreground=$(cat $DOTFILES/Xresources | grep foreground | tail -c 8)
-magenta=$(cat $DOTFILES/Xresources | grep color13 | tail -c 8)
+foreground=$(cat $HOME/.Xresources | grep foreground | tail -c 8)
+magenta=$(cat $HOME/.Xresources | grep color13 | tail -c 8)
 
 # Kill old clocks
 pkill -f "dzen2 -title-name clock_button"*

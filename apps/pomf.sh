@@ -13,7 +13,7 @@ fi
 output=$(curl --silent -sf -F files[]="@$file" "http://pomf.se/upload.php")
 
 if [[ $# -eq 0 ]]; then
-	pomffile=$(echo "$output" | grep -Eo '"url":"[A-Za-z0-9]+.png",' | sed 's/"url":"//;s/",//')
+	pomffile=$(echo "$output" | grep -E -o '"url":"[A-Za-z0-9]+.png",' | sed 's/"url":"//;s/",//')
 	url=http://a.pomf.se/$pomffile
 
 	# Copy link to clipboard
@@ -30,7 +30,7 @@ if [[ $# -eq 0 ]]; then
 	sleep 0.1
 	bash $SCRIPTS/notify/capture_pomf.sh $url & disown
 else
-	pomffile=$(echo "$output" | grep -Eo '"url":"[A-Za-z0-9]+.[a-z]",' | sed 's/"url":"//;s/",//')
+	pomffile=$(echo "$output" | grep -E -o '"url":"[A-Za-z0-9]+.[A-Za-z0-9.]+",' | sed 's/"url":"//;s/",//')
 	url=http://a.pomf.se/$pomffile
 
 	# Copy link to clipboard
@@ -38,5 +38,5 @@ else
 	echo $url | xclip -selection clipboard
 
 	# Print url in terminal
-	echo File has been uploaded: $url
+	echo File has been pomfed: $url
 fi

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Get the escapism name
-case=$(cat $HOME/.script/neet/text.patch | grep -i "*" | cut -c 3-| cut -f 1 -d "(" | head -c -2)
+case=$(cat $SCRIPTS/neet/text.patch | grep -i "*" | cut -c 3-| cut -f 1 -d "(" | head -c -2)
 
 # Get the currenly watching episode number
-episode=$(cat $HOME/.script/neet/text.patch | grep -i "*" | grep -o -P "(?<=\().*(?=\))" | cut -f 1 -d "/")
+episode=$(cat $SCRIPTS/neet/text.patch | grep -i "*" | grep -o -P "(?<=\().*(?=\))" | cut -f 1 -d "/")
 
 # Add a 0 to numbers under 10, so 1 will become 01
 if [[ $episode -eq 0 ]]; then

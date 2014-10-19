@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define colors
-magenta=$(cat $DOTFILES/Xresources | grep color13 | tail -c 8)
+magenta=$(cat $HOME/.Xresources | grep color13 | tail -c 8)
 
 # Kill old music button
 pkill -f "dzen2 -title-name music_button"*

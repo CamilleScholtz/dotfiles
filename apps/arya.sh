@@ -11,6 +11,7 @@ while [[ $# -gt 0 ]]; do
 			echo "-u         update"
 			echo "-c         clean"
 			echo "-s pkg     search"
+			echo "-l pkg     search installed"
 			echo "-i pkg     info"
 			exit
 			;;
@@ -69,6 +70,17 @@ while [[ $# -gt 0 ]]; do
                                 exit
                         fi
                         shift
+			;;
+		-l)
+			shift
+			if [[ $# -ge 1 ]]; then
+				pacaur -Q | grep $@
+				exit
+			else
+				echo "No search terms provided."
+				exit
+			fi
+			shift
 			;;
 		-i)
 			shift

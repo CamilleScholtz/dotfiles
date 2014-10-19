@@ -3,7 +3,7 @@
 # TODO: Fix fucking stacking errors
 
 # Get color from .Xresources
-color=$(cat $DOTFILES/Xresources | grep background | tail -c 8)
+color=$(cat $HOME/.Xresources | grep background | tail -c 8)
 
 # Get the notification text
 text=$(cat $SCRIPTS/notify/text)

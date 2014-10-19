@@ -11,8 +11,8 @@
 foreground="\e[0;39m"
 brown="\e[1;33m"
 green="\e[1;32m"
-red="\e[1;35m"
-red2="\e[1;31m"
+magenta="\e[1;35m"
+magane2="\e[1;31m"
 
 while [[ $# -gt 0 ]]; do
 	# Fuzzy logic vars
@@ -95,13 +95,13 @@ while [[ $# -gt 0 ]]; do
 		-l)
 			echo "neet.sh watching list:"
 			echo "$active"
-			echo -e "$red$watching"
+			echo -e "$magenta$watching"
 			exit
 			;;
 		-L)
 			echo "neet.sh watching & backlog list:"
 			echo "$active"
-			echo -e "$red$watching"
+			echo -e "$magenta$watching"
 			echo -e "$brown$backlog"
 			exit
 			;;
@@ -126,7 +126,7 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -eq 1 ]]; then
 				echo "neet.sh changed:"
-				echo -e "$red+$white $case"
+				echo -e "$magenta+$white $case"
 				sed -i "s|. $case|+ $case|g" $SCRIPTS/neet/text.patch
 				exit
 			else
@@ -141,7 +141,7 @@ while [[ $# -gt 0 ]]; do
 				count=$(echo $active | wc -w)
 				if [[ $count -ge 2 ]]; then
 					echo "neet.sh changed:"
-					echo -e "$red+ $active"
+					echo -e "$magenta+ $active"
 					echo "* $case"
 					sed -i "s|. $active|+ $active|g" $SCRIPTS/neet/text.patch
 					sed -i "s|. $case|* $case|g" $SCRIPTS/neet/text.patch
@@ -168,7 +168,7 @@ while [[ $# -gt 0 ]]; do
 				# Echo and send to text.patch
 				if [[ $end -gt $last ]]; then
 					echo "neet.sh changed:"
-					echo -e "$red↑$white $casenoep ($end/$total)"
+					echo -e "$magenta↑$white $casenoep ($end/$total)"
 					exit
 				elif [[ $end -lt $last ]]; then
 					echo "neet.sh changed:"
@@ -199,11 +199,11 @@ while [[ $# -gt 0 ]]; do
 
 				# Echo and send to text
 				echo "neet.sh changed:"
-				echo -e "$red↑$white $casenoep ($increment/$total)"
+				echo -e "$magenta↑$white $casenoep ($increment/$total)"
 				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
-				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${red2}No$foreground] "
+				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${magenta2}No$foreground] "
 				while true; do
 					read -r response
 					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
@@ -214,7 +214,7 @@ while [[ $# -gt 0 ]]; do
 					elif [[ -z $response ]]; then
 						exit
 					else
-						echo -e -n "Sorry, response '$response' not understood. [${green}Yes$foreground/${red2}No$foreground] "
+						echo -e -n "Sorry, response '$response' not understood. [${green}Yes$foreground/${magenta2}No$foreground] "
 						continue
 					fi
 				done
