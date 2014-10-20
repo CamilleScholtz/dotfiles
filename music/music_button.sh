@@ -13,4 +13,4 @@ sleep 0.1
 echo "^fg($magenta)^i($SCRIPTS/music/music_icon.xbm)" |
 
 # Spawn music button
-dzen2  -title-name music_button -p -geometry +40-160 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w 40 -h 40 -e 'button1=exec:bash $SCRIPTS/music/music_popup.sh;' & disown
+dzen2  -title-name music_button -p -geometry +40-160 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w 40 -h 40 -e 'onstart=lower;button1=exec:bash $SCRIPTS/music/music_popup.sh;' & disown

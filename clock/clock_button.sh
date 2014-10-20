@@ -27,4 +27,4 @@ while true; do
 done |
 
 # Spawn clock (dzen/bar)
-dzen2 -title-name clock_button -p -geometry +40-80 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 & disown
+dzen2 -title-name clock_button -p -geometry +40-80 -fn -gohu-gohufont-medium-r-normal--14-100-100-100-c-80-iso10646-1 -ta c -w $width -h 40 -e 'onstart=lower' & disown

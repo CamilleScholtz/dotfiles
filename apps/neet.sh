@@ -6,79 +6,83 @@
 # TODO: Add add option
 # TODO: Add remove option
 # TODO: Replace -w with +10/-10?
+# TODO: Fix syntax
+# TODO: Automaticly increase episode count with watch_later
+# TODO: Make it look like pacaur
 
 # Define colors
 foreground="\e[0;39m"
+blue="\e[1;34m"
 brown="\e[1;33m"
 green="\e[1;32m"
 magenta="\e[1;35m"
-magane2="\e[1;31m"
+maganta2="\e[1;31m"
 
-while [[ $# -gt 0 ]]; do
-	# Fuzzy logic vars
-	max=0
-	answer=
+# Fuzzy logic vars
+max=0
+answer=
 
-	# Make newlines the only separator (the fuzzy logic loop needs to read whole lines)
-	IFS=$'\n'
-	set -f
+# Make newlines the only separator (the fuzzy logic loop needs to read whole lines)
+IFS=$'\n'
+set -f
 
-	# Make bash case insensitive for fuzzy logic
-	shopt -s nocasematch
+# Make bash case insensitive for fuzzy logic
+shopt -s nocasematch
 
-	# Fuzzy logic
-	for line in $(cat $SCRIPTS/neet/text.patch); do
-		match=0
+# Fuzzy logic
+for line in $(cat $SCRIPTS/neet/text.patch); do
+	match=0
 
-		# Set default seperator value again (for the next loop to work)
-		IFS=$' \t\n'
+	# Set default seperator value again (for the next loop to work)
+	IFS=$' \t\n'
 
-		for words in "$@"; do
-			[[ $line = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
-		done
-
-		# And make newlines the only seperator again
-		IFS=$'\n'
-
-		# Check which line has the most matches
-		if [[ $match -gt $max ]]; then
-			max=$match
-			answer=$line
-		fi
+	for words in "$@"; do
+		[[ $line = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
 	done
 
-	# Restore all these bash things to the default value
-	IFS=$' \t\n'
-	set +f
-	shopt -u nocasematch
+	# And make newlines the only seperator again
+	IFS=$'\n'
 
-	if [[ $# -eq 1 ]]; then
-		# Clean up answer (oh no actually don't, just use cat)
-		case=$(cat $SCRIPTS/neet/text.patch | grep -i "*" | cut -c 3-)
-	else
-		# Clean up answer
-		case=$(echo $answer | cut -c 3-)
+	# Check which line has the most matches
+	if [[ $match -gt $max ]]; then
+		max=$match
+		answer=$line
 	fi
+done
 
-	# Case without episode info
-	casenoep=$(echo $case | cut -f 1 -d "(" | head -c -2)
+# Restore all these bash things to the default value
+IFS=$' \t\n'
+set +f
+shopt -u nocasematch
 
-	# Case with only episode info
-	episode=$(echo $case | grep -o -P "(?<=\().*(?=\))")
+if [[ $# -le 1 ]]; then
+	# Clean up answer (oh no actually don't, just use cat)
+	escapism=$(cat $SCRIPTS/neet/text.patch | grep -i "*" | cut -c 3-)
+else
+	# Clean up answer
+	escapism=$(echo $answer | cut -c 3-)
+fi
 
-	# Get last watched and total episode info from $episode
-	last=$(echo $episode | cut -f 1 -d "/")
-	total=$(echo $episode | cut -f 2 -d "/")
+# Escapism without episode info
+escapismnoep=$(echo $escapism | cut -f 1 -d "(" | head -c -2)
 
-	# Get escapism status
-	active=$(cat $SCRIPTS/neet/text.patch | grep "*")
-	watching=$(cat $SCRIPTS/neet/text.patch | grep "+" | sort)
-	backlog=$(cat $SCRIPTS/neet/text.patch | grep "-" | sort)
+# Escapism with only episode info
+episode=$(echo $escapism | grep -o -P "(?<=\().*(?=\))")
 
-	# Check if the escapism is a drama or animu or... etc.
-	# TODO: FIx this
-	escapism=$(cat $SCRIPTS/neet/text.patch | sed "/$casenoep/d" | grep "#" | tail -n 1 | cut -c 3-)
+# Get last watched and total episode info from $episode
+last=$(echo $episode | cut -f 1 -d "/")
+total=$(echo $episode | cut -f 2 -d "/")
 
+# Get escapism status
+active=$(cat $SCRIPTS/neet/text.patch | grep "*")
+watching=$(cat $SCRIPTS/neet/text.patch | grep "+" | sort)
+backlog=$(cat $SCRIPTS/neet/text.patch | grep "-" | sort)
+
+# Check if the escapism is a drama or animu or... etc.
+# TODO: FIx this
+type=$(cat $SCRIPTS/neet/text.patch | sed "/$escapismnoep/d" | grep "#" | tail -n 1 | cut -c 3-)
+
+if [[ $# -gt 0 ]]; then
 	case $1 in
 		-h|--help)
 			echo "-h         show help"
@@ -93,13 +97,13 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 		-l)
-			echo "neet.sh watching list:"
+			echo -e "$blue::$foreground Currently watching escapism..."
 			echo "$active"
 			echo -e "$magenta$watching"
 			exit
 			;;
 		-L)
-			echo "neet.sh watching & backlog list:"
+			echo -e "$blue::$foreground Currently watching escapism and backlog..."
 			echo "$active"
 			echo -e "$magenta$watching"
 			echo -e "$brown$backlog"
@@ -113,8 +117,8 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -eq 1 ]]; then
 				echo "neet.sh changed:"
-				echo -e "$brown-$white $case"
-				sed -i "s|. $case|- $case|g" $SCRIPTS/neet/text.patch
+				echo -e "$brown-$white $escapism"
+				sed -i "s|. $escapism|- $escapism|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "No escapism provided."
@@ -126,8 +130,8 @@ while [[ $# -gt 0 ]]; do
 			shift
 			if [[ $# -eq 1 ]]; then
 				echo "neet.sh changed:"
-				echo -e "$magenta+$white $case"
-				sed -i "s|. $case|+ $case|g" $SCRIPTS/neet/text.patch
+				echo -e "$magenta+$white $escapism"
+				sed -i "s|. $escapism|+ $escapism|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "No escapism provided."
@@ -142,14 +146,14 @@ while [[ $# -gt 0 ]]; do
 				if [[ $count -ge 2 ]]; then
 					echo "neet.sh changed:"
 					echo -e "$magenta+ $active"
-					echo "* $case"
+					echo "* $escapism"
 					sed -i "s|. $active|+ $active|g" $SCRIPTS/neet/text.patch
-					sed -i "s|. $case|* $case|g" $SCRIPTS/neet/text.patch
+					sed -i "s|. $escapism|* $escapism|g" $SCRIPTS/neet/text.patch
 					exit
 				else
 					echo "neet.sh changed:"
-					echo "* $case"
-					sed -i "s|. $case|* $case|g" $SCRIPTS/neet/text.patch
+					echo "* $escapism"
+					sed -i "s|. $escapism|* $escapism|g" $SCRIPTS/neet/text.patch
 					exit
 				fi
 				exit
@@ -168,18 +172,18 @@ while [[ $# -gt 0 ]]; do
 				# Echo and send to text.patch
 				if [[ $end -gt $last ]]; then
 					echo "neet.sh changed:"
-					echo -e "$magenta↑$white $casenoep ($end/$total)"
+					echo -e "$magenta↑$white $escapismnoep ($end/$total)"
 					exit
 				elif [[ $end -lt $last ]]; then
 					echo "neet.sh changed:"
-					echo -e "$brown↓$white $casenoep ($end/$total)"
+					echo -e "$brown↓$white $escapismnoep ($end/$total)"
 					exit
 				else
 					echo "neet.sh changed:"
-					echo "‖ $casenoep ($end/$total)"
+					echo "‖ $escapismnoep ($end/$total)"
 					exit
 				fi
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($end/$total)|g" $SCRIPTS/neet/text.patch
+				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($end/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			elif [[ $# -eq 1 ]]; then
 				echo "Please provide escapism and watched episodes."
@@ -199,15 +203,15 @@ while [[ $# -gt 0 ]]; do
 
 				# Echo and send to text
 				echo "neet.sh changed:"
-				echo -e "$magenta↑$white $casenoep ($increment/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($increment/$total)|g" $SCRIPTS/neet/text.patch
+				echo -e "$magenta↑$white $escapismnoep ($increment/$total)"
+				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($increment/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${magenta2}No$foreground] "
 				while true; do
 					read -r response
 					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
-						sed -i "/$casenoep/d" $SCRIPTS/neet/text.patch
+						sed -i "/$escapismnoep/d" $SCRIPTS/neet/text.patch
 						exit
 					elif [[ $response =~ ^([nN][oO]|[nN])$ ]]; then
 						exit
@@ -230,8 +234,8 @@ while [[ $# -gt 0 ]]; do
 
 				# Echo and send to text
 				echo "neet.sh changed:"
-				echo -e "$brown↓$white $casenoep ($decrement/$total)"
-				sed -i "s|$casenoep ($last/$total)|$casenoep ($decrement/$total)|g" $SCRIPTS/neet/text.patch
+				echo -e "$brown↓$white $escapismnoep ($decrement/$total)"
+				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($decrement/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "Can't go lower than 0!"
@@ -244,8 +248,57 @@ while [[ $# -gt 0 ]]; do
 			exit
 			;;
 	esac
-done
+fi
 
 if [[ $# -eq 0 ]]; then
-	echo "No option provided, use -h for help."
+	# Add a 0 to numbers under 10, so 1 will become 01
+	if [[ $last -eq 0 ]]; then
+		last=01
+	elif [[ $last -le 9 ]]; then
+		for number in {1..9}; do
+			if [[ $number -eq $last ]]; then
+				last=0$number
+			fi
+		done
+	fi
+
+	# Fuzzy logic vars
+	max=0
+	answer=
+
+	# Make newlines the only separator (the fuzzy logic loop needs to read whole lines)
+	IFS=$'\n'
+	set -f
+
+	# Make bash case insensitive for fuzzy logic
+	shopt -s nocasematch
+
+	# Fuzzy logic
+	for directory in $(ls $HOME/Downloads); do
+		match=0
+
+		# Set default seperator value again (for the next loop to work)
+		IFS=$' \t\n'
+
+		for words in "$escapismnoep"; do
+			[[ $directory = @("$words"|"$words"[![:alpha:]]*|*[![:alpha:]]"$words"|*[![:alpha:]]"$words"[![:alpha:]]*) ]] && ((match++))
+		done
+
+		# And make newlines the only seperator again
+		IFS=$'\n'
+
+		# Check which line has the most matches
+		if [[ $match -gt $max ]]; then
+			max=$match
+			answer=$directory
+		fi
+	done
+
+	# Restore all these bash things to the default value
+	IFS=$' \t\n'
+	set +f
+	shopt -u nocasematch
+
+	# Launch mpv
+	mpv --fullscreen --really-quiet "$HOME/Downloads/$answer/"*E$last*.*
 fi

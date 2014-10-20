@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO: add failed notification
+# TODO: Add error if nothing is found with -l
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
