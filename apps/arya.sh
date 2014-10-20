@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO: add failed notification
+# TODO: Add nothing to update notification
 # TODO: Add error if nothing is found with -l
 
 while [[ $# -gt 0 ]]; do
@@ -75,8 +76,14 @@ while [[ $# -gt 0 ]]; do
 		-l)
 			shift
 			if [[ $# -ge 1 ]]; then
-				pacaur -Q | grep $@
-				exit
+				list=$(pacaur -Q | grep $@)
+				if [[ -n $list ]]; then
+					pacaur -Q | grep $@
+					exit
+				else
+					echo "Package not installed."
+					exit
+				fi
 			else
 				echo "No search terms provided."
 				exit
