@@ -2,7 +2,7 @@
 
 # TODO: add failed notification
 # TODO: Add nothing to update notification
-# TODO: Add error if nothing is found with -l
+# TODO: Fix grep error when seatch two packages with -l
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -69,16 +69,16 @@ while [[ $# -gt 0 ]]; do
 				exit
 			else
 				echo "No search terms provided."
-                                exit
-                        fi
-                        shift
+				exit
+			fi
+			shift
 			;;
 		-l)
 			shift
 			if [[ $# -ge 1 ]]; then
 				list=$(pacaur -Q | grep $@)
 				if [[ -n $list ]]; then
-					pacaur -Q | grep $@
+					pacaur -Qss $@
 					exit
 				else
 					echo "Package not installed."
