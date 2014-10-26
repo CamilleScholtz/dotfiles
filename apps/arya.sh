@@ -3,6 +3,7 @@
 # TODO: add failed notification
 # TODO: Add nothing to update notification
 # TODO: Fix grep error when seatch two packages with -l
+# TODO: Add no packages found to -s
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -13,7 +14,7 @@ while [[ $# -gt 0 ]]; do
 			echo "-u         update"
 			echo "-c         clean"
 			echo "-s pkg     search"
-			echo "-l pkg     search installed"
+			echo "-l pkg     search local"
 			echo "-i pkg     info"
 			exit
 			;;

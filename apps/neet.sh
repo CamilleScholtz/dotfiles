@@ -256,7 +256,7 @@ if [[ $# -eq 0 ]]; then
 		last=01
 	elif [[ $last -le 9 ]]; then
 		for number in {1..9}; do
-			if [[ $number -eq $last ]]; then
+			if [[ $number -eq $((10#$last)) ]]; then
 				last=0$number
 			fi
 		done
@@ -300,5 +300,7 @@ if [[ $# -eq 0 ]]; then
 	shopt -u nocasematch
 
 	# Launch mpv
+	echo "Escapism playing: $escapism"
+	mpc -q pause
 	mpv --fullscreen --really-quiet "$HOME/Downloads/$answer/"*E$last*.*
 fi
