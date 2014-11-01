@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Remove old text and kill old ii if
 if [[ $# -ge 1 ]]; then
 	case "$1" in
 		-h|--help)
@@ -26,9 +25,6 @@ if [[ $# -ge 1 ]]; then
 		esac
 fi
 
-# Kill old script
-pkill -f "bash $SCRIPTS/irc/punyama.sh"
-
 # Make variables for in and out
 #in=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/in
 #out=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/out
@@ -41,22 +37,22 @@ echo "Reporting in~" > $in
 
 tailf -n 1 $out | \
 while read date time nick msg; do
+
 	# Strip < and >, if msg is by ourself ignore it
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
+
+	if [[ $nick == ! ]]; then
+		cat $save | grep $(echo $msg | cut -d "(" -f 1) | cut -d " " -f 2- > $in
+	fi
 
 	# Website stuff
 	if [[ $msg =~ https?:// ]]; then
 		url=$(echo $msg | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
 
 		# TODO: Why doesn't this need > $in?
-		curl $url -s -o - | grep -i -P -o "(?<=<title>)(.*)(?=</title>)"
+		curl $url -s -o - | grep -i -P -o "(?<=<title>)(.*)(?=</title>)" > $in
 	fi
-
-	# Intro stuff
-	if [[ $nick == -!- ]]; then
-		echo "intro here"
-	fi	
 
 	# Check if command
 	if [[ $msg == .* ]]; then
@@ -85,10 +81,15 @@ while read date time nick msg; do
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
 		fi
 
-		# Set untro message
+		# Set intro message
 		if [[ $msg == .intro* ]]; then
-			echo "$nick $(echo $msg | cut -d " " -f 2-)" > $save
-			echo "Intro set." > $in
+			if [[ -z $(cat $save | grep "onodera") ]]; then
+				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $save
+				echo "Intro set." > $in
+			else
+				sed -i "s/$nick */$nick $(echo $msg | cut -d " " -f 2-)/g" $save
+				echo "Intro set." > $in
+			fi
 		fi
 
 	fi
