@@ -12,13 +12,13 @@ sleep 0.1
 
 # Calculate the width of the spawned clock
 # TODO: Fix $width when day is changed
-count=$(date +'%A' | wc -c)
+count=$(date +"%A" | wc -c)
 width=$(expr $count \* 8 + 127)
 
 # Clock content
 while true; do
 	# Get the time
-	time=$(date +'%A, %I:%M %p')
+	time=$(date +"%A, %I:%M %p")
 
 	# Send content to clock_button.sh
 	echo "^fg($magenta)^i($SCRIPTS/clock/clock_icon.xbm)^fg($foreground)  $time"

@@ -8,7 +8,8 @@
 # TODO: Replace -w with +10/-10?
 # TODO: Fix syntax
 # TODO: Automaticly increase episode count with watch_later
-# TODO: Make it look like pacaur
+# TODO: Make it look like arya
+# TODO: Make neet $1 play that episode
 
 # Define colors
 foreground="\e[0;39m"
@@ -79,21 +80,20 @@ watching=$(cat $SCRIPTS/neet/text.patch | grep "+" | sort)
 backlog=$(cat $SCRIPTS/neet/text.patch | grep "-" | sort)
 
 # Check if the escapism is a drama or animu or... etc.
-# TODO: FIx this
-type=$(cat $SCRIPTS/neet/text.patch | sed "/$escapismnoep/d" | grep "#" | tail -n 1 | cut -c 3-)
+type=$(tac $SCRIPTS/neet/text.patch | sed "/$escapismnoep/d" | grep "#" | tail -n 1 | cut -c 3-)
 
-if [[ $# -gt 0 ]]; then
+if [[ $# -ge 1 ]]; then
 	case $1 in
 		-h|--help)
-			echo "-h         show help"
-			echo "-l         list all currently watching escapism"
-			echo "-L         list all escapism"
-			echo "-e         edit escapism list with $EDITOR"
+			echo "-h         help"
+			echo "-l         list active"
+			echo "-L         list all"
+			echo "-e         edit list"
 			echo "-s* esc    set status of escapism"
 			echo "  ^ b/w/a  backlog/watching/active"
-			echo "-w         set watching episode number"
-			echo "+ (esc)    increment watching episode number by 1"
-			echo "- (esc)    decrement watching episode number by 1"
+			echo "+ (esc)    increment ep"
+			echo "- (esc)    decrement ep"
+			echo "           play"
 			exit
 			;;
 		-l)
@@ -163,37 +163,37 @@ if [[ $# -gt 0 ]]; then
 			fi
 			shift
 			;;
-		-w)
-			shift
-			if [[ $2 -ge 2 ]]; then
-				# Get last parameter (aka episode number)
-				for end; do true; done
+		#-w)
+		#	shift
+		#	if [[ $2 -ge 2 ]]; then
+		#		# Get last parameter (aka episode number)
+		#		for end; do true; done
 
-				# Echo and send to text.patch
-				if [[ $end -gt $last ]]; then
-					echo "neet.sh changed:"
-					echo -e "$magenta↑$white $escapismnoep ($end/$total)"
-					exit
-				elif [[ $end -lt $last ]]; then
-					echo "neet.sh changed:"
-					echo -e "$brown↓$white $escapismnoep ($end/$total)"
-					exit
-				else
-					echo "neet.sh changed:"
-					echo "‖ $escapismnoep ($end/$total)"
-					exit
-				fi
-				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($end/$total)|g" $SCRIPTS/neet/text.patch
-				exit
-			elif [[ $# -eq 1 ]]; then
-				echo "Please provide escapism and watched episodes."
-				exit
-			else
-				echo "No escapism provided."
-				exit
-			fi
-			shift
-			;;
+		#		# Echo and send to text.patch
+		#		if [[ $end -gt $last ]]; then
+		#			echo "neet.sh changed:"
+		#			echo -e "$magenta↑$white $escapismnoep ($end/$total)"
+		#			exit
+		#		elif [[ $end -lt $last ]]; then
+		#			echo "neet.sh changed:"
+		#			echo -e "$brown↓$white $escapismnoep ($end/$total)"
+		#			exit
+		#		else
+		#			echo "neet.sh changed:"
+		#			echo "‖ $escapismnoep ($end/$total)"
+		#			exit
+		#		fi
+		#		sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($end/$total)|g" $SCRIPTS/neet/text.patch
+		#		exit
+		#	elif [[ $# -eq 1 ]]; then
+		#		echo "Please provide escapism and watched episodes."
+		#		exit
+		#	else
+		#		echo "No escapism provided."
+		#		exit
+		#	fi
+		#	shift
+		#	;;
 		+)
 			shift
 			# Set cap
@@ -207,19 +207,14 @@ if [[ $# -gt 0 ]]; then
 				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($increment/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
-				echo -e -n "$escapism completed! Would you like to remove this escapism? [${green}Yes$foreground/${magenta2}No$foreground] "
+				echo -e -n "$blue::$foreground $escapism completed! Would you like to remove this escapism? [y/N] "
 				while true; do
 					read -r response
 					if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
 						sed -i "/$escapismnoep/d" $SCRIPTS/neet/text.patch
 						exit
-					elif [[ $response =~ ^([nN][oO]|[nN])$ ]]; then
-						exit
-					elif [[ -z $response ]]; then
-						exit
 					else
-						echo -e -n "Sorry, response '$response' not understood. [${green}Yes$foreground/${magenta2}No$foreground] "
-						continue
+						exit
 					fi
 				done
 			fi
@@ -248,9 +243,7 @@ if [[ $# -gt 0 ]]; then
 			exit
 			;;
 	esac
-fi
-
-if [[ $# -eq 0 ]]; then
+else
 	# Add a 0 to numbers under 10, so 1 will become 01
 	if [[ $last -eq 0 ]]; then
 		last=01
