@@ -25,7 +25,7 @@ if [[ $# -ge 1 ]]; then
 		esac
 fi
 
-# Make variables for in and out
+# Make variables for in, out and save
 #in=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/in
 #out=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/out
 in=$SCRIPTS/irc/text/irc.freenode.net/\#punpuntest/in
@@ -42,6 +42,7 @@ while read date time nick msg; do
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
 
+	# Intro stuff
 	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
 		cat $save | grep $(echo $msg | cut -d "(" -f 1) | cut -d " " -f 2- > $in
 	fi
@@ -59,7 +60,7 @@ while read date time nick msg; do
 
 		# About message
 		if [[ $msg == .about ]]; then
-			echo "punyama version 0.01, created by onodera." > $in
+			echo "punyama version 0.02, created by onodera." > $in
 		fi
 
 		# Calculator
@@ -76,6 +77,11 @@ while read date time nick msg; do
 				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $save
 				echo "Intro set." > $in
 			fi
+		fi
+
+		# Check when a person was last seen
+		if [[ $msg == .seen* ]]; then
+			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
 		fi
 
 		# Check time
