@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Define colors
+foreground="\x03"
+red="\x0305"
+
+# Define default values
+server=irc.freenode.net
+channel=doingitwell
+password=el_psy_congroo
+
 if [[ $# -ge 1 ]]; then
 	case "$1" in
 		-h|--help)
@@ -14,22 +23,19 @@ if [[ $# -ge 1 ]]; then
 			rm -r $SCRIPTS/irc/text
 
 			# Lauch ii
-			ii -i $SCRIPTS/irc/text -s irc.freenode.net -n punyama &
+			ii -i $SCRIPTS/irc/text -s $server -n punyama &
 			sleep 0.5
 
 			# Connect to channel
-			#echo "/j #doingitwell el_psy_congroo" > $SCRIPTS/irc/text/irc.freenode.net/in
-			echo "/j #punpuntest" > $SCRIPTS/irc/text/irc.freenode.net/in
+			echo "/j #$channel $password" > $SCRIPTS/irc/text/$server/in
 			sleep 0.5
 			;;
-		esac
+	esac
 fi
 
 # Make variables for in, out and save
-#in=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/in
-#out=$SCRIPTS/irc/text/irc.freenode.net/\#doingitwell/out
-in=$SCRIPTS/irc/text/irc.freenode.net/\#punpuntest/in
-out=$SCRIPTS/irc/text/irc.freenode.net/\#punpuntest/out
+in=$SCRIPTS/irc/text/$server/\#$channel/in
+out=$SCRIPTS/irc/text/$server/\#$channel/out
 save=$SCRIPTS/irc/save
 
 # Say hi
@@ -48,24 +54,47 @@ while read date time nick msg; do
 	fi
 
 	# Website stuff
-	if [[ $msg =~ https?:// ]]; then
+	# TODO: Add filter for jpg and other files
+	if [[ $msg =~ https?:// && -z $(echo $msg | grep -i ".*[a-z0-9].png") ]]; then
 		url=$(echo $msg | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
+		title=$(curl -s $url | grep -i -P -o "(?<=<title>)(.*)(?=</title>)")
 
-		# TODO: Why doesn't this need > $in?
-		curl $url -s -o - | grep -i -P -o "(?<=<title>)(.*)(?=</title>)" > $in
+		if [[ -n $(echo $msg $title | grep -i "porn\|penis\|sexy\|gay\|anal\|pussy\|/b/\|nsfw") ]]; then
+			echo -e "(${red}NSFW$foreground) $title" > $in
+		else
+			echo "$title" > $in
+		fi
 	fi
 
 	# Check if command
 	if [[ $msg == .* ]]; then
 
+		# Display help
+		if [[ $msg == .help ]]; then
+			echo "Commands with (!) don't work correctly yet."
+			echo ".about .calc .grep(!) .intro .kill .ping .reload .time .quote(!)" > $in
+		fi
+
 		# About message
 		if [[ $msg == .about ]]; then
-			echo "punyama version 0.02, created by onodera." > $in
+			uptime=$(ps -p $$ -o etime= | cut -c 7-)
+			hostname=$(hostname)
+			distro=$(cat /etc/*-release | grep "PRETTY_NAME" | cut -d '"' -f 2)
+
+			echo "punyama version 0.19, alive for $uptime." > $in
+			echo "Hosted by $USER@$hostname, running $distro." > $in
+			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
 		fi
 
 		# Calculator
 		if [[ $msg == .calc* ]]; then
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
+		fi
+
+		# Grep through logs
+		# TODO: Rice this.
+		if [[ $msg == .grep* ]]; then
+			cat $out | grep "$(echo $msg | cut -d " " -f 2-)" | tail -n 5 | head -n -1 > $in
 		fi
 
 		# Set intro message
@@ -79,9 +108,26 @@ while read date time nick msg; do
 			fi
 		fi
 
-		# Check when a person was last seen
-		if [[ $msg == .seen* ]]; then
-			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
+		# Kill punyama
+		if [[ $msg == .kill ]]; then
+			if [[ $nick == onodera ]]; then
+				echo "Commiting sudoku." > $in
+				pkill $SCRIPTS/irc/punyama.sh
+				pkill ii
+			else
+				echo "Sorry, only onodera can kill me." > $in
+			fi
+		fi
+
+		# ping
+		if [[ $msg == .ping ]]; then
+			echo "pong" > $in
+		fi
+
+		# Reload punyama
+		if [[ $msg == .reload ]]; then
+			pkill $SCRIPTS/irc/punyama.sh
+			bash $SCRIPTS/irc/punyama.sh
 		fi
 
 		# Check time
@@ -102,6 +148,12 @@ while read date time nick msg; do
 				date +"The time is %I:%M %p." > $in
 			fi
 		fi
+
+		# Post random quote
+		# TODO: Fix this
+		#if [[ $msg == .quote* ]]; then
+		#	cat $out | grep "$(echo $msg | cut -d " " -f 2-)" | shuf -n 1 | cut -d " " -f 3- > $in
+		#fi
 
 	fi
 done > $in
