@@ -1,9 +1,9 @@
 scripts
 =======
 
-Various scripts I made, README.md is WIP. Check out https://github.com/lainscerealexpe/scripts for more widgets.
+Various scripts I made.
 
-apps/arya
+apps/aiko
 ---------
 ~~Emerge wrapper for Gentoo. Just a very simple bash script but it does the job. I wanted to copy the simple syntax of Arch's Pacman & Pacuar.~~
 
@@ -30,6 +30,10 @@ Removes all images (scrots) in $HOME
 clock
 -----
 Just a simple dzen2 clock, I position the clock with MVWM.
+
+irc/punyama
+-----------
+WIP bash irc bot using ii.
 
 music
 -----
