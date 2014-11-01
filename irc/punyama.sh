@@ -20,7 +20,6 @@ if [[ $# -ge 1 ]]; then
 			# Kill old ii
 			pkill ii
 			sleep 0.5
-			rm -r $SCRIPTS/irc/text
 
 			# Lauch ii
 			ii -i $SCRIPTS/irc/text -s $server -n punyama &
@@ -33,10 +32,9 @@ if [[ $# -ge 1 ]]; then
 	esac
 fi
 
-# Make variables for in, out and save
+# Make variables for in and out.
 in=$SCRIPTS/irc/text/$server/\#$channel/in
 out=$SCRIPTS/irc/text/$server/\#$channel/out
-save=$SCRIPTS/irc/save
 
 # Say hi
 echo "Reporting in~" > $in
@@ -50,16 +48,16 @@ while read date time nick msg; do
 
 	# Intro stuff
 	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
-		cat $save | grep $(echo $msg | cut -d "(" -f 1) | cut -d " " -f 2- > $in
+		cat $SCRIPTS/irc/intro.txt | grep $(echo "$msg" | cut -d "(" -f 1) | cut -d " " -f 2- > $in
 	fi
 
 	# Website stuff
-	# TODO: Add filter for jpg and other files
-	if [[ $msg =~ https?:// && -z $(echo $msg | grep -i ".*[a-z0-9].png") ]]; then
-		url=$(echo $msg | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
-		title=$(curl -s $url | grep -i -P -o "(?<=<title>)(.*)(?=</title>)")
+	# TODO: filter png/jpg thingy
+	if [[ $msg =~ https?:// && -z $(echo "$msg" | grep -i ".*[a-z0-9].png") && -z $(echo "$msg" | grep -i ".*[a-z0-9].jpg") ]]; then
+		url=$(echo "$msg" | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
+		title=$(curl -s "$url" | grep -i -P -o "(?<=<title>)(.*)(?=</title>)")
 
-		if [[ -n $(echo $msg $title | grep -i "porn\|penis\|sexy\|gay\|anal\|pussy\|/b/\|nsfw") ]]; then
+		if [[ -n $(echo "$msg $title" | grep -i "porn\|penis\|sexy\|gay\|anal\|pussy\|/b/\|nsfw") ]]; then
 			echo -e "(${red}NSFW$foreground) $title" > $in
 		else
 			echo "$title" > $in
@@ -71,8 +69,8 @@ while read date time nick msg; do
 
 		# Display help
 		if [[ $msg == .help ]]; then
-			echo "Commands with (!) don't work correctly yet."
-			echo ".about .calc .grep(!) .intro .kill .ping .reload .time .quote(!)" > $in
+			echo -e "Commands with ($red!$foreground) don't work correctly yet~"
+			echo -e ".about .calc .count .grep .intro .kill .msg($red!$foreground) .ping .reload .time .quote($red!$foreground)" > $in
 		fi
 
 		# About message
@@ -81,8 +79,8 @@ while read date time nick msg; do
 			hostname=$(hostname)
 			distro=$(cat /etc/*-release | grep "PRETTY_NAME" | cut -d '"' -f 2)
 
-			echo "punyama version 0.19, alive for $uptime." > $in
-			echo "Hosted by $USER@$hostname, running $distro." > $in
+			echo "punyama version 0.25, alive for $uptime~" > $in
+			echo "Hosted by $USER@$hostname, running $distro~" > $in
 			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
 		fi
 
@@ -91,43 +89,77 @@ while read date time nick msg; do
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
 		fi
 
+		# Count words
+		if [[ $msg == .count* ]]; then
+			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep "$(echo $msg | cut -d " " -f 2-)" | cut -d " " -f 3-)
+			echo "This word has been used $(echo "$results" | wc -l) times~" > $in
+		fi
+
 		# Grep through logs
-		# TODO: Rice this.
+		# TODO: Rice this with color.
 		if [[ $msg == .grep* ]]; then
-			cat $out | grep "$(echo $msg | cut -d " " -f 2-)" | tail -n 5 | head -n -1 > $in
+			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep -v "> .grep" | grep "$(echo $msg | cut -d " " -f 2-)" | cut -d " " -f 3-)
+			count=$(echo "$results" | wc -l)
+
+			if [[ $count -ge 5 ]]; then
+				echo "$results" | tail -n 4 > $in
+				echo "$results" > $SCRIPTS/irc/grep.txt
+
+				upload=$(curl --silent -sf -F files[]="@$SCRIPTS/irc/grep.txt" "http://pomf.se/upload.php")
+				pomffile=$(echo "$upload" | grep -E -o '"url":"[A-Za-z0-9]+.txt",' | sed 's/"url":"//;s/",//')
+				url=http://a.pomf.se/$pomffile
+
+				echo "$(expr $count - 4) more results: $url" > $in
+			elif [[ -z $results ]]; then
+				echo "No results~" > $in
+			else
+				echo "$results" > $in
+			fi
 		fi
 
 		# Set intro message
 		if [[ $msg == .intro* ]]; then
-			if [[ -z $(cat $save | grep "onodera") ]]; then
-				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $save
-				echo "Intro set." > $in
+			if [[ -z $(cat $SCRIPTS/irc/intro.txt | grep "$nick") ]]; then
+				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/intro.txt
+				echo "Intro set~" > $in
 			else
-				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $save
-				echo "Intro set." > $in
+				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/intro.txt
+				echo "Intro set~" > $in
 			fi
 		fi
 
 		# Kill punyama
 		if [[ $msg == .kill ]]; then
 			if [[ $nick == onodera ]]; then
-				echo "Commiting sudoku." > $in
-				pkill $SCRIPTS/irc/punyama.sh
+				echo "Commiting sudoku~" > $in
 				pkill ii
+				exit
 			else
-				echo "Sorry, only onodera can kill me." > $in
+				echo "Sorry, only onodera can kill me~" > $in
+			fi
+		fi
+
+		# Leave message
+		# TODO: Make this work
+		if [[ $msg == .msg* ]]; then
+			if [[ -z $(cat $SCRIPTS/irc/msg.txt | grep "$nick") ]]; then
+				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/msg.txt
+				echo "Message left~" > $in
+			else
+				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/msg.txt
+				echo "Message left~" > $in
 			fi
 		fi
 
 		# ping
 		if [[ $msg == .ping ]]; then
-			echo "pong" > $in
+			echo "pong~" > $in
 		fi
 
 		# Reload punyama
 		if [[ $msg == .reload ]]; then
-			pkill $SCRIPTS/irc/punyama.sh
-			bash $SCRIPTS/irc/punyama.sh
+			bash $SCRIPTS/irc/punyama.sh & disown
+			exit
 		fi
 
 		# Check time
@@ -140,12 +172,12 @@ while read date time nick msg; do
 				left=$(expr 1730 - $time)
 
 				if [[ $nick == onodera ]]; then
-					date +"The time is %I:%M %p, $left hours left." > $in
+					date +"The time is %I:%M %p, $left hours left~" > $in
 				elif [[ $nick == Vista-Narvas ]]; then
-					date +"The time is %I:%M %p, $left hours left." > $in
+					date +"The time is %I:%M %p, $left hours left~" > $in
 				fi
 			else
-				date +"The time is %I:%M %p." > $in
+				date +"The time is %I:%M %p~" > $in
 			fi
 		fi
 

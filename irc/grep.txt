@@ -1,0 +1,7 @@
+<Vista-Narvas> .calc $in + 46
+<Vista-Narvas> .calc $in > 46
+<Vista-Narvas> .calc $in + 46
+<Vista-Narvas> .calc \$in + 46
+<Vista-Narvas> .calc \\$in + 46
+<Vista-Narvas> .calc "\$in + 46
+<Vista-Narvas> .calc );"\$in + 46
