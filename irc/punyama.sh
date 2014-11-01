@@ -42,7 +42,7 @@ while read date time nick msg; do
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
 
-	if [[ $nick == ! ]]; then
+	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
 		cat $save | grep $(echo $msg | cut -d "(" -f 1) | cut -d " " -f 2- > $in
 	fi
 
@@ -56,6 +56,27 @@ while read date time nick msg; do
 
 	# Check if command
 	if [[ $msg == .* ]]; then
+
+		# About message
+		if [[ $msg == .about ]]; then
+			echo "punyama version 0.01, created by onodera." > $in
+		fi
+
+		# Calculator
+		if [[ $msg == .calc* ]]; then
+			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
+		fi
+
+		# Set intro message
+		if [[ $msg == .intro* ]]; then
+			if [[ -z $(cat $save | grep "onodera") ]]; then
+				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $save
+				echo "Intro set." > $in
+			else
+				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $save
+				echo "Intro set." > $in
+			fi
+		fi
 
 		# Check time
 		if [[ $msg == .time ]]; then
@@ -73,22 +94,6 @@ while read date time nick msg; do
 				fi
 			else
 				date +"The time is %I:%M %p." > $in
-			fi
-		fi
-
-		# Calculator
-		if [[ $msg == .calc* ]]; then
-			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
-		fi
-
-		# Set intro message
-		if [[ $msg == .intro* ]]; then
-			if [[ -z $(cat $save | grep "onodera") ]]; then
-				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $save
-				echo "Intro set." > $in
-			else
-				sed -i "s/$nick */$nick $(echo $msg | cut -d " " -f 2-)/g" $save
-				echo "Intro set." > $in
 			fi
 		fi
 
