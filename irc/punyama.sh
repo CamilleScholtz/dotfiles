@@ -46,9 +46,24 @@ while read date time nick msg; do
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
 
-	# Intro stuff
+	# Join stuff
 	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
-		cat $SCRIPTS/irc/intro.txt | grep $(echo "$msg" | cut -d "(" -f 1) | cut -d " " -f 2- > $in
+		fixednick=$(echo "$msg" | cut -d "(" -f 1)
+
+		# Intro
+		cat $SCRIPTS/irc/intro.txt | grep $realnick | cut -d " " -f 2- > $in
+		# Message
+		# TODO: Grep returns a non-critical error here
+		if [[ -n $(cat $SCRIPTS/irc/msg.txt | grep $fixednick | cut -d " " -f 2-) ]]; then
+			if [[ $fixednick == onodera ]]; then
+				swapednick=Vista-Narvas
+			elif [[ $fixednick == Vista-Narvas ]]; then
+				swapednick=onodera
+			fi
+
+			echo "$swapednick has left a message for you: $(cat $SCRIPTS/irc/msg.txt | grep $fixednick | cut -d " " -f 2-)" > $in
+			sed -i "/$fixednick .*/d" $SCRIPTS/irc/msg.txt
+		fi
 	fi
 
 	# Website stuff
@@ -57,7 +72,8 @@ while read date time nick msg; do
 		url=$(echo "$msg" | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
 		title=$(curl -s "$url" | grep -i -P -o "(?<=<title>)(.*)(?=</title>)")
 
-		if [[ -n $(echo "$msg $title" | grep -i "porn\|penis\|sexy\|gay\|anal\|pussy\|/b/\|nsfw") ]]; then
+		# Check if url is NSFW
+		if [[ -n $(echo "$msg $title" | grep -i "porn\|penis\|sexy\|gay\|anal\|pussy\|/b/\|nsfw\|gore") ]]; then
 			echo -e "(${red}NSFW$foreground) $title" > $in
 		else
 			echo "$title" > $in
@@ -65,40 +81,57 @@ while read date time nick msg; do
 	fi
 
 	# Check if command
-	if [[ $msg == .* ]]; then
+	if [[ $msg == "."* ]]; then
 
 		# Display help
-		if [[ $msg == .help ]]; then
-			echo -e "Commands with ($red!$foreground) don't work correctly yet~"
-			echo -e ".about .calc .count .grep .intro .kill .msg($red!$foreground) .ping .reload .time .quote($red!$foreground)" > $in
+		if [[ $msg == ".help" ]]; then
+			echo -e ".about .calc .count .grep .intro .kill .msg .ping .reload .time .quote($red!$foreground)" > $in
 		fi
 
 		# About message
-		if [[ $msg == .about ]]; then
+		if [[ $msg == ".about" ]]; then
 			uptime=$(ps -p $$ -o etime= | cut -c 7-)
 			hostname=$(hostname)
 			distro=$(cat /etc/*-release | grep "PRETTY_NAME" | cut -d '"' -f 2)
 
-			echo "punyama version 0.25, alive for $uptime~" > $in
+			echo "punyama version 0.30, alive for $uptime~" > $in
 			echo "Hosted by $USER@$hostname, running $distro~" > $in
 			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
 		fi
 
 		# Calculator
-		if [[ $msg == .calc* ]]; then
+		if [[ $msg == ".calc "* ]]; then
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
 		fi
 
+		# Calculator
+		if [[ $msg == ".calc" ]]; then
+			echo "Please enter a calculation~" > $in
+		fi
+
 		# Count words
-		if [[ $msg == .count* ]]; then
-			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep "$(echo $msg | cut -d " " -f 2-)" | cut -d " " -f 3-)
-			echo "This word has been used $(echo "$results" | wc -l) times~" > $in
+		if [[ $msg == ".count "* ]]; then
+			if [[ $(echo $msg | cut -d " " -f 2-) == onodera ]]; then
+				results=$(cat $out | grep "<onodera>")
+				echo "onodera has spoken $(echo "$results" | wc -l) times~" > $in
+			elif [[ $(echo $msg | cut -d " " -f 2-) == Vista-Narvas ]]; then
+				results=$(cat $out | grep "<Vista-Narvas>")
+				echo "Vista-Narvas has spoken $(echo "$results" | wc -l) times~" > $in
+			else
+				results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep "$(echo "$msg" | cut -d " " -f 2-)" | cut -d " " -f 3-)
+				echo "This word has been used $(echo "$results" | wc -l) times~" > $in
+			fi
+		fi
+
+		# Grep error
+		if [[ $msg == ".count" ]]; then
+			echo "Please specify at least one search term~" > $in
 		fi
 
 		# Grep through logs
 		# TODO: Rice this with color.
-		if [[ $msg == .grep* ]]; then
-			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep -v "> .grep" | grep "$(echo $msg | cut -d " " -f 2-)" | cut -d " " -f 3-)
+		if [[ $msg == ".grep "* ]]; then
+			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep -v "> .grep" | grep "$(echo "$msg" | cut -d " " -f 2-)" | cut -d " " -f 3-)
 			count=$(echo "$results" | wc -l)
 
 			if [[ $count -ge 5 ]]; then
@@ -117,8 +150,13 @@ while read date time nick msg; do
 			fi
 		fi
 
+		# Grep error
+		if [[ $msg == ".grep" ]]; then
+			echo "Please specify at least one search term~" > $in
+		fi
+
 		# Set intro message
-		if [[ $msg == .intro* ]]; then
+		if [[ $msg == ".intro "* ]]; then
 			if [[ -z $(cat $SCRIPTS/irc/intro.txt | grep "$nick") ]]; then
 				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/intro.txt
 				echo "Intro set~" > $in
@@ -128,8 +166,13 @@ while read date time nick msg; do
 			fi
 		fi
 
-		# Kill punyama
-		if [[ $msg == .kill ]]; then
+		# Get intro message
+		if [[ $msg == ".intro" ]]; then
+			echo "Your intro is: $(cat $SCRIPTS/irc/intro.txt | grep $nick | cut -d " " -f 2-)" > $in
+		fi
+
+		# Kill punyama ;_;
+		if [[ $msg == ".kill" ]]; then
 			if [[ $nick == onodera ]]; then
 				echo "Commiting sudoku~" > $in
 				pkill ii
@@ -140,30 +183,53 @@ while read date time nick msg; do
 		fi
 
 		# Leave message
-		# TODO: Make this work
-		if [[ $msg == .msg* ]]; then
-			if [[ -z $(cat $SCRIPTS/irc/msg.txt | grep "$nick") ]]; then
-				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/msg.txt
+		if [[ $msg == ".msg "* ]]; then
+			if [[ $nick == onodera ]]; then
+			swapednick=Vista-Narvas
+			elif [[ $nick == Vista-Narvas ]]; then
+			swapednick=onodera
+			fi
+
+			if [[ -z $(cat $SCRIPTS/irc/msg.txt | grep "$swapednick") ]]; then
+				echo "$swapednick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/msg.txt
 				echo "Message left~" > $in
 			else
-				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/msg.txt
+				sed -i "s/$swapednick .*/$swapednick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/msg.txt
 				echo "Message left~" > $in
 			fi
 		fi
 
+		# Get message
+		if [[ $msg == ".msg" ]]; then
+			# Message
+			# TODO: Grep returns a non-critical error here
+			if [[ -n $(cat $SCRIPTS/irc/msg.txt | grep $nick | cut -d " " -f 2-) ]]; then
+				if [[ $nick == onodera ]]; then
+					swapednick=Vista-Narvas
+				elif [[ $nick == Vista-Narvas ]]; then
+					swapednick=onodera
+				fi
+
+				echo "$swapednick has left a message for you: $(cat $SCRIPTS/irc/msg.txt | grep $fixednick | cut -d " " -f 2-)" > $in
+				sed -i "/$nick .*/d" $SCRIPTS/irc/msg.txt
+			else
+				echo "Sorry, you don't have any messages~" > $in
+			fi
+		fi
+
 		# ping
-		if [[ $msg == .ping ]]; then
+		if [[ $msg == ".ping" ]]; then
 			echo "pong~" > $in
 		fi
 
 		# Reload punyama
-		if [[ $msg == .reload ]]; then
+		if [[ $msg == ".reload" ]]; then
 			bash $SCRIPTS/irc/punyama.sh & disown
 			exit
 		fi
 
 		# Check time
-		if [[ $msg == .time ]]; then
+		if [[ $msg == ".time" ]]; then
 			day=$(date +"%u")
 			time=$(date +"%H%M")
 
@@ -183,9 +249,10 @@ while read date time nick msg; do
 
 		# Post random quote
 		# TODO: Fix this
-		#if [[ $msg == .quote* ]]; then
+		#if [[ $msg == ".quote "* ]]; then
 		#	cat $out | grep "$(echo $msg | cut -d " " -f 2-)" | shuf -n 1 | cut -d " " -f 3- > $in
 		#fi
 
 	fi
+
 done > $in
