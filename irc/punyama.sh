@@ -17,6 +17,7 @@ if [[ $# -ge 1 ]]; then
 			exit
 			;;
 		-r)
+			# TODO: Fix this, als change -r?
 			# Kill old ii
 			pkill ii
 			sleep 0.5
@@ -46,12 +47,19 @@ while read date time nick msg; do
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
 
+	if [[ $nick == Vista_Narvas ]]; then
+		nick=Vista-Narvas
+	fi
+
 	# Join stuff
 	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
 		fixednick=$(echo "$msg" | cut -d "(" -f 1)
+		if [[ $fixednick == Vista_Narvas ]]; then
+			fixednick=Vista-Narvas
+		fi
 
 		# Intro
-		cat $SCRIPTS/irc/intro.txt | grep $realnick | cut -d " " -f 2- > $in
+		cat $SCRIPTS/irc/intro.txt | grep $fixednick | cut -d " " -f 2- > $in
 		# Message
 		# TODO: Grep returns a non-critical error here
 		if [[ -n $(cat $SCRIPTS/irc/msg.txt | grep $fixednick | cut -d " " -f 2-) ]]; then
@@ -66,9 +74,15 @@ while read date time nick msg; do
 		fi
 	fi
 
+	# Afk stuff
+	if [[ -n $(cat $SCRIPTS/irc/afk.txt | grep $nick) ]]; then
+		echo "$nick is no longer afk~"
+		sed -i "/$nick .*/d" $SCRIPTS/irc/afk.txt
+	fi
+
 	# Website stuff
 	# TODO: filter png/jpg thingy
-	if [[ $msg =~ https?:// && -z $(echo "$msg" | grep -i ".*[a-z0-9].png") && -z $(echo "$msg" | grep -i ".*[a-z0-9].jpg") ]]; then
+	if [[ $msg =~ https?:// && -z $(echo "$msg" | grep -i -s ".*[a-z0-9].png") && -z $(echo "$msg" | grep -i -s ".*[a-z0-9].jpg") ]]; then
 		url=$(echo "$msg" | grep -o -P "http(s?):\/\/[^ \"\(\)\<\>]*")
 		title=$(curl -s "$url" | grep -i -P -o "(?<=<title>)(.*)(?=</title>)")
 
@@ -85,7 +99,7 @@ while read date time nick msg; do
 
 		# Display help
 		if [[ $msg == ".help" ]]; then
-			echo -e ".about .calc .count .grep .intro .kill .msg .ping .reload .time .quote($red!$foreground)" > $in
+			echo -e ".about .afk($red!$foreground) .calc($red!$foreground) .count .date .day .grep($red!$foreground) .intro .kill .msg .ping .random($red!$foreground) .reload($red!$foreground) .time($red!$foreground)" > $in
 		fi
 
 		# About message
@@ -94,9 +108,29 @@ while read date time nick msg; do
 			hostname=$(hostname)
 			distro=$(cat /etc/*-release | grep "PRETTY_NAME" | cut -d '"' -f 2)
 
-			echo "punyama version 0.30, alive for $uptime~" > $in
+			echo "punyama version 0.35, alive for $uptime~" > $in
 			echo "Hosted by $USER@$hostname, running $distro~" > $in
 			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
+		fi
+
+		# Set afk message
+		if [[ $msg == ".afk "* ]]; then
+			if [[ -z $(cat $SCRIPTS/irc/afk.txt | grep "$nick") ]]; then
+				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/afk.txt
+				echo "You are now afk~" > $in
+			else
+				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/afk.txt
+				echo "You are now afk~" > $in
+			fi
+		fi
+
+		# Get afk message
+		if [[ $msg == ".afk" ]]; then
+			count=$(cat $SCRIPTS/irc/afk.txt | wc -l)
+
+			for (( number=1; number<=$count; number++ )); do
+				echo "$(cat $SCRIPTS/irc/afk.txt | head -n $number | tail -n 1 | cut -d " " -f 1) is afk because: $(cat $SCRIPTS/irc/afk.txt | head -n $number | tail -n 1 | cut -d " " -f 2-)" > $in
+			done
 		fi
 
 		# Calculator
@@ -104,7 +138,7 @@ while read date time nick msg; do
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
 		fi
 
-		# Calculator
+		# Calculator error
 		if [[ $msg == ".calc" ]]; then
 			echo "Please enter a calculation~" > $in
 		fi
@@ -126,6 +160,30 @@ while read date time nick msg; do
 		# Grep error
 		if [[ $msg == ".count" ]]; then
 			echo "Please specify at least one search term~" > $in
+		fi
+
+		# Check date
+		if [[ $msg == ".date" ]]; then
+			date +"The date is %d %B~" > $in
+		fi
+
+		# Check day
+		if [[ $msg == ".day" ]]; then
+			day=$(date +"%u")
+
+			# TODO: Test this, make vista and onodera versions
+			if [[ $day -le 5 ]]; then
+				left=$(expr 5 - $(date +"%u"))
+
+				if [[ $left -eq 1 ]]; then
+					date +"Today is a %A, $left day left until the weekend~" > $in
+				else
+					date +"Today is a %A, $left days left until the weekend~" > $in
+				fi
+			else
+				date +"Today is a %A~" > $in
+			fi
+
 		fi
 
 		# Grep through logs
@@ -222,6 +280,13 @@ while read date time nick msg; do
 			echo "pong~" > $in
 		fi
 
+		# Post random quote
+		# TODO: Rice this with color.
+		# TODO: Ad random *.
+		if [[ $msg == ".random" ]]; then
+			cat $out | grep "<$nick>" | shuf -n 1 | cut -d " " -f 3- > $in
+		fi
+
 		# Reload punyama
 		if [[ $msg == ".reload" ]]; then
 			bash $SCRIPTS/irc/punyama.sh & disown
@@ -229,6 +294,7 @@ while read date time nick msg; do
 		fi
 
 		# Check time
+		# TODO: Add betime thingy
 		if [[ $msg == ".time" ]]; then
 			day=$(date +"%u")
 			time=$(date +"%H%M")
@@ -246,12 +312,6 @@ while read date time nick msg; do
 				date +"The time is %I:%M %p~" > $in
 			fi
 		fi
-
-		# Post random quote
-		# TODO: Fix this
-		#if [[ $msg == ".quote "* ]]; then
-		#	cat $out | grep "$(echo $msg | cut -d " " -f 2-)" | shuf -n 1 | cut -d " " -f 3- > $in
-		#fi
 
 	fi
 

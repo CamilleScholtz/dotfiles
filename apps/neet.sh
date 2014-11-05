@@ -230,7 +230,7 @@ if [[ $# -ge 1 ]]; then
 				# Echo and send to text
 				echo "neet.sh changed:"
 				echo -e "$brown↓$white $escapismnoep ($decrement/$total)"
-				sed -i "s|$escapismnoep ($last/$total)/$escapismnoep ($decrement/$total)|g" $SCRIPTS/neet/text.patch
+				sed -i "s|$escapismnoep ($last/$total)|$escapismnoep ($decrement/$total)|g" $SCRIPTS/neet/text.patch
 				exit
 			else
 				echo "Can't go lower than 0!"
