@@ -295,6 +295,12 @@ while read date time nick msg; do
 			bash $SCRIPTS/irc/punyama.sh & disown
 			exit
 
+		# Download from git and reload punyama
+    		elif [[ $msg == ".regit" ]]; then
+			curl https://raw.githubusercontent.com/onodera-punpun/scripts/master/irc/punyama.sh > $SCRIPTS/irc/punyama.sh
+			bash $SCRIPTS/irc/punyama.sh & disown
+			exit
+
 		# Check time
 		# TODO: Add betime thingy
 		elif [[ $msg == ".time" ]]; then
