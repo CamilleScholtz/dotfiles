@@ -47,9 +47,15 @@ while read date time nick msg; do
 	nick="${nick:1:-1}"
 	[[ $nick == "punyama" ]] && continue
 
-	if [[ $nick == Vista_Narvas ]]; then
+	# Fix nicks
+	shopt -s nocasematch
+	if [[ $nick == "Vista-Narvas"* || $nick == "Vista_Narvas"* ]]; then
 		nick=Vista-Narvas
 	fi
+	if [[ $nick == "onodera"* || $nick == "kamiru"* || $nick == "camille"* ]]; then
+		nick=onodera
+	fi
+	shopt -u nocasematch
 
 	# Join stuff
 	if [[ $nick == ! && -n $(tail -n 1 $out | grep "has joined") ]]; then
@@ -99,16 +105,17 @@ while read date time nick msg; do
 
 		# Display help
 		if [[ $msg == ".help" ]]; then
-			echo -e ".about .afk($red!$foreground) .calc($red!$foreground) .count .date .day .grep($red!$foreground) .intro .kill .msg .ping .random($red!$foreground) .reload($red!$foreground) .time($red!$foreground)" > $in
+			echo -e ".about .afk($red!$foreground) .calc($red!$foreground) .count .date .day .fortune .grep($red!$foreground) .intro .kill .msg .ping .random($red!$foreground) .reload($red!$foreground) .time($red!$foreground)" > $in
 		fi
 
 		# About message
 		if [[ $msg == ".about" ]]; then
+			version=$(cat $SCRIPTS/irc/punyama.sh | sum | cut -d " " -f 1)
 			uptime=$(ps -p $$ -o etime= | cut -c 7-)
 			hostname=$(hostname)
 			distro=$(cat /etc/*-release | grep "PRETTY_NAME" | cut -d '"' -f 2)
 
-			echo "punyama version 0.35, alive for $uptime~" > $in
+			echo "punyama version $version, alive for $uptime~" > $in
 			echo "Hosted by $USER@$hostname, running $distro~" > $in
 			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
 		fi
@@ -184,6 +191,23 @@ while read date time nick msg; do
 				date +"Today is a %A~" > $in
 			fi
 
+		fi
+
+		# Get a fortune
+		if [[ $msg == ".fortune"* ]]; then
+			word=$(echo $msg | cut -d " " -f 2)
+
+			if [[ $word == "tech" ]]; then
+				fortune -a -s computers linux linuxcookie > $in
+			elif [[ $word ==  "paradox" ]]; then
+				fortune -a -s paradoxum > $in
+			elif [[ $word == "science" ]]; then
+				fortune -a -s science > $in
+			elif [[ $word == "cookie" ]]; then
+				fortune -a -s goedel > $in
+			else
+				echo "Please choose one of the following items: cookie paradox science tech" > $in
+			fi
 		fi
 
 		# Grep through logs
