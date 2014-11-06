@@ -51,8 +51,7 @@ while read date time nick msg; do
 	shopt -s nocasematch
 	if [[ $nick == "Vista-Narvas"* || $nick == "Vista_Narvas"* ]]; then
 		nick=Vista-Narvas
-	fi
-	if [[ $nick == "onodera"* || $nick == "kamiru"* || $nick == "camille"* ]]; then
+	elif [[ $nick == "onodera"* || $nick == "kamiru"* || $nick == "camille"* ]]; then
 		nick=onodera
 	fi
 	shopt -u nocasematch
@@ -106,10 +105,9 @@ while read date time nick msg; do
 		# Display help
 		if [[ $msg == ".help" ]]; then
 			echo -e ".about .afk($red!$foreground) .calc($red!$foreground) .count .date .day .fortune .grep($red!$foreground) .intro .kill .msg .ping .random($red!$foreground) .reload($red!$foreground) .time($red!$foreground)" > $in
-		fi
 
 		# About message
-		if [[ $msg == ".about" ]]; then
+		elif [[ $msg == ".about" ]]; then
 			version=$(cat $SCRIPTS/irc/punyama.sh | sum | cut -d " " -f 1)
 			uptime=$(ps -p $$ -o etime= | cut -c 7-)
 			hostname=$(hostname)
@@ -118,10 +116,9 @@ while read date time nick msg; do
 			echo "punyama version $version, alive for $uptime~" > $in
 			echo "Hosted by $USER@$hostname, running $distro~" > $in
 			echo "https://github.com/onodera-punpun/scripts/tree/master/irc"
-		fi
 
 		# Set afk message
-		if [[ $msg == ".afk "* ]]; then
+		elif [[ $msg == ".afk "* ]]; then
 			if [[ -z $(cat $SCRIPTS/irc/afk.txt | grep "$nick") ]]; then
 				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/afk.txt
 				echo "You are now afk~" > $in
@@ -129,29 +126,25 @@ while read date time nick msg; do
 				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/afk.txt
 				echo "You are now afk~" > $in
 			fi
-		fi
 
 		# Get afk message
-		if [[ $msg == ".afk" ]]; then
+		elif [[ $msg == ".afk" ]]; then
 			count=$(cat $SCRIPTS/irc/afk.txt | wc -l)
 
 			for (( number=1; number<=$count; number++ )); do
 				echo "$(cat $SCRIPTS/irc/afk.txt | head -n $number | tail -n 1 | cut -d " " -f 1) is afk because: $(cat $SCRIPTS/irc/afk.txt | head -n $number | tail -n 1 | cut -d " " -f 2-)" > $in
 			done
-		fi
 
 		# Calculator
-		if [[ $msg == ".calc "* ]]; then
+		elif [[ $msg == ".calc "* ]]; then
 			echo "$(echo $msg | cut -d " " -f 2-)" | bc -l > $in
-		fi
 
 		# Calculator error
-		if [[ $msg == ".calc" ]]; then
+		elif [[ $msg == ".calc" ]]; then
 			echo "Please enter a calculation~" > $in
-		fi
 
 		# Count words
-		if [[ $msg == ".count "* ]]; then
+		elif [[ $msg == ".count "* ]]; then
 			if [[ $(echo $msg | cut -d " " -f 2-) == onodera ]]; then
 				results=$(cat $out | grep "<onodera>")
 				echo "onodera has spoken $(echo "$results" | wc -l) times~" > $in
@@ -162,20 +155,17 @@ while read date time nick msg; do
 				results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep "$(echo "$msg" | cut -d " " -f 2-)" | cut -d " " -f 3-)
 				echo "This word has been used $(echo "$results" | wc -l) times~" > $in
 			fi
-		fi
 
 		# Grep error
-		if [[ $msg == ".count" ]]; then
+		elif [[ $msg == ".count" ]]; then
 			echo "Please specify at least one search term~" > $in
-		fi
 
 		# Check date
-		if [[ $msg == ".date" ]]; then
+		elif [[ $msg == ".date" ]]; then
 			date +"The date is %d %B~" > $in
-		fi
 
 		# Check day
-		if [[ $msg == ".day" ]]; then
+		elif [[ $msg == ".day" ]]; then
 			day=$(date +"%u")
 
 			# TODO: Test this, make vista and onodera versions
@@ -191,10 +181,8 @@ while read date time nick msg; do
 				date +"Today is a %A~" > $in
 			fi
 
-		fi
-
 		# Get a fortune
-		if [[ $msg == ".fortune"* ]]; then
+		elif [[ $msg == ".fortune"* ]]; then
 			word=$(echo $msg | cut -d " " -f 2)
 
 			if [[ $word == "tech" ]]; then
@@ -208,11 +196,10 @@ while read date time nick msg; do
 			else
 				echo "Please choose one of the following items: cookie paradox science tech" > $in
 			fi
-		fi
 
 		# Grep through logs
 		# TODO: Rice this with color.
-		if [[ $msg == ".grep "* ]]; then
+		elif [[ $msg == ".grep "* ]]; then
 			results=$(cat $out | grep -v "<punyama>" | grep -v "\-!\-" | grep -v "> .grep" | grep "$(echo "$msg" | cut -d " " -f 2-)" | cut -d " " -f 3-)
 			count=$(echo "$results" | wc -l)
 
@@ -230,15 +217,13 @@ while read date time nick msg; do
 			else
 				echo "$results" > $in
 			fi
-		fi
 
 		# Grep error
-		if [[ $msg == ".grep" ]]; then
+		elif [[ $msg == ".grep" ]]; then
 			echo "Please specify at least one search term~" > $in
-		fi
 
 		# Set intro message
-		if [[ $msg == ".intro "* ]]; then
+		elif [[ $msg == ".intro "* ]]; then
 			if [[ -z $(cat $SCRIPTS/irc/intro.txt | grep "$nick") ]]; then
 				echo "$nick $(echo $msg | cut -d " " -f 2-)" >> $SCRIPTS/irc/intro.txt
 				echo "Intro set~" > $in
@@ -246,10 +231,9 @@ while read date time nick msg; do
 				sed -i "s/$nick .*/$nick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/intro.txt
 				echo "Intro set~" > $in
 			fi
-		fi
 
 		# Get intro message
-		if [[ $msg == ".intro" ]]; then
+		elif [[ $msg == ".intro" ]]; then
 			echo "Your intro is: $(cat $SCRIPTS/irc/intro.txt | grep $nick | cut -d " " -f 2-)" > $in
 		fi
 
@@ -262,10 +246,9 @@ while read date time nick msg; do
 			else
 				echo "Sorry, only onodera can kill me~" > $in
 			fi
-		fi
 
 		# Leave message
-		if [[ $msg == ".msg "* ]]; then
+		elif [[ $msg == ".msg "* ]]; then
 			if [[ $nick == onodera ]]; then
 			swapednick=Vista-Narvas
 			elif [[ $nick == Vista-Narvas ]]; then
@@ -279,10 +262,9 @@ while read date time nick msg; do
 				sed -i "s/$swapednick .*/$swapednick $(echo $msg | cut -d " " -f 2-)/g" $SCRIPTS/irc/msg.txt
 				echo "Message left~" > $in
 			fi
-		fi
 
 		# Get message
-		if [[ $msg == ".msg" ]]; then
+		elif [[ $msg == ".msg" ]]; then
 			# Message
 			# TODO: Grep returns a non-critical error here
 			if [[ -n $(cat $SCRIPTS/irc/msg.txt | grep $nick | cut -d " " -f 2-) ]]; then
@@ -297,29 +279,25 @@ while read date time nick msg; do
 			else
 				echo "Sorry, you don't have any messages~" > $in
 			fi
-		fi
 
 		# ping
-		if [[ $msg == ".ping" ]]; then
+		elif [[ $msg == ".ping" ]]; then
 			echo "pong~" > $in
-		fi
 
 		# Post random quote
 		# TODO: Rice this with color.
 		# TODO: Ad random *.
-		if [[ $msg == ".random" ]]; then
+		elif [[ $msg == ".random" ]]; then
 			cat $out | grep "<$nick>" | shuf -n 1 | cut -d " " -f 3- > $in
-		fi
 
 		# Reload punyama
-		if [[ $msg == ".reload" ]]; then
+		elif [[ $msg == ".reload" ]]; then
 			bash $SCRIPTS/irc/punyama.sh & disown
 			exit
-		fi
 
 		# Check time
 		# TODO: Add betime thingy
-		if [[ $msg == ".time" ]]; then
+		elif [[ $msg == ".time" ]]; then
 			day=$(date +"%u")
 			time=$(date +"%H%M")
 
