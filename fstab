@@ -1,13 +1,10 @@
 #
 # /etc/fstab: static file system information
 #
-# <file>  <dir> <fs> <options>        <dump/pass>
+# <file>       <dir> <fs> <options>        <dump/pass>
 
-/dev/sda1 /boot ext2 defaults,noatime 0 2
-/dev/sda2 /     ext4 defaults,noatime 0 1
-/dev/sda3 /home ext4 defaults,noatime 0 2
-
-devpts /dev/pts        devpts noexec,nosuid,gid=tty,mode=0620 0 0
-tmpfs  /usr/pkgmk/work tmpfs  defaults,rw,relatime,size=6G   0 0
+/dev/mmcblk0p1 /boot vfat defaults,noatime 0 2
+/dev/mmcblk0p2 /     ext4 defaults,noatime 0 1
+/dev/sda       /srv  ext4 defaults,noatime 0 2
 
 # End of file

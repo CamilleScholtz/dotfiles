@@ -1,8 +1,0 @@
-#!/bin/fish
-
-## EXECUTE
-
-clock -s -i 45 -f '%A, %B %eth %I:%M %p' | while read clock
-	set clock (string replace '  ' ' ' $clock)
-	echo "%{c}%{A:fish $HOME/.lemonbar/popups/clock/launcher &:}$clock%{A}"
-end

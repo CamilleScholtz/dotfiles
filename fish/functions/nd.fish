@@ -1,3 +1,0 @@
-function nd
-	nextd
-end

@@ -1,9 +1,0 @@
-#!/bin/fish
-
-## EXECUTE
-
-clock -s -i 45 -f "%B %eth, %I:%M %p" | \
-while read clock
-	set clock (echo $clock | sed s/\ \ /\ /)
-	echo "%{c}$clock"
-end

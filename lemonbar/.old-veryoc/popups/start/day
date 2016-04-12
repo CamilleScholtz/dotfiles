@@ -1,9 +1,0 @@
-#!/bin/fish
-
-## EXECUTE
-
-clock -s -i 45 -f "%A" | \
-while read day
-	set day (echo $day)
-	echo "%{c}Today is a $day"
-end

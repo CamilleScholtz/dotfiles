@@ -1,4 +1,0 @@
-def_key "left"
-  scroll_up_album
-def_key "right"
-  scroll_down_album

@@ -1,3 +1,0 @@
-function pd
-	prevd
-end

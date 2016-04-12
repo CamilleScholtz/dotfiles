@@ -1,9 +1,0 @@
-#!/bin/fish
-
-## EXECUTE
-
-mpc idleloop player | \
-while read
-	set music (mpc current | cut -d \n -f 1)
-	echo "%{r}%{B#$bg}%{r}%{A4:mpc -q prev:}%{A5:mpc -q next:}%{A:fish $HOME/.lemonbar/popups/cover/cover &:}     $music     %{A}%{A}%{A}%{A}%{A}%{B#00$bg}"
-end
