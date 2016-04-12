@@ -1,0 +1,6 @@
+#!/bin/fish
+
+## EXECUTE
+
+set celsius (weather -c)
+echo "%{l}  Rainfall graph, it's $celsius."

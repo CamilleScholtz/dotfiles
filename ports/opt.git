@@ -1,0 +1,5 @@
+# Collection opt, https://crux.nu/gitweb/?p=ports/opt.git
+
+NAME=opt
+URL=git://crux.nu/ports/opt
+BRANCH=3.2

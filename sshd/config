@@ -1,0 +1,30 @@
+Port 22
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+Protocol 2
+
+# HostKey for protocol version 1
+#HostKey /etc/ssh/ssh_host_key
+# HostKeys for protocol version 2
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_dsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
+
+RSAAuthentication yes
+PubkeyAuthentication yes
+
+AuthorizedKeysFile .ssh/authorized_keys
+
+# Only allow keys
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+
+PrintMotd no
+PrintLastLog yes
+UsePrivilegeSeparation sandbox
+PidFile /var/run/sshd.pid
+
+Subsystem sftp /usr/lib/ssh/sftp-server

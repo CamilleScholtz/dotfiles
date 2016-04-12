@@ -1,0 +1,7 @@
+#!/bin/fish
+
+## EXECUTE
+
+xtitle -s -t 28 | while read window
+	echo "   º%{c}$window"
+end

@@ -1,0 +1,23 @@
+# Set root image
+rootshuf
+
+# Load fonts
+xset +fp /usr/share/fonts/X11/misc
+xset +fp $HOME/.fonts
+xset +fp $HOME/.fonts/Microsoft
+xset fp rehash
+
+# Load .Xresources
+xrdb $HOME/.Xresources
+
+# Start URxvt daemon
+urxvtd -q -o -f
+
+# Add shadows
+compton -b --backend xrender --unredir-if-possible -cC -l -18 -t -18 -o 0.07
+
+# Start lemonbars
+fish $HOME/.lemonbar/launcher &
+
+# Start wm
+exec openbox

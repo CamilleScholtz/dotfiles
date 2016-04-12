@@ -1,0 +1,8 @@
+#!/bin/fish
+
+n30f -x 32 -y 1117 -c "fish $HOME/.lemonbar/popups/start/start" $HOME/.lemonbar/start.png &
+
+set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1,-freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1,-freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+set -l -x fg 021B21
+set -l -x bg EEEEEE
+fish $HOME/.lemonbar/music | lemonbar -g 900x56+988+32 -b -f $font -B \#00$bg -F \#$fg | dash &

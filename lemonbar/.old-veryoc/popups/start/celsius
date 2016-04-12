@@ -1,0 +1,9 @@
+#!/bin/fish
+
+## EXECUTE
+
+clock -s -i 120 | \
+while read
+	set celsius (weather -c)
+	echo "%{l}  Rainfall graph, it's $celsius"
+end

@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# /etc/rc.d/sysklogd: start/stop syslog and klog daemons
+#
+
+SSD=/sbin/start-stop-daemon
+SLOG=/usr/sbin/syslogd
+KLOG=/usr/sbin/klogd
+SLOG_PID=/var/run/syslogd.pid
+KLOG_PID=/var/run/klogd.pid
+
+
+print_status() {
+	$SSD --status --pidfile $2
+	case $? in
+	0) echo "$1 is running with pid $(cat $2)" ;;
+	1) echo "$1 is not running but the pid file $2 exists" ;;
+	3) echo "$1 is not running" ;;
+	4) echo "Unable to determine the program status" ;;
+	esac
+}
+
+case $1 in
+start)
+	$SSD --start --pidfile $SLOG_PID --exec $SLOG
+	$SSD --start --pidfile $KLOG_PID --exec $KLOG -- -c4
+	;;
+stop)
+	$SSD --stop --retry 10 --pidfile $SLOG_PID 
+	$SSD --stop --retry 10 --pidfile $KLOG_PID 
+	;;
+restart)
+	$0 stop
+	$0 start
+	;;
+status)
+	print_status $SLOG $SLOG_PID
+	print_status $KLOG $KLOG_PID
+	;;
+*)
+	echo "usage: $0 [start|stop|restart|status]"
+	;;
+esac
+
+# End of file

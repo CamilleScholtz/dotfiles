@@ -1,0 +1,33 @@
+#!/bin/fish
+
+## CONFIGURATION
+
+# Set geometry
+set geometry 32 921
+
+
+## EXECUTE
+
+# Exit if open
+if test (pgrep -f "n30f -d -x $geometry[1]" | head -n 1)
+	pkill -n -f "n30f -d -x $geometry[1]"
+	pkill -f "n30f -d -x 35"
+	pkill -f "fish $HOME/.lemonbar/popups/start/clock"
+	pkill -f "fish $HOME/.lemonbar/popups/start/day"
+	pkill -f "fish $HOME/.lemonbar/popups/start/celsius"
+	pkill -f "fish $HOME/.lemonbar/popups/start/desktop"
+	exit
+end
+
+set -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
+set -x fg 021B21
+set -x bg EEEEEE
+
+n30f -d -x $geometry[1] -y $geometry[2] -c "fish $HOME/.lemonbar/popups/start/start" $HOME/.lemonbar/popups/start/start_bg.png &
+sleep 0.01
+fish $HOME/.lemonbar/popups/start/clock | lemonbar -g 160x20+50+243 -b -d -f $font -B \#00$bg -F \#$fg &
+fish $HOME/.lemonbar/popups/start/day | lemonbar -g 160x20+50+228 -b -d -f $font -B \#00$bg -F \#$fg &
+raingraph /tmp/raingraph.png
+n30f -d -x 35 -y 926 /tmp/raingraph.png &
+fish $HOME/.lemonbar/popups/start/celsius | lemonbar -g 158x20+50+140 -b -d -f $font -B \#00$bg -F \#$fg &
+fish $HOME/.lemonbar/popups/start/desktop | lemonbar -g 160x20+50+88 -b -d -f $font -B \#00$bg -F \#$fg &

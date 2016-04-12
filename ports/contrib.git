@@ -1,0 +1,5 @@
+# Collection contrib, https://crux.nu/gitweb/?p=ports/contrib.git
+
+NAME=contrib
+URL=git://crux.nu/ports/contrib
+BRANCH=3.2

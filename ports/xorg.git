@@ -1,0 +1,5 @@
+# Collection xorg, https://crux.nu/gitweb/?p=ports/xorg.git
+
+NAME=xorg
+URL=git://crux.nu/ports/xorg
+BRANCH=3.2

@@ -1,0 +1,52 @@
+#!/bin/fish
+
+## CONFIGURATION
+
+# Set music dir location
+set musicdir $HOME/media/music
+
+## FUCNTIONS
+
+# This function extracts the current playing album location
+function path
+	mpc -f '%file%' | head -n 1 | string match -r '.*/'
+end
+
+# This function displays the cover
+function spawncover
+	n30f -d -b -x 1735 -y 65 $musicdir/{$path}cover_popup.png &
+end
+
+
+## EXECUTE
+
+# Exit if open
+if test (pgrep -f 'n30f -d -b -x 1725' | head -n 1)
+	pkill -f "n30f -d -b -x 1735"
+	pkill -f "n30f -d -b -x 1725"
+	pkill -f -n "mpc idleloop player"
+	exit
+end
+
+set path (path)
+n30f -d -b -x 1725 -y 45 $HOME/.lemonbar/popups/music/bg.png &
+spawncover
+
+mpc idleloop player | while read
+	set pathnew (path)
+
+	if test $path != $pathnew
+		if test -f $musicdir/$path/cover_popup.png
+			set path (path)
+			set pathnew $path
+
+			spawncover
+			pkill -o -f 'n30f -d -x 1735'
+		else
+			set path (path)
+			set pathnew $path
+
+			spawncover
+		end
+	end
+end

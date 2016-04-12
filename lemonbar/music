@@ -1,0 +1,14 @@
+#!/bin/fish
+
+## EXECUTE
+
+mpc idleloop player | while read
+	set music (mpc current)
+	set playing (mpc | string match -r '\[playing\]')
+
+	if test $playing
+		echo "%{r}%{A3:mpc -q toggle:}%{A4:mpc -q prev:}%{A5:mpc -q next:}%{A:fish $HOME/.lemonbar/popups/music/launcher &:}%{B#$bg2}  »   $music   %{B#$bg1}%{A}%{A}%{A}%{A}"
+	else
+		echo "%{r}%{A3:mpc -q toggle:}%{A4:mpc -q prev:}%{A5:mpc -q next:}%{A:fish $HOME/.lemonbar/popups/music/launcher &:}%{B#$bg2}  »   $music [paused]   %{B#$bg1}%{A}%{A}%{A}%{A}"
+	end
+end

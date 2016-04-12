@@ -1,0 +1,20 @@
+--- Pkgfile	2016-03-19 13:44:43.896497474 +0100
++++ new	2016-03-19 13:44:59.439831444 +0100
+@@ -13,7 +13,7 @@
+ 
+     ./configure --prefix=/usr \
+                 --with-vim-name=vim \
+-                --without-x \
++                --with-x \
+                 --disable-gui \
+                 --enable-multibyte \
+                 --enable-cscope \
+@@ -38,7 +38,7 @@
+     ./configure --prefix=/ \
+                 --datarootdir=/usr/share \
+                 --with-vim-name=vi \
+-                --without-x \
++                --with-x \
+                 --disable-gui \
+                 --enable-multibyte \
+                 --disable-gpm \

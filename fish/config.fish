@@ -1,0 +1,1 @@
+/home/onodera/dotfiles/fish/config

@@ -1,0 +1,5 @@
+# Collection core, https://crux.nu/gitweb/?p=ports/core.git
+
+NAME=core
+URL=git://crux.nu/ports/core
+BRANCH=3.2

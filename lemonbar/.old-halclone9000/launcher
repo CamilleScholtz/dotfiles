@@ -1,0 +1,35 @@
+#!/bin/fish
+
+# Start window lemonbar
+begin
+	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1,-freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1,-freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+	set -l -x fg FFFFFF
+	set -l -x bg F2A18C
+	fish $HOME/.lemonbar/window | lemonbar -g 220x32+0+0 -b -f $font -B \#$bg -F \#$fg &
+end
+
+# Start desktop lemonbar
+begin
+	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
+	set -l -x fg FFFFFF
+	set -l -x bg1 5394C9
+	set -l -x bg2 72A7d3
+	fish $HOME/.lemonbar/desktop | lemonbar -g 210x32+220+0 -b -p -f $font -B \#$bg1 -F \#$fg | dash &
+end
+
+# Start clock lemonbar
+begin
+	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
+	set -l -x fg CCCCCC
+	set -l -x bg 445967
+	fish $HOME/.lemonbar/clock | lemonbar -g 1060x32+430+0 -b -f $font -B \#$bg -F \#$fg &
+end
+
+# Start music lemonbar
+begin
+	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1,-freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1,-freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+	set -l -x fg CCCCCC
+	set -l -x bg1 445967
+	set -l -x bg2 3C4F5B
+	fish $HOME/.lemonbar/music | lemonbar -g 570x32+1350+0 -b -f $font -B \#$bg1 -F \#$fg | dash &
+end

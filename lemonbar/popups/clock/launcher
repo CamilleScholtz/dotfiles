@@ -1,0 +1,22 @@
+#!/bin/fish
+
+## EXECUTE
+
+# Exit if open
+if test (pgrep -f 'n30f -d -b -x 870' | head -n 1)
+	pkill -n -f 'n30f -d -b -x 870'
+	pkill -f 'n30f -d -b -x 85'
+	pkill -f 'lemonbar -g 168x20'
+	exit
+end
+
+set -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
+set -x fg 021B21
+set -x bg EEEEEE
+
+n30f -d -b -x 870 -y 45 $HOME/.lemonbar/popups/clock/bg.png &
+
+raingraph /tmp/raingraph.png
+n30f -d -b -x 857 -y 66 /tmp/raingraph.png &
+fish $HOME/.lemonbar/popups/clock/celsius | lemonbar -g 168x20+872+65 -b -p -d -f $font -B \#00$bg -F \#$fg &
+fish $HOME/.lemonbar/popups/clock/moon | lemonbar -g 168x20+872+155 -b -p -d -f $font -B \#00$bg -F \#$fg &

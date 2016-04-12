@@ -1,0 +1,67 @@
+!! MISC
+
+! Clickable links
+*perl-ext-common:    default,matcher
+*url-launcher:       seamonkey
+*matcher.button:     1
+
+
+!! RICE
+
+! Make minimal
+*scrollBar:          false
+*internalBorder:     23
+*geometry:           75x14
+
+! Set font
+*font:               -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1,-freetype-baekmukbig-medium-r-normal--12-120-75-75-p-55-iso10646-1
+*boldFont:           
+*italicFont:         
+*boldItalicFont:     
+*lineSpace:          8
+
+! Change cursor
+*cursorUnderline:    true
+
+
+!! COLORS
+
+! special
+*foreground:         #E8DFD6
+*background:         #212F31
+*cursorColor:        #F3D5C9
+*highlightColor:     #2A4141
+*highlightTextColor: #F2F1B9
+
+! Black
+*color0:             #2A4141
+*color8:             #435858
+
+! Red
+*color1:             #F99595
+*color9:             #F3D5C9
+
+! Green
+*color2:             #7CBF9E
+*color10:            #A2D9B1
+
+! Yellow
+*color3:             #E5C078
+*color11:            #F9D48C
+
+! Blue
+*color4:             #7BBAC7
+*color12:            #DFF0EB
+
+! Magenta
+! TODO: MAke less bright
+*color5:             #FF5879
+*color13:            #FF99A1
+
+! Cyan
+*color6:             #62BDB3
+*color14:            #9ED9D8
+
+! White
+*color7:             #F2F1B9
+*color15:            #F6F6C9

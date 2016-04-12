@@ -1,0 +1,13 @@
+--- Pkgfile	2016-03-19 19:25:05.634001046 +0100
++++ new	2016-03-19 19:25:19.260668272 +0100
+@@ -12,6 +12,10 @@
+ build () {
+     cd $name-$version/$name
+ 
++    cd ../src 
++    patch -p1 < /home/onodera/.prtpatch/opt/wpa_supplicant/patch-src_crypto_tls_openssl_c
++    cd ../$name
++
+     cp defconfig .config
+     echo "CONFIG_READLINE=y
+           CONFIG_LIBNL32=y

@@ -1,0 +1,12 @@
+--- Pkgfile	2016-03-20 03:29:46.691859490 +0100
++++ new	2016-03-20 03:33:08.641867765 +0100
+@@ -13,6 +13,9 @@
+ build() {
+ 	cd $name-$version
+ 
++	patch -p1 < /home/onodera/.prtpatch/opt/alsa-plugins/0001-Do-not-use-deprecated-FFmpeg-API
++	patch -p1 < /home/onodera/.prtpatch/opt/alsa-plugins/0002-replace-avcodec_alloc_free_frame
++
+ 	./configure --prefix=/usr
+ 
+ 	make

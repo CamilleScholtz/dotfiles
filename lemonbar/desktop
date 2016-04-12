@@ -1,0 +1,14 @@
+#!/bin/fish
+
+## EXECUTE
+
+xdesktop -s | while read desktop
+	switch $desktop
+		case 1
+			echo "%{A4:xdesktop -p:}%{A5:xdesktop -n:}%{B#$bg2}  ¼   www    %{A:xdesktop -g 2:}%{B#$bg1}  ½   irc    %{A}%{A:xdesktop -g 3:}%{B#$bg1}  ¾   src    %{A}%{A}%{A}"
+		case 2
+			echo "%{A4:xdesktop -p:}%{A5:xdesktop -n:}%{A:xdesktop -g 1:}%{B#$bg1}  ¼   www    %{A}%{B#$bg2}  ½   irc    %{A:xdesktop -g 3:}%{B#$bg1}  ¾   src    %{A}%{A}%{A}"
+		case 3
+			echo "%{A4:xdesktop -p:}%{A5:xdesktop -n:}%{A:xdesktop -g 1:}%{B#$bg1}  ¼   www    %{A}%{A:xdesktop -g 2:}%{B#$bg1}  ½   irc    %{A}%{B#$bg2}  ¾   src    %{A}%{A}"
+	end
+end
