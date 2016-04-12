@@ -3,8 +3,10 @@
 #
 # <file>       <dir> <fs> <options>        <dump/pass>
 
-/dev/mmcblk0p1 /boot vfat defaults,noatime 0 2
-/dev/mmcblk0p2 /     ext4 defaults,noatime 0 1
-/dev/sda       /srv  ext4 defaults,noatime 0 2
+/dev/mmcblk0p1 /boot vfat defaults         0 0
+/dev/mmcblk0p2 /     ext4 defaults,noatime 0 0
+
+UUID=f24293b1-0eb6-4c58-b01f-7ea65bec308f /srv          ext4 defaults,noatime 0 0
+UUID=26dac958-a6f4-467a-81b4-4ed877a5cf73 /srv/personal ext4 defaults,noatime 0 0
 
 # End of file

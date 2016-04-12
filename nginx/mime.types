@@ -1,6 +1,5 @@
-
 types {
-    text/html                             html;
+    text/html                             html htm shtml;
     text/css                              css;
     text/xml                              xml;
     image/gif                             gif;
@@ -10,6 +9,7 @@ types {
     application/rss+xml                   rss;
 
     text/mathml                           mml;
+    text/plain                            txt;
     text/vnd.sun.j2me.app-descriptor      jad;
     text/vnd.wap.wml                      wml;
     text/x-component                      htc;
@@ -43,12 +43,14 @@ types {
     application/x-java-archive-diff       jardiff;
     application/x-java-jnlp-file          jnlp;
     application/x-makeself                run;
+    application/x-perl                    pl pm;
     application/x-pilot                   prc pdb;
     application/x-rar-compressed          rar;
     application/x-redhat-package-manager  rpm;
     application/x-sea                     sea;
     application/x-shockwave-flash         swf;
     application/x-stuffit                 sit;
+    application/x-tcl                     tcl tk;
     application/x-x509-ca-cert            der pem crt;
     application/x-xpinstall               xpi;
     application/xhtml+xml                 xhtml;
@@ -72,6 +74,7 @@ types {
     audio/x-realaudio                     ra;
 
     video/3gpp                            3gpp 3gp;
+    video/mp2t                            ts;
     video/mp4                             mp4;
     video/mpeg                            mpeg mpg;
     video/quicktime                       mov;
