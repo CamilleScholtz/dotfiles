@@ -1,2 +1,0 @@
-defaults.pcm.rate_converter "speexrate_medium"
-defaults.pcm.dmix.rate 41000

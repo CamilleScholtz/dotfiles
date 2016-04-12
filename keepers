@@ -26,12 +26,12 @@ n30f
 ncmpcpp-0.6.8
 neet
 nvidia-sl
+openbox
 p5-text-aspell
 poppler-glib
 pqiv
 prt-utils-extra
 rxvt-unicode
-seamonkey
 setroot
 slop
 sutils
@@ -50,8 +50,3 @@ xorg-xrdb
 xorg-xset
 xtitle
 youtube-dl
-echinus
-xorg-xprop
-openbox
-pcf2bdf
-slock

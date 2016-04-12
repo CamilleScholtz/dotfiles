@@ -5,8 +5,8 @@
 FONT=default
 KEYMAP=us
 TIMEZONE=Europe/Amsterdam
-HOSTNAME=punpun
+HOSTNAME=lappun
 SYSLOG=sysklogd
-SERVICES=(lo net crond sshd alsa mpd mpdscribble)
+SERVICES=(lo wlan bubmlebeed crond sshd alsa mpd mpdscribble)
 
 # End of file

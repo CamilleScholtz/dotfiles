@@ -51,7 +51,6 @@ sudo cp -r $d/vim              /root/.vim
 sudo cp -r $d/vim/config       /root/.vimrc
 
 # Copy etc files
-sudo cp -r $d/alsa/config      /etc/asound.conf
 sudo cp -r $d/fstab            /etc/fstab
 sudo cp -r $d/pkgmk/config     /etc/pkgmk.conf
 sudo cp -r $d/ports            /etc/ports
@@ -60,4 +59,5 @@ sudo cp -r $d/prt-get/config   /etc/prt-get.conf
 sudo cp -r $d/rc/config        /etc/rc.conf
 sudo cp -r $d/rc/scripts/*     /etc/rc.d
 sudo cp -r $d/sshd/config      /etc/ssh/sshd_config
+sudo cp -r $d/wpa/config       /etc/wpa_supplicant.conf
 sudo cp -r $d/x11/config       /etc/X11/xorg.conf

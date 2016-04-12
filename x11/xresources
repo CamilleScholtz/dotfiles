@@ -14,7 +14,7 @@
 *geometry:           75x14
 
 ! Set font
-*font:               -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1,-freetype-baekmukbig-medium-r-normal--12-120-75-75-p-55-iso10646-1
+*font:               -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1
 *boldFont:           
 *italicFont:         
 *boldItalicFont:     

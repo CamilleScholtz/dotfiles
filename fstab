@@ -8,6 +8,6 @@
 /dev/sda3 /home ext4 defaults,noatime 0 2
 
 devpts /dev/pts        devpts noexec,nosuid,gid=tty,mode=0620 0 0
-tmpfs  /usr/pkgmk/work tmpfs  defaults,rw,relatime,size=14G   0 0
+tmpfs  /usr/pkgmk/work tmpfs  defaults,rw,relatime,size=6G   0 0
 
 # End of file

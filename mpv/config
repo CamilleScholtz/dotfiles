@@ -1,10 +1,11 @@
 # Video
-vo=opengl-hq:pbo:scale=ewa_lanczossharp:cscale=ewa_lanczossoft:tscale=oversample:interpolation:dither-depth=8:temporal-dither:blend-subtitles
+vo=opengl-hq:interpolation:scale=ewa_lanczossharp:cscale=ewa_lanczossoft:tscale=oversample:dither-depth=8:temporal-dither:target-prim=bt.709:target-trc=bt.1886:blend-subtitles
 video-sync=display-resample
 hwdec=no
+framedrop=vo
 
 # Audio
-ao=alsa:resample=yes
+ao=alsa
 audio-channels=2
 alang=Korean,kor,ko,Japanese,jpn,jp,English,eng,en
 
@@ -48,7 +49,6 @@ cache=auto
 cache-default=8000000
 cache-initial=1000
 cache-seek-min=2000
-cache-secs=1000
 
 # Window behaviour
 keep-open=always
@@ -59,19 +59,13 @@ title=mpv [${filename}]
 # Misc
 save-position-on-quit
 loop=no
-audio-display=no
 really-quiet
 
 # Streams
 ytdl-format=best
-#ytdl-format=0/(bestvideo[vcodec=vp9]/bestvideo[height>720]/bestvideo[fps>30])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio)/best
 [protocol.http]
 force-window=immediate
 audio-pitch-correction=no
 [protocol.https]
 force-window=immediate
 audio-pitch-correction=no
-
-# Audio-only content
-[audio]
-ytdl-format=bestaudio/best

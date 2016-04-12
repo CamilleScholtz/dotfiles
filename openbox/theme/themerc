@@ -5,7 +5,7 @@ window.handle.width: 0
 border.width: 0
 
 # Set border width
-window.client.padding.width: 0
+window.client.padding.width: 10
 
 # Set border color
 window.*.client.color: #253337

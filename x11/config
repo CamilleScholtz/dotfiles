@@ -34,15 +34,14 @@ Section "Monitor"
     Identifier     "Monitor0"
     VendorName     "Unknown"
     ModelName      "Unknown"
-    HorizSync       28.0 - 33.0
-    VertRefresh     43.0 - 72.0
     Option         "DPMS"
 EndSection
 
 Section "Device"
-    Identifier     "Device0"
-    Driver         "nvidia"
-    VendorName     "NVIDIA Corporation"
+    Identifier     "Intel Graphics"
+    Driver         "intel"
+    Option         "AccelMethod" "sna"
+    Option         "TearFree" "true"
 EndSection
 
 Section "Screen"
@@ -50,7 +49,6 @@ Section "Screen"
     Device         "Device0"
     Monitor        "Monitor0"
     DefaultDepth    24
-    Option "metamodes" "nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
     SubSection     "Display"
         Depth       24
     EndSubSection

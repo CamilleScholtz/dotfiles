@@ -92,9 +92,6 @@ function add_file(s)
         append_property(s, sec, "demuxer-cache-duration",
                         {prefix="+", suffix=" sec", nl="", indent=o.prefix_sep,
                          prefix_sep="", no_prefix_markup=true})
-        append_property(s, sec, "cache-speed",
-                        {prefix="", suffix="", nl="", indent=o.prefix_sep,
-                         prefix_sep="", no_prefix_markup=true})
     end
 end
 
@@ -274,5 +271,7 @@ end
 function b(t)
     return o.b1 .. t .. o.b0
 end
+
+
 
 mp.add_key_binding("i", mp.get_script_name(), main, {repeatable=true})

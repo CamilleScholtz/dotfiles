@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<openbox_config
-	xmlns="http://openbox.org/3.4/rc"
-	xmlns:xi="http://www.w3.org/2001/XInclude"
->
+<openbox_config xmlns="http://openbox.org/3.4/rc"
+		xmlns:xi="http://www.w3.org/2001/XInclude">
 
 <resistance>
 	<strength>0</strength>
-	<screen_edge_strength>32</screen_edge_strength>
+	<screen_edge_strength>0</screen_edge_strength>
 </resistance>
 
 <focus>
@@ -26,7 +24,7 @@
 
 <theme>
 	<name>minato</name>
-	<titleLayout>CSLM</titleLayout>
+	<titleLayout>CILM</titleLayout>
 	<keepBorder>yes</keepBorder>
 	<animateIconify>yes</animateIconify>
 
@@ -69,14 +67,9 @@
 </theme>
 
 <desktops>
-	<firstdesk>1</firstdesk>
 	<number>3</number>
+	<firstdesk>1</firstdesk>
 	<popupTime>0</popupTime>
-	<names>
-		<name>www</name>
-		<name>irc</name>
-		<name>src</name>
-	</names>
 </desktops>
 
 <resize>
@@ -175,6 +168,7 @@
 		<mousebind button="Left" action="Press">
 			<action name="Focus"/>
 			<action name="Raise"/>
+			<action name="Unshade"/>
 		</mousebind>
 		<mousebind button="Middle" action="Press">
 			<action name="Lower"/>
@@ -182,6 +176,8 @@
 			<action name="Unfocus"/>
 		</mousebind>
 		<mousebind button="Right" action="Press">
+			<action name="Focus"/>
+			<action name="Raise"/>
 			<action name="ShowMenu"><menu>client-menu</menu></action>
 		</mousebind>
 	</context>
@@ -201,22 +197,16 @@
 		</mousebind>
 	</context>
 
-	<context name="Close">
-		<mousebind button="Left" action="Click">
-			<action name="Close"/>
-		</mousebind>
-	</context>
-
-	<context name="Shade">
-		<mousebind button="Left" action="Click">
-			<action name="ToggleShade"/>
-		</mousebind>
+	<context name="Iconify">
 	</context>
 
 	<context name="Maximize">
-		<mousebind button="Left" action="Click">
-			<action name="ToggleMaximize"/>
-		</mousebind>
+	</context>
+
+	<context name="Close">
+	</context>
+
+	<context name="Desktop">
 	</context>
 
 	<context name="Root">
