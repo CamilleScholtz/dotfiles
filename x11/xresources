@@ -2,7 +2,7 @@
 
 ! Clickable links
 *perl-ext-common:    default,matcher
-*url-launcher:       seamonkey
+*url-launcher:       firefox
 *matcher.button:     1
 
 
