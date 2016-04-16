@@ -23,9 +23,9 @@ case ${PKGMK_ARCH} in
 		;;
 esac
 
-PKGMK_SOURCE_DIR="/usr/pkgmk/sources"
-PKGMK_PACKAGE_DIR="/usr/pkgmk/packages"
-PKGMK_WORK_DIR="/usr/pkgmk/work/$name"
+PKGMK_SOURCE_DIR="/src/pkgmk/sources"
+PKGMK_PACKAGE_DIR="/src/pkgmk/packages"
+PKGMK_WORK_DIR="/src/pkgmk/work/$name"
 PKGMK_DOWNLOAD="yes"
 PKGMK_IGNORE_FOOTPRINT="no"
 PKGMK_IGNORE_NEW="yes"
