@@ -2,29 +2,29 @@
 
 # Hide bloat
 window.handle.width: 0
-border.width: 0
 
 # Set border width
 window.client.padding.width: 0
+border.width: 10
 
 # Set border color
-window.*.client.color: #253337
-
+window.*.client.color: #EEEEEE
+window.*.border.*.color: #EEEEEE
 
 ## TITLE
 
 # Add some padding
-padding.width: 18
-padding.height: 9
+padding.width: 16
+padding.height: 0
 
 # Set title colors
 window.*.title.bg: Solid Flat
 window.*.*.bg: Parentrelative
-window.*.title.bg.color: #E5AB96
-window.*.label.text.color: #E5AB96
+window.*.title.bg.color: #FFFFFF
+window.*.label.text.color: #FFFFFF
 
 # Set buttons color
-window.*.button.*.image.color: #BC846F
+window.*.button.*.image.color: #223445
 
 
 ## MENU

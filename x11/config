@@ -50,9 +50,8 @@ Section "Screen"
     Device         "Device0"
     Monitor        "Monitor0"
     DefaultDepth    24
-    Option "metamodes" "nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
+    Option         "metamodes" "nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
     SubSection     "Display"
         Depth       24
     EndSubSection
 EndSection
-

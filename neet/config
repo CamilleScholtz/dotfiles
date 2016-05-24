@@ -5,7 +5,7 @@ set mediadir $HOME/media/videos
 set playercommand mpv --fullscreen
 
 # Set the highlight color
-set highlight yellow
+set highlight yellow --bold
 
 # Run the following commands before starting mpv
 # (to pause mpd for example)
@@ -14,16 +14,16 @@ function userfunction
 	mpc -q pause
 
 	# Close clock popup
-	if test (pgrep -f 'n30f -d -b -x 870' | head -n 1)
-		pkill -n -f 'n30f -d -b -x 870'
-		pkill -f 'n30f -d -b -x 85'
+	if test (pgrep -f 'n30f -d -x 870' | head -n 1)
+		pkill -n -f 'n30f -d -x 870'
+		pkill -f 'n30f -d -x 85'
 		pkill -f 'lemonbar -g 168x20'
 	end
 
 	# Close album popup
-	if test (pgrep -f 'n30f -d -b -x 1725' | head -n 1)
-		pkill -f "n30f -d -b -x 1735"
-		pkill -f "n30f -d -b -x 1725"
+	if test (pgrep -f 'n30f -d -x 1725' | head -n 1)
+		pkill -f "n30f -d -x 1735"
+		pkill -f "n30f -d -x 1725"
 		pkill -f -n "mpc idleloop player"
 	end
 end

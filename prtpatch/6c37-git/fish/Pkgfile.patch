@@ -1,0 +1,11 @@
+--- Pkgfile	2016-05-24 00:23:16.455459419 +0200
++++ new	2016-05-24 00:27:17.678802638 +0200
+@@ -20,6 +20,8 @@
+ 		cd $name
+ 	fi
+ 
++	patch -p1 < /home/onodera/.prtpatch/6c37-git/fish/tabs.diff
++
+ 	# Fix --help (thanks ryu0 for the patch)
+ 	# pkgmk compresses all man pages, and unpatched fish can't read that
+ 	patch -p1 < $SRC/fix-help.patch

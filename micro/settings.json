@@ -1,0 +1,18 @@
+{
+    "autoindent": true,
+    "colorscheme": "minato",
+    "fishfmt": true,
+    "gofmt": true,
+    "goimports": false,
+    "ignorecase": true,
+    "indentchar": "┆",
+    "linter": true,
+    "ruler": true,
+    "scrollmargin": 2,
+    "scrollspeed": 5,
+    "statusline": false,
+    "syntax": true,
+    "tabsize": 4,
+    "tabstospaces": false,
+    "undothreshold": 1000
+}

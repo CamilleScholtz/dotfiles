@@ -7,7 +7,7 @@
 
 <resistance>
 	<strength>0</strength>
-	<screen_edge_strength>32</screen_edge_strength>
+	<screen_edge_strength>29</screen_edge_strength>
 </resistance>
 
 <focus>
@@ -23,6 +23,12 @@
 	<policy>UnderMouse</policy>
 	<center>yes</center>
 </placement>
+
+<applications>
+	<application class="*">
+		<decor>no</decor>
+	</application>
+</applications>
 
 <theme>
 	<name>minato</name>
@@ -85,8 +91,8 @@
 </resize>
 
 <margins>
-	<top>0</top>
-	<bottom>32</bottom>
+	<top>29</top>
+	<bottom>0</bottom>
 	<left>0</left>
 	<right>0</right>
 </margins>
@@ -99,9 +105,6 @@
 		<action name="SendToDesktop"><to>right</to><wrap>yes</wrap></action>
 	</keybind>
 
-	<keybind key="W-q">
-		<action name="Close"/>
-	</keybind>
 	<keybind key="W-1">
 		<action name="SendToDesktop"><to>1</to></action>
 	</keybind>
@@ -112,8 +115,64 @@
 		<action name="SendToDesktop"><to>3</to></action>
 	</keybind>
 
-	<keybind key="W-Return">
-		<action name="Execute"><command>urxvtc</command></action>
+	<keybind key="W-q">
+		<action name="Close"/>
+	</keybind>
+
+	<keybind key="W-e">
+		<action name="ToggleMaximize"/>
+	</keybind>
+	<keybind key="W-t">
+		<action name="ToggleAlwaysOnTop"/>
+	</keybind>
+	<keybind key="W-S-t">
+		<action name="ToggleOmnipresent"/>
+	</keybind>
+
+	<keybind key="W-Tab">
+		<action name="NextWindow"><dialog>none</dialog><bar>no</bar><raise>yes</raise></action>
+	</keybind>
+	<keybind key="W-S-Tab">
+		<action name="PreviousWindow"><dialog>none</dialog><bar>no</bar><raise>yes</raise></action>
+	</keybind>
+
+	<keybind key="W-w">
+		<action name="DirectionalTargetWindow"><direction>north</direction></action>
+	</keybind>
+	<keybind key="W-a">
+		<action name="DirectionalTargetWindow"><direction>west</direction></action>
+	</keybind>
+	<keybind key="W-s">
+		<action name="DirectionalTargetWindow"><direction>south</direction></action>
+	</keybind>
+	<keybind key="W-d">
+		<action name="DirectionalTargetWindow"><direction>east</direction></action>
+	</keybind>d
+
+	<keybind key="W-S-w">
+		<action name="MoveRelative"><y>-20</y></action>
+	</keybind>
+	<keybind key="W-S-a">
+		<action name="MoveRelative"><x>-20</x></action>
+	</keybind>
+	<keybind key="W-S-s">
+		<action name="MoveRelative"><y>20</y></action>
+	</keybind>
+	<keybind key="W-S-d">
+		<action name="MoveRelative"><x>20</x></action>
+	</keybind>d
+
+	<keybind key="W-p">
+		<action name="Execute"><command>scrot</command></action>
+	</keybind>
+	<keybind key="W-S-p">
+		<action name="Execute"><command>punf -d</command></action>
+	</keybind>
+	<keybind key="W-o">
+		<action name="Execute"><command>scrot -s</command></action>
+	</keybind>
+	<keybind key="W-S-o">
+		<action name="Execute"><command>punf -s</command></action>
 	</keybind>
 
 	<keybind key="C-space">
@@ -133,6 +192,10 @@
 	</keybind>
 	<keybind key="C-r">
 		<action name="Execute"><command>mpdrandom</command></action>
+	</keybind>
+
+	<keybind key="W-Return">
+		<action name="Execute"><command>urxvtc</command></action>
 	</keybind>
 </keyboard>
 
@@ -154,11 +217,16 @@
 			<action name="FocusToBottom"/>
 			<action name="Unfocus"/>
 		</mousebind>
-		<mousebind button="W-Up" action="Click">
+
+		<mousebind button="W-Up" action="Press">
 			<action name="GoToDesktop"><to>previous</to></action>
 		</mousebind>
-		<mousebind button="W-Down" action="Click">
+		<mousebind button="W-Down" action="Press">
 			<action name="GoToDesktop"><to>next</to></action>
+		</mousebind>
+
+		<mousebind button="W-Right" action="Click">
+			<action name="ShowMenu"><menu>root-menu</menu></action>
 		</mousebind>
 	</context>
 
@@ -171,16 +239,17 @@
 		</mousebind>
 	</context>
 
-	<context name="Titlebar Top Right Bottom Left TLCorner TRCorner BRCorner BLCorner">
+	<context name="Titlebar">
 		<mousebind button="Left" action="Press">
 			<action name="Focus"/>
-			<action name="Raise"/>
+			<action name="Raise"/> Top Right Bottom Left TLCorner TRCorner BRCorner BLCorner"
 		</mousebind>
 		<mousebind button="Middle" action="Press">
 			<action name="Lower"/>
 			<action name="FocusToBottom"/>
 			<action name="Unfocus"/>
 		</mousebind>
+
 		<mousebind button="Right" action="Press">
 			<action name="ShowMenu"><menu>client-menu</menu></action>
 		</mousebind>
@@ -202,38 +271,42 @@
 	</context>
 
 	<context name="Close">
-		<mousebind button="Left" action="Click">
+		<mousebind button="Left" action="Press">
 			<action name="Close"/>
 		</mousebind>
 	</context>
 
 	<context name="Shade">
-		<mousebind button="Left" action="Click">
+		<mousebind button="Left" action="Press">
 			<action name="ToggleShade"/>
 		</mousebind>
 	</context>
 
 	<context name="Maximize">
-		<mousebind button="Left" action="Click">
+		<mousebind button="Left" action="Press">
 			<action name="ToggleMaximize"/>
 		</mousebind>
 	</context>
 
 	<context name="Root">
+		<mousebind button="Up" action="Press">
+			<action name="GoToDesktop"><to>previous</to></action>
+		</mousebind>
+		<mousebind button="Down" action="Press">
+			<action name="GoToDesktop"><to>next</to></action>
+		</mousebind>
+		<mousebind button="W-Up" action="Press">
+			<action name="GoToDesktop"><to>previous</to></action>
+		</mousebind>
+		<mousebind button="W-Down" action="Press">
+			<action name="GoToDesktop"><to>next</to></action>
+		</mousebind>
+
 		<mousebind button="Right" action="Press">
 			<action name="ShowMenu"><menu>root-menu</menu></action>
 		</mousebind>
-		<mousebind button="Up" action="Click">
-			<action name="GoToDesktop"><to>previous</to></action>
-		</mousebind>
-		<mousebind button="Down" action="Click">
-			<action name="GoToDesktop"><to>next</to></action>
-		</mousebind>
-		<mousebind button="W-Up" action="Click">
-			<action name="GoToDesktop"><to>previous</to></action>
-		</mousebind>
-		<mousebind button="W-Down" action="Click">
-			<action name="GoToDesktop"><to>next</to></action>
+		<mousebind button="W-Right" action="Click">
+			<action name="ShowMenu"><menu>root-menu</menu></action>
 		</mousebind>
 	</context>
 </mouse>
@@ -247,102 +320,5 @@
 	<showIcons>no</showIcons>
 	<manageDesktops>no</manageDesktops>
 </menu>
-
-<applications>
-<!--
-	# this is an example with comments through out. use these to make your
-	# own rules, but without the comments of course.
-	# you may use one or more of the name/class/role/title/type rules to specify
-	# windows to match
-
-	<application name="the window's _OB_APP_NAME property (see obxprop)"
-							class="the window's _OB_APP_CLASS property (see obxprop)"
-					groupname="the window's _OB_APP_GROUP_NAME property (see obxprop)"
-				 groupclass="the window's _OB_APP_GROUP_CLASS property (see obxprop)"
-							 role="the window's _OB_APP_ROLE property (see obxprop)"
-							title="the window's _OB_APP_TITLE property (see obxprop)"
-							 type="the window's _OB_APP_TYPE property (see obxprob)..
-											(if unspecified, then it is 'dialog' for child windows)">
-	# you may set only one of name/class/role/title/type, or you may use more
-	# than one together to restrict your matches.
-
-	# the name, class, role, and title use simple wildcard matching such as those
-	# used by a shell. you can use * to match any characters and ? to match
-	# any single character.
-
-	# the type is one of: normal, dialog, splash, utility, menu, toolbar, dock,
-	#		or desktop
-
-	# when multiple rules match a window, they will all be applied, in the
-	# order that they appear in this list
-
-
-		# each rule element can be left out or set to 'default' to specify to not 
-		# change that attribute of the window
-
-		<decor>yes</decor>
-		# enable or disable window decorations
-
-		<shade>no</shade>
-		# make the window shaded when it appears, or not
-
-		<position force="no">
-			# the position is only used if both an x and y coordinate are provided
-			# (and not set to 'default')
-			# when force is "yes", then the window will be placed here even if it
-			# says you want it placed elsewhere.	this is to override buggy
-			# applications who refuse to behave
-			<x>center</x>
-			# a number like 50, or 'center' to center on screen. use a negative number
-			# to start from the right (or bottom for <y>), ie -50 is 50 pixels from
-			# the right edge (or bottom). use 'default' to specify using value
-			# provided by the application, or chosen by openbox, instead.
-			<y>200</y>
-			<monitor>1</monitor>
-			# specifies the monitor in a xinerama setup.
-			# 1 is the first head, or 'mouse' for wherever the mouse is
-		</position>
-
-		<size>
-			# the size to make the window.
-			<width>20</width>
-			# a number like 20, or 'default' to use the size given by the application.
-			# you can use fractions such as 1/2 or percentages such as 75% in which
-			# case the value is relative to the size of the monitor that the window
-			# appears on.
-			<height>30%</height>
-		</size>
-
-		<focus>yes</focus>
-		# if the window should try be given focus when it appears. if this is set
-		# to yes it doesn't guarantee the window will be given focus. some
-		# restrictions may apply, but Openbox will try to
-
-		<desktop>1</desktop>
-		# 1 is the first desktop, 'all' for all desktops
-
-		<layer>normal</layer>
-		# 'above', 'normal', or 'below'
-
-		<iconic>no</iconic>
-		# make the window iconified when it appears, or not
-
-		<skip_pager>no</skip_pager>
-		# asks to not be shown in pagers
-
-		<skip_taskbar>no</skip_taskbar>
-		# asks to not be shown in taskbars. window cycling actions will also
-		# skip past such windows
-
-		<fullscreen>yes</fullscreen>
-		# make the window in fullscreen mode when it appears
-
-		<maximized>true</maximized>
-		# 'Horizontal', 'Vertical' or boolean (yes/no)
-	</application>
-
-	# end of the example
--->
-</applications>
 
 </openbox_config>

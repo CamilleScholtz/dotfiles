@@ -1,20 +1,20 @@
 # Seeking
 MOUSE_BTN3     ignore
-MOUSE_BTN3     no-osd seek 3
+MOUSE_BTN3     no-osd seek 1
 MOUSE_BTN4     ignore
-MOUSE_BTN4     no-osd seek -3
+MOUSE_BTN4     no-osd seek -1
 AXIS_UP        ignore
-AXIS_UP        no-osd seek 3
+AXIS_UP        no-osd seek 1
 AXIS_DOWN      ignore
-AXIS_DOWN      no-osd seek -3
+AXIS_DOWN      no-osd seek -1
 AXIS_LEFT      ignore
-AXIS_LEFT      no-osd seek 3
+AXIS_LEFT      no-osd seek 1
 AXIS_RIGHT     ignore
-AXIS_RIGHT     no-osd seek -3
+AXIS_RIGHT     no-osd seek -1
 RIGHT          ignore
-RIGHT          no-osd seek 3
+RIGHT          no-osd seek 1
 LEFT           ignore
-LEFT           no-osd seek -3
+LEFT           no-osd seek -1
 UP             ignore
 UP             no-osd seek 60
 DOWN           ignore

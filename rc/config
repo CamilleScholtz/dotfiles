@@ -7,6 +7,6 @@ KEYMAP=us
 TIMEZONE=Europe/Amsterdam
 HOSTNAME=punpun
 SYSLOG=sysklogd
-SERVICES=(lo net crond sshd alsa mpd mpdscribble)
+SERVICES=(lo net crond alsa mpd mpdscribble)
 
 # End of file

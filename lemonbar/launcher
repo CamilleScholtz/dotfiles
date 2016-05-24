@@ -4,9 +4,9 @@
 begin
 	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1 -freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1 -freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
 	set -l -x fg FFFFFF
-	set -l -x bg DBA18C
+	set -l -x bg 37BF8D
 
-	fish $HOME/.lemonbar/window | lemonbar -g 220x32+0+0 -b -f $font[1] -f $font[2] -f $font[3] -B \#$bg -F \#$fg &
+	fish $HOME/.lemonbar/window | lemonbar -g 220x29+0+0 -f $font[1] -f $font[2] -f $font[3] -B \#$bg -F \#$fg &
 end
 
 # Start desktop lemonbar
@@ -14,9 +14,9 @@ begin
 	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
 	set -l -x fg FFFFFF
 	set -l -x bg1 5394C9
-	set -l -x bg2 72A7d3
+	set -l -x bg2 72A7D3
 
-	fish $HOME/.lemonbar/desktop | lemonbar -g 210x32+220+0 -b -f $font -B \#$bg1 -F \#$fg | dash &
+	fish $HOME/.lemonbar/desktop | lemonbar -g 210x29+220+0 -f $font -B \#$bg1 -F \#$fg | dash &
 end
 
 # Start clock lemonbar
@@ -25,7 +25,7 @@ begin
 	set -l -x fg CCCCCC
 	set -l -x bg 445967
 
-	fish $HOME/.lemonbar/clock | lemonbar -g 1060x32+430+0 -b -f $font -B \#$bg -F \#$fg | dash &
+	fish $HOME/.lemonbar/clock | lemonbar -g 1060x29+430+0 -f $font -B \#$bg -F \#$fg | dash &
 end
 
 # Start music lemonbar
@@ -35,5 +35,5 @@ begin
 	set -l -x bg1 445967
 	set -l -x bg2 3C4F5B
 
-	fish $HOME/.lemonbar/music | lemonbar -g 570x32+1350+0 -b -f $font[1] -f $font[2] -f $font[3] -B \#$bg1 -F \#$fg | dash &
+	fish $HOME/.lemonbar/music | lemonbar -g 570x29+1350+0 -f $font[1] -f $font[2] -f $font[3] -B \#$bg1 -F \#$fg | dash &
 end

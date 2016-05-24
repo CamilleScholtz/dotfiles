@@ -3,8 +3,8 @@
 ###
 
 # note: the order matters: the package found first is used
-prtdir /usr/ports/core
 prtdir /usr/ports/punpun
+prtdir /usr/ports/core
 prtdir /usr/ports/6c37-git
 prtdir /usr/ports/6c37
 prtdir /usr/ports/opt

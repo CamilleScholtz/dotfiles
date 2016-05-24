@@ -14,7 +14,7 @@ xrdb $HOME/.Xresources
 urxvtd -q -o -f
 
 # Add shadows
-compton -b --backend xrender --unredir-if-possible -cC -l -18 -t -18 -o 0.07
+compton -b --backend xrender -cC -l -18 -t -18 -o 0.1
 
 # Start lemonbars
 fish $HOME/.lemonbar/launcher &

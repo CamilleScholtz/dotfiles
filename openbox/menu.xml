@@ -3,8 +3,8 @@
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 
 <menu id="launch-menu" label="Launch">
-	<item label="Firefox">
-		<action name="Execute"><command>firefox</command></action>
+	<item label="SeaMonkey">
+		<action name="Execute"><command>seamonkey</command></action>
 	</item>
 	<separator />
 	<item label="GIMP">

@@ -13,12 +13,16 @@ order z3bra
 order contrib
 
 # Aliases
-alias freetype=freetype-infinality-ultimate
-alias fontconfig=fontconfig-infinality-ultimate
-alias cairo=cairo-infinality-ultimate
-alias openssl=libressl
+alias freetype=freetype-iu
+alias fontconfig=fontconfig-iu
+alias cairo=cairo-iu
+alias gtk=gtk-ahoka
+alias glib=glib-ahoka
 
 # prtpatch dir
 prtpatch /home/onodera/.prtpatch
+
+# pkgmk command
+makecommand pkgmk
 
 # End of file

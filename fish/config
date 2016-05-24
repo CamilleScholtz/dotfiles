@@ -9,8 +9,8 @@ set -g -x LANG en_US.utf8
 set -g -x PATH $HOME/bin /usr/bin /bin /usr/sbin /sbin
 
 # Set default programs
-set -g -x BROWSER firefox
-set -g -x EDITOR vim
+set -g -x BROWSER seamonkey
+set -g -x EDITOR micro
 set -g -x TERMINAL urxvtc
 
 # source bindings

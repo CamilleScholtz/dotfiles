@@ -59,48 +59,63 @@ local log = {
     return msg.info(table.concat(result, "\n"))
   end
 }
+local FG_PLACEHOLDER = '__FG__'
+local BG_PLACEHOLDER = '__BG__'
 local settings = {
   ['hover-zone-height'] = 40,
   ['top-hover-zone-height'] = 40,
+  ['foreground'] = 'FFFFFF',
+  ['background'] = '262626',
   ['enable-bar'] = true,
   ['bar-height-inactive'] = 2,
   ['bar-height-active'] = 8,
-  ['bar-foreground'] = 'EEEEEE',
-  ['bar-background'] = '262626',
+  ['bar-foreground'] = FG_PLACEHOLDER,
+  ['bar-background'] = BG_PLACEHOLDER,
   ['enable-elapsed-time'] = true,
-  ['elapsed-foreground'] = 'EEEEEE',
-  ['elapsed-background'] = '262626',
+  ['elapsed-foreground'] = FG_PLACEHOLDER,
+  ['elapsed-background'] = BG_PLACEHOLDER,
   ['enable-remaining-time'] = true,
-  ['remaining-foreground'] = 'EEEEEE',
-  ['remaining-background'] = '262626',
+  ['remaining-foreground'] = FG_PLACEHOLDER,
+  ['remaining-background'] = BG_PLACEHOLDER,
   ['enable-hover-time'] = true,
-  ['hover-time-foreground'] = 'EEEEEE',
-  ['hover-time-background'] = '262626',
+  ['hover-time-foreground'] = FG_PLACEHOLDER,
+  ['hover-time-background'] = BG_PLACEHOLDER,
   ['enable-title'] = false,
   ['title-font-size'] = 30,
-  ['title-foreground'] = 'EEEEEE',
-  ['title-background'] = '262626',
+  ['title-foreground'] = FG_PLACEHOLDER,
+  ['title-background'] = BG_PLACEHOLDER,
   ['pause-indicator'] = false,
-  ['pause-indicator-foreground'] = '262626',
-  ['pause-indicator-background'] = 'EEEEEE',
+  ['pause-indicator-foreground'] = FG_PLACEHOLDER,
+  ['pause-indicator-background'] = BG_PLACEHOLDER,
   ['enable-chapter-markers'] = true,
   ['chapter-marker-width'] = 2,
   ['chapter-marker-width-active'] = 4,
   ['chapter-marker-active-height-fraction'] = 1,
-  ['chapter-marker-before'] = 'EEEEEE',
-  ['chapter-marker-after'] = '262626',
+  ['chapter-marker-before'] = FG_PLACEHOLDER,
+  ['chapter-marker-after'] = BG_PLACEHOLDER,
   ['request-display-duration'] = 1,
   ['redraw-period'] = 0.03,
   ['font'] = 'Source Sans Pro Semibold',
   ['time-font-size'] = 30,
   ['hover-time-font-size'] = 26,
-  ['hover-time-left-margin'] = 124,
-  ['hover-time-right-margin'] = 140,
+  ['hover-time-left-margin'] = 120,
+  ['hover-time-right-margin'] = 130,
   ['elapsed-offscreen-pos'] = -100,
   ['remaining-offscreen-pos'] = -100,
   ['title-offscreen-pos'] = -40
 }
 options.read_options(settings, script_name)
+for key, value in pairs(settings) do
+  if key:match('-foreground') or key == 'chapter-marker-before' then
+    if value == FG_PLACEHOLDER then
+      settings[key] = settings.foreground
+    end
+  elseif key:match('-background') or key == 'chapter-marker-after' then
+    if value == BG_PLACEHOLDER then
+      settings[key] = settings.background
+    end
+  end
+end
 local OSDAggregator
 do
   local _class_0
@@ -172,7 +187,7 @@ do
       self.inputState = {
         mouseX = -1,
         mouseY = -1,
-        mouseInWindow = true,
+        mouseInWindow = false,
         displayRequested = false
       }
       self.subscriberCount = 0
@@ -197,11 +212,11 @@ do
       local displayDuration = settings['request-display-duration']
       local displayRequestTimer = mp.add_timeout(0, function() end)
       return mp.add_key_binding("tab", "request-display", function(event)
-        local _exp_0 = event.event
-        if "down" == _exp_0 then
+        if event.event == "down" or event.event == "press" then
           displayRequestTimer:kill()
           self.inputState.displayRequested = true
-        elseif "up" == _exp_0 then
+        end
+        if event.event == "up" or event.event == "press" then
           displayRequestTimer = mp.add_timeout(displayDuration, function()
             self.inputState.displayRequested = false
           end)
@@ -1199,10 +1214,10 @@ do
       }
       if paused then
         self.line[8] = "m 15 0 l 60 0 b 75 0 75 0 75 15 l 75 60 b 75 75 75 75 60 75 l 15 75 b 0 75 0 75 0 60 l 0 15 b 0 0 0 0 15 0 m 23 20 l 23 55 33 55 33 20 m 42 20 l 42 55 52 55 52 20\n"
-        self.line[16] = [[m 0 0 l 0 75 m 23 20 l 23 55 33 55 33 20 m 42 20 l 42 55 52 55 52 20 m 75 0 l 75 75]]
+        self.line[16] = [[m 0 0 m 75 75 m 23 20 l 23 55 33 55 33 20 m 42 20 l 42 55 52 55 52 20]]
       else
         self.line[8] = "m 15 0 l 60 0 b 75 0 75 0 75 15 l 75 60 b 75 75 75 75 60 75 l 15 75 b 0 75 0 75 0 60 l 0 15 b 0 0 0 0 15 0 m 23 18 l 23 57 58 37.5\n"
-        self.line[16] = [[m 0 0 l 0 75 m 23 18 l 23 57 58 37.5 m 75 0 l 75 75]]
+        self.line[16] = [[m 0 0 m 75 75 m 23 18 l 23 57 58 37.5]]
       end
       do
         local _base_1 = self
@@ -1259,7 +1274,7 @@ do
     update = function(self, inputState)
       do
         local _with_0 = inputState
-        _class_0.__parent.__base.update(self, inputState, (self:containsPoint(_with_0.mouseX, _with_0.mouseY) or self.topBox:containsPoint(_with_0.mouseX, _with_0.mouseY)))
+        _class_0.__parent.__base.update(self, inputState, (self:containsPoint(_with_0.mouseX, _with_0.mouseY) or self.topBox:containsPoint(_with_0.mouseX, _with_0.mouseY) or _with_0.displayRequested))
         return _with_0
       end
     end
