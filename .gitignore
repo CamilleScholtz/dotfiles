@@ -1,7 +1,8 @@
 fish/fish_history
 fonts/
 gimp/
-irssi/logs
+irssi/logs/
+micro/buffers/
 mozilla/
 mpd/database
 mpd/log

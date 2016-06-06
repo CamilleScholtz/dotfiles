@@ -5,7 +5,7 @@ set -g -x LC_ALL en_US.utf8
 set -g -x LC_LANG en_US.utf8
 set -g -x LANG en_US.utf8
 
-# Set path
+# Set PATH
 set -g -x PATH $HOME/bin /usr/bin /bin /usr/sbin /sbin
 
 # Set default programs

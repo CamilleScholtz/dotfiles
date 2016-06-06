@@ -49,6 +49,7 @@ ln $o $d/x11/xresources $HOME/.Xresources
 # Copy etc files
 sudo cp -r $d/alsa/config /etc/asound.conf
 sudo cp -r $d/fstab /etc/fstab
+sudo cp -r $d/lilo/config /etc/lilo.conf
 sudo cp -r $d/pkgmk/config /etc/pkgmk.conf
 sudo cp -r $d/ports /etc/ports
 sudo cp -r $d/prt-utils/config /etc/prt.conf

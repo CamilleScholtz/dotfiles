@@ -7,10 +7,10 @@
 /dev/sda2 /     ext4 defaults,noatime 0 1
 /dev/sda3 /home ext4 defaults,noatime 0 2
 
-devpts /dev/pts devpts noexec,nosuid,gid=tty,mode=0620      0 0
-tmp    /tmp     tmpfs  defaults,nodev,nosuid,noexec,size=8G 0 0
-shm    /dev/shm tmpfs  defaults,nodev,nosuid,noexec,size=4G 0 0
+devpts /dev/pts devpts noexec,nosuid,gid=tty,mode=0620 0 0
+tmpfs  /tmp     tmpfs  defaults,size=8G                0 0
+shm    /dev/shm tmpfs  defaults,size=4G                0 0
 
-tmpfs /src/pkgmk/work tmpfs defaults,rw,relatime,size=14G 0 0
+tmpfs /src/pkgmk/work tmpfs defaults,rw,relatime,size=15G 0 0
 
 # End of file

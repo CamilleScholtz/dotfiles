@@ -1,47 +1,55 @@
 !! MISC
 
 ! Clickable links
-*perl-ext-common:    default,matcher
-*url-launcher:       seamonkey
-*matcher.button:     1
+*perl-ext-common: default,matcher
+*url-launcher:    seamonkey
+*matcher.button:  1
 
 
 !! RICE
 
 ! Make minimal
-*scrollBar:          false
-*internalBorder:     23
-*geometry:           75x14
+*scrollBar:      false
+*internalBorder: 23
+*geometry:       75x14
 
 ! Set font
-*font:               -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1,-freetype-baekmukbig-medium-r-normal--12-120-75-75-p-55-iso10646-1
-*boldFont:           
-*italicFont:         
-*boldItalicFont:     
-*lineSpace:          8
+*font:           -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1,-freetype-baekmukbig-medium-r-normal--12-120-75-75-p-55-iso10646-1
+*boldFont:
+*italicFont:
+*boldItalicFont:
+*lineSpace:      8
 
 ! Change cursor
-*cursorUnderline:    true
+*cursorUnderline: true
 
 
 !! COLORS
 
-*foreground: 	#E8DFD6
-*background: 	#021B21
-*cursorColor:  #2E3340
-*color0:       #032C36
-*color8:       #065F73
-*color1:       #C2454E
-*color9:       #EF5847
-*color2:       #7CBF9E
-*color10:      #A2D9B1
-*color3:       #8A7A63
-*color11:      #BEB090
-*color4:       #2E3340
-*color12:      #61778D
-*color5:       #FF5879
-*color13:      #FF99A1
-*color6:       #44B5B1
-*color14:      #9ED9D8
-*color7:       #F2F1B9
-*color15:      #F6F6C9
+*foreground:  #E8DFD6
+*background:  #021B21
+*cursorColor: #234149
+
+*color0: #032C36
+*color8: #234149
+
+*color1: #C2454E
+*color9: #EF5847
+
+*color2:  #7CBF9E
+*color10: #A2D9B1
+
+*color3:  #8A7A63
+*color11: #BEB090
+
+*color4:  #2E3340
+*color12: #61778D
+
+*color5:  #FF5879
+*color13: #FF99A1
+
+*color6:  #44B5B1
+*color14: #9ED9D8
+
+*color7:  #F2F1B9
+*color15: #F6F6C9

@@ -9,7 +9,6 @@ order 6c37-git
 order 6c37
 order opt
 order xorg
-order z3bra
 order contrib
 
 # Aliases
@@ -18,6 +17,7 @@ alias fontconfig=fontconfig-iu
 alias cairo=cairo-iu
 alias gtk=gtk-ahoka
 alias glib=glib-ahoka
+alias libressl=openssl
 
 # prtpatch dir
 prtpatch /home/onodera/.prtpatch

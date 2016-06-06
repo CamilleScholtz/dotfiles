@@ -9,7 +9,6 @@ prtdir /usr/ports/6c37-git
 prtdir /usr/ports/6c37
 prtdir /usr/ports/opt
 prtdir /usr/ports/xorg
-prtdir /usr/ports/z3bra
 prtdir /usr/ports/contrib
 
 # the following line enables the multilib compat-32 collection
