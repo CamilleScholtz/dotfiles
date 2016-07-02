@@ -22,9 +22,9 @@ end
 
 # Exit if open
 if test (pgrep -f 'n30f -d -x 1725' | head -n 1)
-	pkill -f "n30f -d -x 1735"
-	pkill -f "n30f -d -x 1725"
-	pkill -f -n "mpc idleloop player"
+	pkill -f 'n30f -d -x 1735'
+	pkill -f 'n30f -d -x 1725'
+	pkill -f -n 'mpc idleloop player'
 	exit
 end
 

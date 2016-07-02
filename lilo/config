@@ -4,6 +4,7 @@
 
 lba32
 install=text
+disk=/dev/sdb inaccessible
 boot=/dev/sda
 image=/boot/vmlinuz
         label=CRUX

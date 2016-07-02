@@ -10,7 +10,8 @@
 devpts /dev/pts devpts noexec,nosuid,gid=tty,mode=0620 0 0
 tmpfs  /tmp     tmpfs  defaults,size=8G                0 0
 shm    /dev/shm tmpfs  defaults,size=4G                0 0
+/swap  none     swap   defaults                        0 0
 
-tmpfs /src/pkgmk/work tmpfs defaults,rw,relatime,size=15G 0 0
+tmpfs /usr/src/pkgmk/work tmpfs defaults,rw,relatime,size=15G 0 0
 
 # End of file

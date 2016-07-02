@@ -1,10 +1,11 @@
 {
+    "autoclose": false,
     "autoindent": true,
     "colorscheme": "minato",
     "cursorline": false,
     "fishfmt": true,
     "gofmt": true,
-    "goimports": false,
+    "goimports": true,
     "ignorecase": true,
     "indentchar": "┆",
     "linter": true,

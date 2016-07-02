@@ -7,6 +7,7 @@ set -g -x LANG en_US.utf8
 
 # Set PATH
 set -g -x PATH $HOME/bin /usr/bin /bin /usr/sbin /sbin
+set -g -x GOPATH $HOME/code/go
 
 # Set default programs
 set -g -x BROWSER seamonkey

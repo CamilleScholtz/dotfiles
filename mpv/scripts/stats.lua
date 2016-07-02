@@ -91,7 +91,9 @@ function add_file(s)
     s[sec] = ""
 
     append_property(s, sec, "filename", {prefix="File:", nl="", indent=""})
-    append_property(s, sec, "metadata/title", {prefix="Title:"})
+    if not (mp.get_property_osd("filename") == mp.get_property_osd("media-title")) then
+        append_property(s, sec, "media-title", {prefix="Title:"})
+    end
     append_property(s, sec, "chapter", {prefix="Chapter:"})
     if append_property(s, sec, "cache-used", {prefix="Cache:"}) then
         append_property(s, sec, "demuxer-cache-duration",
@@ -286,7 +288,7 @@ function b(t)
 end
 
 
-local timer = mp.add_periodic_timer(o.redraw_delay - 0.1, function() print_stats(o.redraw_delay) end)
+local timer = mp.add_periodic_timer(o.redraw_delay, function() print_stats(o.redraw_delay + 1) end)
 timer:kill()
 
 function toggle_stats()
@@ -295,7 +297,7 @@ function toggle_stats()
         mp.osd_message("", 0)
     else
         timer:resume()
-        print_stats(o.redraw_delay)
+        print_stats(o.redraw_delay + 1)
     end
 end
 

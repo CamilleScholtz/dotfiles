@@ -30,26 +30,34 @@
 *background:  #021B21
 *cursorColor: #234149
 
+! black
 *color0: #032C36
 *color8: #234149
 
+! red
 *color1: #C2454E
 *color9: #EF5847
 
+! green
 *color2:  #7CBF9E
 *color10: #A2D9B1
 
+! yellow
 *color3:  #8A7A63
 *color11: #BEB090
 
-*color4:  #2E3340
-*color12: #61778D
+! blue
+*color4:  #7BBAC7
+*color12: #DFF0EB
 
+! magenta
 *color5:  #FF5879
 *color13: #FF99A1
 
+! cyan
 *color6:  #44B5B1
 *color14: #9ED9D8
 
+! white
 *color7:  #F2F1B9
 *color15: #F6F6C9

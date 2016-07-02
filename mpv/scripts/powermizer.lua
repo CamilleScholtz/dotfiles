@@ -2,8 +2,8 @@
     https://github.com/kevinlekiller/mpv_scripts
    
     Sets "PowerMizer" in Nvidia GPUs with the proprietary driver to
-    "Maximum Performance" mode while mpv is running.
-    Sets "PowerMizer" back to "Adaptive" after mpv exits.
+    "Maximum Performance" mode while mpv is playing.
+    Sets "PowerMizer" back to "Adaptive" when mpv is idle or exits.
     
     The script will try to automatically detect a GPU.
     
@@ -48,14 +48,16 @@ if (test == 0 or test == true) then
         end
     end
 
-    function start()
-        os.execute("nvidia-settings -a " .. gpu .. "/GPUPowerMizerMode=1 > /dev/null")
+    function switch(name, paused)
+        -- If it's nil it's because of the "shutdown" event.
+        if (paused == true or paused == nil) then
+            os.execute("nvidia-settings -a " .. gpu .. "/GPUPowerMizerMode=0 > /dev/null")
+        else
+            os.execute("nvidia-settings -a " .. gpu .. "/GPUPowerMizerMode=1 > /dev/null")
+        end
     end
 
-    function stop()
-        os.execute("nvidia-settings -a " .. gpu .. "/GPUPowerMizerMode=0 > /dev/null")
-    end
-
-    mp.register_event("file-loaded", start)
-    mp.register_event("shutdown", stop)
+    mp.observe_property("core-idle", "bool", switch)
+    -- "core-idle" doesn't trigger when exiting mpv, use "shutdown" to set GPU back to adaptive.
+    mp.register_event("shutdown", switch)
 end

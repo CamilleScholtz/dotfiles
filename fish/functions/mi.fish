@@ -1,3 +1,3 @@
-function mc
+function mi
 	micro $argv
 end

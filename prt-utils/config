@@ -12,12 +12,12 @@ order xorg
 order contrib
 
 # Aliases
-alias freetype=freetype-iu
-alias fontconfig=fontconfig-iu
-alias cairo=cairo-iu
-alias gtk=gtk-ahoka
-alias glib=glib-ahoka
-alias libressl=openssl
+alias opt/freetype 6c37/freetype-iu
+alias opt/fontconfig 6c37/fontconfig-iu
+alias opt/cairo 6c37/cairo-iu
+alias opt/gtk 6c37/gtk-ahoka
+alias opt/glib 6c37/glib-ahoka
+alias core/openssl 6c37/libressl
 
 # prtpatch dir
 prtpatch /home/onodera/.prtpatch

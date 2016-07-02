@@ -11,6 +11,7 @@ border.width: 10
 window.*.client.color: #EEEEEE
 window.*.border.*.color: #EEEEEE
 
+
 ## TITLE
 
 # Add some padding
@@ -20,8 +21,8 @@ padding.height: 0
 # Set title colors
 window.*.title.bg: Solid Flat
 window.*.*.bg: Parentrelative
-window.*.title.bg.color: #FFFFFF
-window.*.label.text.color: #FFFFFF
+window.*.title.bg.color: #DFE4ED
+window.*.label.text.color: #DFE4ED
 
 # Set buttons color
 window.*.button.*.image.color: #223445

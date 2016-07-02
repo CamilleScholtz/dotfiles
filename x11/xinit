@@ -2,9 +2,9 @@
 rootshuf
 
 # Load fonts
-xset +fp /usr/share/fonts/X11/misc
 xset +fp $HOME/.fonts
 xset +fp $HOME/.fonts/Microsoft
+xset +fp /usr/share/fonts/X11/pcf/Gohufont/14
 xset fp rehash
 
 # Load .Xresources
