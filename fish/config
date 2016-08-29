@@ -17,6 +17,9 @@ set -g -x TERMINAL urxvtc
 # source bindings
 source $HOME/.config/fish/bindings
 
+# Misc variables
+set -g -x MOZ_USE_OMTC 1
+
 
 ## COLORS
 

@@ -9,7 +9,7 @@ audio-channels=2
 alang=Korean,kor,ko,Japanese,jpn,jp,English,eng,en
 
 # Subtitles feel
-sub-auto=fuzzy
+sub-auto=all
 demuxer-mkv-subtitle-preroll
 no-sub-ass
 slang=English,eng,en
@@ -46,8 +46,8 @@ input-conf=/home/onodera/.mpv/bindings
 # Cache
 cache=auto
 cache-default=8000000
+cache-backbuffer=16000
 cache-initial=1000
-cache-seek-min=2000
 cache-secs=1000
 
 # Window behaviour
@@ -61,6 +61,7 @@ save-position-on-quit
 loop=no
 audio-display=no
 really-quiet
+hr-seek=yes
 
 # Streams
 ytdl-format=best
@@ -75,3 +76,4 @@ audio-pitch-correction=no
 # Audio-only content
 [audio]
 ytdl-format=bestaudio/best
+audio-pitch-correction=no

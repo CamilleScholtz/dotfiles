@@ -36,9 +36,10 @@ ln $o $d/mpdscribble $HOME/.mpdscribble
 ln $o $d/mpv $HOME/.mpv
 ln $o $d/ncmpcpp $HOME/.ncmpcpp
 ln $o $d/neet $HOME/.neet
+ln $o $d/notify $HOME/.notify
 ln $o $d/openbox $HOME/.config/openbox
 ln $o $d/openbox/theme $HOME/.themes/minato/openbox-3
-ln $o $d/prtpatch $HOME/.prtpatch
+ln $o $d/punf $HOME/.punf
 ln $o $d/rootshuf $HOME/.rootshuf
 sudo ln $o $d/ssh $HOME/.ssh
 ln $o $d/transmission $HOME/.config/transmission-daemon
@@ -48,12 +49,12 @@ ln $o $d/x11/xresources $HOME/.Xresources
 
 # Copy etc files
 sudo cp -r $d/alsa/config /etc/asound.conf
-sudo cp -r $d/fstab /etc/fstab
+sudo cp -r $d/fs/config /etc/fstab
 sudo cp -r $d/lilo/config /etc/lilo.conf
 sudo cp -r $d/pkgmk/config /etc/pkgmk.conf
 sudo cp -r $d/ports /etc/ports
-sudo cp -r $d/prt-utils/config /etc/prt.conf
 sudo cp -r $d/prt-get/config /etc/prt-get.conf
+sudo cp -r $d/prtstuff/* /etc/prtstuff
 sudo cp -r $d/rc/config /etc/rc.conf
 sudo cp -r $d/rc/scripts/* /etc/rc.d
 sudo cp -r $d/sshd/config /etc/ssh/sshd_config

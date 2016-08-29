@@ -1,0 +1,16 @@
+#
+# /etc/fstab: static file system information
+#
+# <file>  <dir> <fs> <opts>   <dump/pass>
+
+/dev/sda1 /boot xfs  defaults 0 2
+/dev/sda2 none  swap sw       0 0
+/dev/sda3 /     xfs  defaults 0 1
+
+devpts /dev/pts devpts noexec,nosuid,gid=tty,mode=0620 0 0
+tmpfs  /tmp     tmpfs  defaults,size=8G                0 0
+shm    /dev/shm tmpfs  defaults,size=4G                0 0
+
+tmpfs /usr/src/pkgmk/work tmpfs defaults,rw,size=14G 0 0
+
+# End of file

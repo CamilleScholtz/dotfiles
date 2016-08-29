@@ -3,12 +3,14 @@
 #
 
 lba32
+compact
 install=text
 disk=/dev/sdb inaccessible
 boot=/dev/sda
+
 image=/boot/vmlinuz
         label=CRUX
         read-only
-        append="root=/dev/sda2"
+        root=/dev/sda3
 
 # End of file

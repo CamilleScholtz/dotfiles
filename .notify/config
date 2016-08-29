@@ -1,0 +1,11 @@
+#!/bin/fish
+
+# Set notification duration
+set duration 5
+
+# Set font
+set font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1 -freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1 -freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+
+# Set colors
+set fg 021B21
+set bg EEEEEE

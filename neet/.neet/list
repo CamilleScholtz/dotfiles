@@ -1,0 +1,35 @@
+#!/bin/fish
+
+set name    'Ms. Temper & Nam Jung Gi'
+set current 16
+set total   16
+
+# set name      'Mare'
+# set current   3
+# set total     156
+# set userpath  'Mare/Week 01~The Witch-Princess Birthday Cake'
+# set userregex '.*#[0 ]*'$current'[^0-9].*$'
+
+# set name    'Ugly Alert'
+# set current 1
+# set total   133
+
+# set name    'Ryoma Den: The Adventurer'
+# set current 15
+# set total   48
+
+# set name    'Six Flying Dragons'
+# set current 17
+# set total   50
+
+# set name    'Sound of the Desert'
+# set current 3
+# set total   34
+
+# set name    'Gunshi Kanbei'
+# set current 1
+# set total   48
+
+# set name    'Running Man'
+# set current 11
+# set total   250

@@ -1,42 +1,51 @@
 servers = (
   {
-    address = "irc.rizon.net";
-    chatnet = "Rizon";
+    address = "verne.freenode.net";
+    chatnet = "freenode";
     port = "6697";
     use_ssl = "yes";
     autoconnect = "yes";
   },
   {
-    address = "verne.freenode.net";
-    chatnet = "Freenode";
+    address = "irc.rizon.net";
+    chatnet = "rizon";
     port = "6697";
     use_ssl = "yes";
     autoconnect = "yes";
   },
+  {
+    address = "irc.unix.chat";
+    chatnet = "unix";
+    port = "6697";
+    use_ssl = "yes";
+    autoconnect = "yes";
+  }
 );
 
 chatnets = {
-  Rizon = {
-    type = "IRC";
-    nick = "onodera";
-    autosendcmd = "/^msg NickServ identify derpaderp2;wait 2000";
-  };
-  Freenode = {
+  freenode = {
     type = "IRC";
     nick = "onodera";
     autosendcmd = "/^msg NickServ identify Derpaderp2;wait 2000";
   };
-  Oftc = { type = "IRC"; nick = "onodera"; };
+  rizon = {
+    type = "IRC";
+    nick = "onodera";
+    autosendcmd = "/^msg NickServ identify derpaderp2;wait 2000";
+  };
+  unix = { type = "IRC"; nick = "onodera"; };
 };
 
 channels = (
-  { name = "#6c37"; chatnet = "Freenode"; autojoin = "Yes"; },
-  { name = "#crux"; chatnet = "Freenode"; autojoin = "Yes"; },
-  { name = "#crux-devel"; chatnet = "Freenode"; autojoin = "Yes"; },
-  { name = "#code"; chatnet = "Rizon"; autojoin = "Yes"; },
-  { name = "#grape"; chatnet = "Rizon"; autojoin = "Yes"; },
-  { name = "#plez"; chatnet = "Rizon"; autojoin = "Yes"; },
-  { name = "#rice"; chatnet = "Rizon"; autojoin = "Yes"; },
+  { name = "#6c37"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#crux"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#crux-devel"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#nixers"; chatnet = "unix"; autojoin = "Yes"; },
+  { name = "#code"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#grape"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#plez"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#rice"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#unix"; chatnet = "unix"; autojoin = "Yes"; }
 );
 
 settings = {
@@ -44,7 +53,7 @@ settings = {
     real_name = "Camille";
     user_name = "onodera";
     nick = "onodera";
-    quit_message = "laughing myself to sleep";
+    quit_message = "tfw";
   };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
@@ -54,19 +63,13 @@ settings = {
     window_history = "yes";
     autolog = "yes";
     autolog_path = "~/.irssi/logs/$0/%y-%m.log";
-    bell_beeps = "yes";
-    beep_msg_level = "MSGS NOTICES DCC DCCMSGS HILIGHT";
   };
   "perl/core/scripts" = {
     neat_global_colors = "yes";
     neat_colors = "rygCb";
-    neat_dynamic = "yes";
-    neat_shrink = "yes";
-    neat_history = "25";
-    neat_staircase_shrink = "no";
-    beep_when_not_away = "yes";
-    beep_command = "notify '$;' &";
     trackbar_string = "-";
+    neat_color_reassign_time = "0";
+    spell_dict = "en_US";
   };
 };
 statusbar = {

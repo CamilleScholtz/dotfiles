@@ -1,0 +1,32 @@
+Mentioned in #rice by enju: onodera~ just no drives or no partitions
+Mentioned in ##windows by TheBard: onodera, are you perchance trying to dual boot?
+Mentioned in ##windows by Mathisen: onodera, where is it complaining on the drivers ?
+Mentioned in #crux by pedja: onodera: this worked for me : https://www.plop.at/en/winusbinstall.html
+Mentioned in ##windows by TheBard: onodera, there is an option in the installer for it to format your drive. Do so.
+Mentioned in ##windows by Mathisen: onodera, you doing raid ? bios set to ahci ?
+Mentioned in ##windows by Mathisen: onodera, no win installer does se linux partitons ext, resierfs atleast for others i have not tried
+Mentioned in ##windows by Mathisen: onodera, so it should see your drive there
+Mentioned in ##windows by Ussat: <onodera> so in short: no, not yet
+Mentioned in ##windows by Mathisen: onodera, okej cant say if that works or not.. maybe best then to boot live and make it RAW
+Mentioned in ##windows by Mathisen: onodera, i agree on that
+Mentioned in ##windows by Mathisen: onodera, double check bios atleast first that it is set to AHCI
+Mentioned in ##windows by Ussat: onodera, just drop to a term and use diskpart
+Mentioned in ##windows by Mathisen: onodera, diskpart
+Mentioned in ##windows by merced: onodera: what v windows
+Mentioned in ##windows by Mathisen: onodera, did you check bios settings ?
+Mentioned in ##windows by Mathisen: onodera, it should be on the SATA settings
+Mentioned in ##windows by Mathisen: onodera, if you using IDE/RAID change to AHCI
+Mentioned in ##windows by Mathisen: onodera, okej just try to set default settings then... anyway that is a normal issue for win7 that it dont find device drivers when it is not set to ahci
+Mentioned in ##windows by Mathisen: onodera, only thing i can think off that should mather.. like if it where xp you where trying to install it could have been just sata drivers but for win7 everything is there
+Mentioned in ##windows by DLSteve: onodera, They all do.
+Mentioned in ##windows by Mathisen: onodera, you can upgrade to 10 :) the offical free upgrade is no more, but the MS servers seem to not understand that yet. did it yesterday and it worked to upgrade from 7 to 10 for free..
+Mentioned in ##windows by DLSteve: onodera, Do you have home basic or home premium?
+Mentioned in #rice by spoonm: onodera: no
+Mentioned in #rice by spoonm: onodera: dunno wtf this is kek
+Mentioned in #rice by spoonm: onodera: romancescam is a thing? kek
+Mentioned in #rice by DANtheBEASTman: onodera: as far as block delimiters go, i don't worry about them because vim-endwise completes them for me
+Mentioned in ##windows by TheBard: onodera, windows 7?
+Mentioned in #crux by wildefyr: onodera, best bet is just grab a windows machine from a friend and create the media from that onodera
+Mentioned in #rice by spoonm: onodera: Wang
+Mentioned in #crux by abenz: onodera: there's a simpler way
+Mentioned in #rice by array: onodera, i remember that one

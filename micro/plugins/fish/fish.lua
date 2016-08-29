@@ -2,10 +2,10 @@ if GetOption("fishfmt") == nil then
     AddOption("fishfmt", false)
 end
 
-MakeCommand("fishfmt", "fish.fishfmt")
+MakeCommand("fishfmt", "fish.fishfmt", 0)
 
-function onSave()
-    if CurView().Buf.FileType == "fish" then
+function onSave(view)
+    if CurView().Buf:FileType() == "fish" then
         if GetOption("fishfmt") then
             fishfmt()
         end
@@ -13,7 +13,7 @@ function onSave()
 end
 
 function fishfmt()
-    CurView():Save()
+    CurView():Save(false)
     local handle = io.popen("fish_indent -w " .. CurView().Buf.Path)
     local result = handle:read("*a")
     handle:close()

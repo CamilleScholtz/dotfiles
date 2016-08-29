@@ -1,0 +1,5 @@
+# Collection core, https://crux.nu/gitweb/?p=ports/core.git
+
+set name core
+set url git://crux.nu/ports/core
+set branch 3.2

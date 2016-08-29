@@ -1,0 +1,21 @@
+# Set location of the ports tree
+set portdir /usr/ports
+
+# Repo order, the port found first is used
+set order punpun core 6c37-git 6c37 opt xorg contrib
+
+# Alias ports
+set alias $alias opt/freetype=6c37/freetype-iu
+set alias $alias opt/fontconfig=6c37/fontconfig-iu
+set alias $alias opt/cairo=6c37/cairo-iu
+set alias $alias opt/gtk=6c37/gtk-ahoka
+set alias $alias opt/glib=6c37/glib-ahoka
+set alias $alias core/openssl=6c37/libressl
+
+# Execute pre- and post-install
+set script true
+
+# Set colors
+set foreground normal
+set bright yellow --bold
+set dark black --bold

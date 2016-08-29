@@ -1,0 +1,19 @@
+#!/bin/fish
+
+# Set default host (sr.ht, punpun.xyz or ssh)
+set host punpun.xyz
+
+# Your sr.ht/punpun.xyz key
+set key (cat $HOME/.$host ^/dev/null)
+
+# Log urls
+set log true
+
+# Copy links to clipboard
+set clipboard true
+
+# Send notification when upload is done (requires my notify script)
+set notify true
+
+# Open url in browser
+set browser false

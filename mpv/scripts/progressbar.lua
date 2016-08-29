@@ -67,6 +67,7 @@ local settings = {
   ['foreground'] = 'FFFFFF',
   ['background'] = '262626',
   ['enable-bar'] = true,
+  ['hide-inactive'] = false,
   ['bar-height-inactive'] = 2,
   ['bar-height-active'] = 8,
   ['seek-precision'] = 'exact',
@@ -77,19 +78,19 @@ local settings = {
   ['elapsed-foreground'] = FG_PLACEHOLDER,
   ['elapsed-background'] = BG_PLACEHOLDER,
   ['elapsed-left-margin'] = 2,
-  ['elapsed-bottom-margin'] = 3,
+  ['elapsed-bottom-margin'] = 0,
   ['enable-remaining-time'] = true,
   ['remaining-foreground'] = FG_PLACEHOLDER,
   ['remaining-background'] = BG_PLACEHOLDER,
   ['remaining-right-margin'] = 4,
-  ['remaining-bottom-margin'] = 3,
+  ['remaining-bottom-margin'] = 0,
   ['enable-hover-time'] = true,
   ['hover-time-foreground'] = FG_PLACEHOLDER,
   ['hover-time-background'] = BG_PLACEHOLDER,
   ['hover-time-left-margin'] = 120,
   ['hover-time-right-margin'] = 130,
-  ['hover-time-bottom-margin'] = 3,
-  ['enable-title'] = true,
+  ['hover-time-bottom-margin'] = 0,
+  ['enable-title'] = false,
   ['title-left-margin'] = 4,
   ['title-top-margin'] = 0,
   ['title-font-size'] = 30,
@@ -98,7 +99,7 @@ local settings = {
   ['pause-indicator'] = false,
   ['pause-indicator-foreground'] = FG_PLACEHOLDER,
   ['pause-indicator-background'] = BG_PLACEHOLDER,
-  ['enable-chapter-markers'] = false,
+  ['enable-chapter-markers'] = true,
   ['chapter-marker-width'] = 2,
   ['chapter-marker-width-active'] = 4,
   ['chapter-marker-active-height-fraction'] = 1,
@@ -172,14 +173,19 @@ do
         if theSub:update(self.inputState) then
           update = true
         end
-        if (needsResize and theSub:updateSize(w, h)) or update then
+        if (needsResize and theSub:updateSize(w, h)) or update or self.needsRedrawAll then
           needsRedraw = true
-          self.script[sub] = theSub:stringify()
+          if self.hideInactive and not theSub.active then
+            self.script[sub] = ""
+          else
+            self.script[sub] = theSub:stringify()
+          end
         end
       end
       if needsRedraw == true then
-        return mp.set_osd_ass(self.w, self.h, table.concat(self.script, '\n'))
+        mp.set_osd_ass(self.w, self.h, table.concat(self.script, '\n'))
       end
+      self.needsRedrawAll = false
     end,
     pause = function(self, event, paused)
       self.paused = paused
@@ -195,6 +201,10 @@ do
       if not (self.paused) then
         return self.updateTimer:resume()
       end
+    end,
+    toggleInactiveVisibility = function(self)
+      self.hideInactive = not self.hideInactive
+      self.needsRedrawAll = true
     end
   }
   _base_0.__index = _base_0
@@ -212,6 +222,8 @@ do
       self.subscriberCount = 0
       self.w = 0
       self.h = 0
+      self.hideInactive = settings['hide-inactive']
+      self.needsRedrawAll = false
       self.updateTimer = mp.add_periodic_timer(settings['redraw-period'], (function()
         local _base_1 = self
         local _fn_0 = _base_1.update
@@ -392,6 +404,7 @@ do
       return self.isFinished
     end,
     interrupt = function(self, reverse, queue)
+      self.finishedCb = nil
       if reverse ~= self.isReversed then
         self:reverse()
       end
@@ -488,7 +501,7 @@ do
   local _parent_0 = Rect
   local _base_0 = {
     stringify = function(self)
-      if not self.hovered and not self.animation.isRegistered then
+      if not self.active then
         return ""
       end
       return table.concat(self.line)
@@ -497,25 +510,30 @@ do
       self.y = h - active_height
       self.w, self.h = w, active_height
     end,
-    update = function(self, inputState, hoverCondition)
+    hoverCondition = function(self, inputState)
       do
         local _with_0 = inputState
-        if hoverCondition == nil then
-          hoverCondition = ((not _with_0.mouseDead and self:containsPoint(_with_0.mouseX, _with_0.mouseY)) or _with_0.displayRequested)
-        end
+        return ((not _with_0.mouseDead and self:containsPoint(_with_0.mouseX, _with_0.mouseY)) or _with_0.displayRequested)
+      end
+    end,
+    update = function(self, inputState)
+      do
+        local _with_0 = inputState
         local update = self.needsUpdate
         self.needsUpdate = false
-        if (_with_0.mouseInWindow or _with_0.displayRequested) and hoverCondition then
+        if (_with_0.mouseInWindow or _with_0.displayRequested) and self:hoverCondition(inputState) then
           if not (self.hovered) then
             update = true
             self.hovered = true
             self.animation:interrupt(false, self.animationQueue)
+            self.active = true
           end
         else
           if self.hovered then
             update = true
             self.hovered = false
             self.animation:interrupt(true, self.animationQueue)
+            self.animation.finishedCb = self.deactivate
           end
         end
         return update
@@ -529,6 +547,10 @@ do
       _class_0.__parent.__init(self, 0, 0, 0, 0)
       self.hovered = false
       self.needsUpdate = false
+      self.active = false
+      self.deactivate = function()
+        self.active = false
+      end
     end,
     __base = _base_0,
     __name = "Subscriber",
@@ -615,15 +637,6 @@ do
   local minHeight, maxHeight
   local _parent_0 = Subscriber
   local _base_0 = {
-    toggleInactiveVisibility = function(self)
-      local value = self.visible and 0 or minHeight
-      self.animation.initialValue = value
-      if not self.hovered then
-        self.line[6] = value
-      end
-      self.visible = not self.visible
-      self.needsUpdate = true
-    end,
     stringify = function(self)
       return table.concat(self.line)
     end,
@@ -672,7 +685,6 @@ do
           return _fn_0(_base_1, ...)
         end
       end)())
-      self.visible = true
     end,
     __base = _base_0,
     __name = "ProgressBar",
@@ -710,15 +722,6 @@ do
   local minHeight, maxHeight
   local _parent_0 = Subscriber
   local _base_0 = {
-    toggleInactiveVisibility = function(self)
-      local value = self.visible and 0 or minHeight
-      self.animation.initialValue = value
-      if not self.hovered then
-        self.line[4] = value
-      end
-      self.visible = not self.visible
-      self.needsUpdate = true
-    end,
     stringify = function(self)
       return table.concat(self.line)
     end,
@@ -757,7 +760,6 @@ do
           return _fn_0(_base_1, ...)
         end
       end)())
-      self.visible = true
     end,
     __base = _base_0,
     __name = "ProgressBarBackground",
@@ -803,7 +805,7 @@ do
     end,
     animateSize = function(self, value)
       self.line[4] = ([[%g]]):format((maxWidth - minWidth) * value + minWidth)
-      self.line[6] = ([[%g]]):format((maxHeight * maxHeightFrac - self.minHeight) * value + self.minHeight)
+      self.line[6] = ([[%g]]):format((maxHeight * maxHeightFrac - minHeight) * value + minHeight)
     end,
     update = function(self, position)
       local update = false
@@ -835,7 +837,6 @@ do
         [[&}m 0 0 l 1 0 1 1 0 1]]
       }
       self.passed = false
-      self.minHeight = minHeight
     end,
     __base = _base_0,
     __name = "ChapterMarker"
@@ -875,18 +876,6 @@ do
         table.insert(self.markers, marker)
         table.insert(self.line, marker:stringify())
       end
-    end,
-    toggleInactiveVisibility = function(self)
-      local value = self.visible and 0 or minHeight
-      for i, marker in ipairs(self.markers) do
-        marker.minHeight = value
-        if not self.hovered then
-          marker.line[6] = value
-        end
-        self.line[i] = marker:stringify()
-      end
-      self.visible = not self.visible
-      self.needsUpdate = true
     end,
     stringify = function(self)
       return table.concat(self.line, '\n')
@@ -941,7 +930,6 @@ do
           return _fn_0(_base_1, ...)
         end
       end)())
-      self.visible = true
     end,
     __base = _base_0,
     __name = "Chapters",
@@ -1143,10 +1131,16 @@ do
       _class_0.__parent.__base.updateSize(self, w, h)
       self.yposChanged = true
     end,
+    hoverCondition = function(self, inputState)
+      do
+        local _with_0 = inputState
+        return (not _with_0.mouseDead and self:containsPoint(_with_0.mouseX, _with_0.mouseY) and _with_0.mouseInWindow)
+      end
+    end,
     update = function(self, inputState)
       do
         local _with_0 = inputState
-        local update = _class_0.__parent.__base.update(self, inputState, (not _with_0.mouseDead and self:containsPoint(_with_0.mouseX, _with_0.mouseY) and _with_0.mouseInWindow))
+        local update = _class_0.__parent.__base.update(self, inputState)
         if update or self.hovered then
           if _with_0.mouseX ~= self.lastX or self.sizeChanged then
             self.line[2] = ("%g,%g"):format(math.min(self.w - rightMargin, math.max(leftMargin, _with_0.mouseX)), self.yPos - settings['hover-time-bottom-margin'])
@@ -1332,12 +1326,14 @@ do
       self.line[4] = ([[%d/%d – %s]]):format(position + 1, total, title)
       self.needsUpdate = true
     end,
-    update = function(self, inputState)
+    hoverCondition = function(self, inputState)
       do
         local _with_0 = inputState
-        _class_0.__parent.__base.update(self, inputState, ((not _with_0.mouseDead and (self:containsPoint(_with_0.mouseX, _with_0.mouseY) or self.topBox:containsPoint(_with_0.mouseX, _with_0.mouseY))) or _with_0.displayRequested))
-        return _with_0
+        return ((not _with_0.mouseDead and (self:containsPoint(_with_0.mouseX, _with_0.mouseY) or self.topBox:containsPoint(_with_0.mouseX, _with_0.mouseY))) or _with_0.displayRequested)
       end
+    end,
+    update = function(self, inputState)
+      return _class_0.__parent.__base.update(self, inputState)
     end
   }
   _base_0.__index = _base_0
@@ -1406,11 +1402,7 @@ if settings['enable-bar'] then
     end)
   end)
   mp.add_key_binding("c", "toggle-inactive-bar", function()
-    barBackground:toggleInactiveVisibility()
-    progressBar:toggleInactiveVisibility()
-    if chapters then
-      return chapters:toggleInactiveVisibility()
-    end
+    return aggregator:toggleInactiveVisibility()
   end)
 end
 if settings['enable-chapter-markers'] then

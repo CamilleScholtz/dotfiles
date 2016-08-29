@@ -1,0 +1,92 @@
+servers = (
+  {
+    address = "verne.freenode.net";
+    chatnet = "freenode";
+    port = "6697";
+    use_ssl = "yes";
+    autoconnect = "yes";
+  },
+  {
+    address = "irc.rizon.net";
+    chatnet = "rizon";
+    port = "6697";
+    use_ssl = "yes";
+    autoconnect = "yes";
+  },
+  {
+    address = "irc.unix.chat";
+    chatnet = "unix";
+    port = "6697";
+    use_ssl = "yes";
+    autoconnect = "yes";
+  }
+);
+
+chatnets = {
+  freenode = {
+    type = "IRC";
+    nick = "onodera";
+    autosendcmd = "/^msg NickServ identify Derpaderp2;wait 2000";
+  };
+  rizon = {
+    type = "IRC";
+    nick = "onodera";
+    autosendcmd = "/^msg NickServ identify derpaderp2;wait 2000";
+  };
+  unix = { type = "IRC"; nick = "onodera"; };
+};
+
+channels = (
+  { name = "#6c37"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#crux"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#crux-devel"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#nixers"; chatnet = "unix"; autojoin = "Yes"; },
+  { name = "#code"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#grape"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#plez"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#rice"; chatnet = "rizon"; autojoin = "Yes"; },
+  { name = "#unix"; chatnet = "unix"; autojoin = "Yes"; }
+);
+
+settings = {
+  core = {
+    real_name = "Camille";
+    user_name = "onodera";
+    nick = "onodera";
+    quit_message = "tfw";
+  };
+  "fe-text" = { actlist_sort = "refnum"; };
+  "fe-common/core" = {
+    show_names_on_join = "no";
+    show_nickmode = "yes";
+    timestamps = "no";
+    window_history = "yes";
+    autolog = "yes";
+    autolog_path = "~/.irssi/logs/$0/%y-%m.log";
+  };
+  "perl/core/scripts" = {
+    hilightcmd_systemcmd = "notify \"%(message)\"";
+    neat_global_colors = "yes";
+    neat_colors = "rygCb";
+    trackbar_string = "-";
+    neat_color_reassign_time = "0";
+    spell_dict = "en_US";
+  };
+};
+statusbar = {
+  default = {
+    topic = { visible = "inactive"; disabled = "yes"; };
+    window = { placement = "bottom"; disabled = "yes"; };
+    prompt = {
+      items = {
+        prompt = { priority = "-1"; };
+        prompt_empty = { priority = "-1"; };
+        input = { priority = "10"; };
+      };
+    };
+    disable = { disabled = "yes"; };
+    window_inact = { disabled = "yes"; };
+    channel = { type = "window"; items = { }; disabled = "yes"; };
+  };
+};
+logs = { };

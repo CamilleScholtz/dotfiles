@@ -14,39 +14,42 @@ end
 
 # This function displays the cover
 function spawncover
-	n30f -d -x 1735 -y 62 $musicdir/{$path}cover_popup.png &
+	n30f -x 1735 -y 62 $musicdir/{$path}cover_popup.png &
 end
 
 
 ## EXECUTE
 
-# Exit if open
-if test (pgrep -f 'n30f -d -x 1725' | head -n 1)
-	pkill -f 'n30f -d -x 1735'
-	pkill -f 'n30f -d -x 1725'
-	pkill -f -n 'mpc idleloop player'
-	exit
-end
+# Check if popup is open
+if test -z (pgrep -f 'n30f -x 1725')
+	set path (path)
 
-set path (path)
-n30f -d -x 1725 -y 42 $HOME/.lemonbar/popups/music/bg.png &
-spawncover
+	n30f -x 1725 -y 42 $HOME/.lemonbar/popups/music/bg.png &
+	sleep 0.01
 
-mpc idleloop player | while read
-	set pathnew (path)
+	spawncover
 
-	if test $path != $pathnew
-		if test -f $musicdir/$path/cover_popup.png
-			set path (path)
-			set pathnew $path
+	# Keep checking for new covers whilst open
+	mpc idleloop player | while read
+		set pathnew (path)
 
-			spawncover
-			pkill -o -f 'n30f -d -x 1735'
-		else
-			set path (path)
-			set pathnew $path
+		if test $path != $pathnew
+			if test -f $musicdir/$path/cover_popup.png
+				set path (path)
+				set pathnew $path
 
-			spawncover
+				spawncover
+				pkill -o -f 'n30f -x 1735'
+			else
+				set path (path)
+				set pathnew $path
+
+				spawncover
+			end
 		end
 	end
+else
+	pkill -f 'n30f -x 1735'
+	pkill -f 'n30f -x 1725'
+	pkill -f -n 'mpc idleloop player'
 end

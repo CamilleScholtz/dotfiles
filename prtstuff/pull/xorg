@@ -1,0 +1,5 @@
+# Collection xorg, https://crux.nu/gitweb/?p=ports/xorg.git
+
+set name xorg
+set url git://crux.nu/ports/xorg
+set branch 3.2

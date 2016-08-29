@@ -1,11 +1,35 @@
-Jewel in the Palace
-+ 36/54
+#!/bin/fish
 
-It's Okay, Daddy's Girl
-1/16
+set name 'Long Vacation'
+set current 11
+set total 11
 
-Six FLying Dragons
-17/52
+# set name 'Mare'
+# set current 3
+# set total 156
+# set userpath 'Mare/Week 01~The Witch-Princess Birthday Cake'
+# set userregex '.*#[0 ]*'$current'[^0-9].*$'
 
-Running Man
-11/245
+# set name    'Ugly Alert'
+# set current 1
+# set total   133
+
+# set name 'Ryoma Den: The Adventurer'
+# set current 15
+# set total 48
+
+# set name    'Six Flying Dragons'
+# set current 17
+# set total   50
+
+# set name 'Sound of the Desert'
+# set current 3
+# set total 34
+
+# set name 'Gunshi Kanbei'
+# set current 1
+# set total 48
+
+# set name 'Running Man'
+# set current 11
+# set total 250

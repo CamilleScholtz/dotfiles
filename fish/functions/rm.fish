@@ -1,3 +1,3 @@
 function rm
-	mv $argv
+	mv $argv ~/.trash
 end

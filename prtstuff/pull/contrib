@@ -1,0 +1,5 @@
+# Collection contrib, https://crux.nu/gitweb/?p=ports/contrib.git
+
+set name contrib
+set url git://crux.nu/ports/contrib
+set branch 3.2

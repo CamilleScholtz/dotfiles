@@ -13,6 +13,10 @@
 *internalBorder: 23
 *geometry:       75x14
 
+! Change cursor
+*cursorUnderline: true
+*cursorBlink: true
+
 ! Set font
 *font:           -windows-dina-medium-r-normal--13-80-96-96-c-70-microsoft-cp1252,-FreeType-JackeyFont-Medium-R-Normal--12-90-100-100-P-21-ISO10646-1,-freetype-baekmukbig-medium-r-normal--12-120-75-75-p-55-iso10646-1
 *boldFont:
@@ -20,44 +24,42 @@
 *boldItalicFont:
 *lineSpace:      8
 
-! Change cursor
-*cursorUnderline: true
-
 
 !! COLORS
 
+! Misc
 *foreground:  #E8DFD6
 *background:  #021B21
-*cursorColor: #234149
+*cursorColor: #274654
 
-! black
+! Black
 *color0: #032C36
 *color8: #234149
 
-! red
+! Red
 *color1: #C2454E
 *color9: #EF5847
 
-! green
+! Green
 *color2:  #7CBF9E
 *color10: #A2D9B1
 
-! yellow
+! Yellow
 *color3:  #8A7A63
 *color11: #BEB090
 
-! blue
+! Blue
 *color4:  #7BBAC7
 *color12: #DFF0EB
 
-! magenta
+! Magenta
 *color5:  #FF5879
 *color13: #FF99A1
 
-! cyan
-*color6:  #44B5B1
-*color14: #9ED9D8
+! Cyan
+*color6:  #7BBAC7
+*color14: #DFF0EB
 
-! white
+! White
 *color7:  #F2F1B9
 *color15: #F6F6C9

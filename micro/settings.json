@@ -1,5 +1,5 @@
 {
-    "autoclose": false,
+    "autoclose": true,
     "autoindent": true,
     "colorscheme": "minato",
     "cursorline": false,

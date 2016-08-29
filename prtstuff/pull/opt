@@ -1,0 +1,5 @@
+# Collection opt, https://crux.nu/gitweb/?p=ports/opt.git
+
+set name opt
+set url git://crux.nu/ports/opt
+set branch 3.2

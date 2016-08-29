@@ -1,11 +1,15 @@
+#!/bin/fish
+
 # Set media dir location
 set mediadir $HOME/media/videos
 
 # Set video player command
-set playercommand mpv --fullscreen
+set playercommand mpv --fullscreen --no-pause
 
-# Set the highlight color
-set highlight yellow --bold
+# Set colors
+set foreground normal
+set bright yellow --bold
+set dark black --bold
 
 # Run the following commands before starting mpv
 # (to pause mpd for example)
