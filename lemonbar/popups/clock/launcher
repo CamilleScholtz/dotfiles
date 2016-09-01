@@ -2,20 +2,20 @@
 
 ## EXECUTE
 
-# Check if popup is open
-if test -z (pgrep -f 'n30f -x 870')
+# Check if clock popup is open
+if test -z (pgrep -f 'n30f -x 871')
 	set -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
 	set -x fg 021B21
 	set -x bg EEEEEE
 
-	n30f -x 870 -y 42 $HOME/.lemonbar/popups/clock/bg.png &
+	n30f -x 871 -y 29 $HOME/.lemonbar/popups/clock/bg.png &
 
 	raingraph /tmp/raingraph.png
-	n30f -x 857 -y 37 /tmp/raingraph.png &
-	fish $HOME/.lemonbar/popups/clock/celsius | lemonbar -g 168x20+872+152 -p -d -f $font -B \#00$bg -F \#$fg &
-	fish $HOME/.lemonbar/popups/clock/moon | lemonbar -g 168x20+872+62 -p -d -f $font -B \#00$bg -F \#$fg &
+	n30f -x 857 -y 29 /tmp/raingraph.png &
+	fish $HOME/.lemonbar/popups/clock/celsius | lemonbar -g 168x20+872+118 -p -d -f $font -B \#00$bg -F \#$fg &
+	fish $HOME/.lemonbar/popups/clock/moon | lemonbar -g 168x20+872+42 -p -d -f $font -B \#00$bg -F \#$fg &
 else
-	pkill -n -f 'n30f -x 870'
+	pkill -n -f 'n30f -x 871'
 	pkill -f 'n30f -x 857'
 	pkill -f 'lemonbar -g 168x20'
 end

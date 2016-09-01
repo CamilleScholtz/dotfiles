@@ -36,12 +36,12 @@ begin
 	fish $HOME/.lemonbar/music | lemonbar -g 570x29+1321+0 -f $font[1] -f $font[2] -f $font[3] -B \#$bg[1] -F \#$fg | dash &
 end
 
-# Start alert bar
+# Start todo bar
 begin
 	set -l -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1
 	set -l -x fg FFFFFF
 	set -l -x bg 5394C9
 
-	echo "%{c}%{A3:echo -n >$HOME/.notify/log:}%{A:echo -n >$HOME/.notify/log:}  ­  %{A}%{A}" | lemonbar -p -g 29x29+1891+0 -f $font -B \#$bg -F \#$fg | dash &
-	fish $HOME/.lemonbar/alert
+	echo "%{c}%{A:fish $HOME/.lemonbar/popups/todo/launcher:}  ­  %{A}" | lemonbar -p -g 29x29+1891+0 -f $font -B \#$bg -F \#$fg | dash &
+	fish $HOME/.lemonbar/todo
 end

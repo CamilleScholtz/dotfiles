@@ -12,44 +12,66 @@ function path
 	mpc -f '%file%' | head -n 1 | string match -r '.*/'
 end
 
-# This function displays the cover
-function spawncover
-	n30f -x 1735 -y 62 $musicdir/{$path}cover_popup.png &
+# This function spawns some info and some info
+function spawninfo
+	if test -f $musicdir/$pathnew/cover_popup.png
+		n30f -x 1753 -y 39 $musicdir/{$path}cover_popup.png &
+	else
+		n30f -x 1753 -y 39 $HOME/.lemonbar/popups/music/cover.png &
+	end
+
+	mpc -f 'Album: %album%' | lemonbar -g 136x20+1604+42 -p -d -f $font[1] -f $font[2] -f $font[3] -B \#00$bg -F \#$fg &
+	mpc -f 'Released in %date%.' | lemonbar -g 136x20+1604+61 -p -d -f $font[1] -B \#00$bg -F \#$fg &
+	mpc -f 'Released in %date%.' | lemonbar -g 136x20+1604+61 -p -d -f $font[1] -B \#00$bg -F \#$fg &
 end
 
 
 ## EXECUTE
 
+set pathnew (path)
+
 # Check if popup is open
-if test -z (pgrep -f 'n30f -x 1725')
+if test -z (pgrep -f 'n30f -x 1587')
+	set -x font -artwiz-cure-medium-r-normal--11-110-75-75-p-90-iso8859-1 -freetype-kochismall-medium-r-normal--9-90-75-75-p-77-iso10646-1 -freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+	set -x fg 021B21
+	set -x bg EEEEEE
+
 	set path (path)
 
-	n30f -x 1725 -y 42 $HOME/.lemonbar/popups/music/bg.png &
-	sleep 0.01
+	n30f -x 1587 -y 29 $HOME/.lemonbar/popups/music/bg.png &
 
-	spawncover
+	# Respawn todo bubble on top
+	set count (grep -c '^.' $HOME/.todo)
+	n30f -x 1886 -y 21 $HOME/.lemonbar/bubbles/$count.png &
+
+	# Close old todo bubble
+	pkill -o -f 'n30f -x 1886'
+
+	# Close todo popup
+	pkill -f "micro $HOME/.todo"
+
+	sleep 0.02
+	spawninfo
 
 	# Keep checking for new covers whilst open
 	mpc idleloop player | while read
 		set pathnew (path)
 
+		# Update cover on album change
 		if test $path != $pathnew
-			if test -f $musicdir/$path/cover_popup.png
-				set path (path)
-				set pathnew $path
+			set path (path)
+			set pathnew $path
 
-				spawncover
-				pkill -o -f 'n30f -x 1735'
-			else
-				set path (path)
-				set pathnew $path
-
-				spawncover
-			end
+			spawninfo
+			pkill -o -f 'n30f -x 1753'
+			pkill -o -f 'lemonbar -g 136x20'
+			pkill -o -f 'lemonbar -g 136x20'
+			pkill -o -f 'lemonbar -g 136x20'
 		end
 	end
 else
-	pkill -f 'n30f -x 1735'
-	pkill -f 'n30f -x 1725'
+	pkill -f 'n30f -x 1753'
+	pkill -f 'lemonbar -g 136x20'
+	pkill -f 'n30f -x 1587'
 	pkill -f -n 'mpc idleloop player'
 end

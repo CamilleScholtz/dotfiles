@@ -18,16 +18,20 @@ function userfunction
 	mpc -q pause
 
 	# Close clock popup
-	if test (pgrep -f 'n30f -d -x 870' | head -n 1)
-		pkill -n -f 'n30f -d -x 870'
-		pkill -f 'n30f -d -x 85'
+	if test (pgrep -f 'n30f -d -x 871')
+		pkill -n -f 'n30f -x 871'
+		pkill -f 'n30f -x 857'
 		pkill -f 'lemonbar -g 168x20'
 	end
 
-	# Close album popup
-	if test (pgrep -f 'n30f -d -x 1725' | head -n 1)
-		pkill -f "n30f -d -x 1735"
-		pkill -f "n30f -d -x 1725"
-		pkill -f -n "mpc idleloop player"
+	# Close music popup
+	if test (pgrep -f 'n30f -x 1587')
+		pkill -f 'n30f -x 1753'
+		pkill -f 'lemonbar -g 140x20'
+		pkill -f 'n30f -x 1587'
+		pkill -f -n 'mpc idleloop player'
 	end
+
+	# Close todo popuo
+	pkill -f "micro $HOME/.todo"
 end

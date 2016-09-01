@@ -28,6 +28,10 @@
 	<application class="*">
 		<decor>no</decor>
 	</application>
+	<application name="todo">
+		<layer>top</layer>
+		<desktop>all</desktop>
+	</application>
 </applications>
 
 <theme>

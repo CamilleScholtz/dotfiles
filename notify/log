@@ -1,32 +1,56 @@
-Mentioned in #rice by enju: onodera~ just no drives or no partitions
-Mentioned in ##windows by TheBard: onodera, are you perchance trying to dual boot?
-Mentioned in ##windows by Mathisen: onodera, where is it complaining on the drivers ?
-Mentioned in #crux by pedja: onodera: this worked for me : https://www.plop.at/en/winusbinstall.html
-Mentioned in ##windows by TheBard: onodera, there is an option in the installer for it to format your drive. Do so.
-Mentioned in ##windows by Mathisen: onodera, you doing raid ? bios set to ahci ?
-Mentioned in ##windows by Mathisen: onodera, no win installer does se linux partitons ext, resierfs atleast for others i have not tried
-Mentioned in ##windows by Mathisen: onodera, so it should see your drive there
-Mentioned in ##windows by Ussat: <onodera> so in short: no, not yet
-Mentioned in ##windows by Mathisen: onodera, okej cant say if that works or not.. maybe best then to boot live and make it RAW
-Mentioned in ##windows by Mathisen: onodera, i agree on that
-Mentioned in ##windows by Mathisen: onodera, double check bios atleast first that it is set to AHCI
-Mentioned in ##windows by Ussat: onodera, just drop to a term and use diskpart
-Mentioned in ##windows by Mathisen: onodera, diskpart
-Mentioned in ##windows by merced: onodera: what v windows
-Mentioned in ##windows by Mathisen: onodera, did you check bios settings ?
-Mentioned in ##windows by Mathisen: onodera, it should be on the SATA settings
-Mentioned in ##windows by Mathisen: onodera, if you using IDE/RAID change to AHCI
-Mentioned in ##windows by Mathisen: onodera, okej just try to set default settings then... anyway that is a normal issue for win7 that it dont find device drivers when it is not set to ahci
-Mentioned in ##windows by Mathisen: onodera, only thing i can think off that should mather.. like if it where xp you where trying to install it could have been just sata drivers but for win7 everything is there
-Mentioned in ##windows by DLSteve: onodera, They all do.
-Mentioned in ##windows by Mathisen: onodera, you can upgrade to 10 :) the offical free upgrade is no more, but the MS servers seem to not understand that yet. did it yesterday and it worked to upgrade from 7 to 10 for free..
-Mentioned in ##windows by DLSteve: onodera, Do you have home basic or home premium?
-Mentioned in #rice by spoonm: onodera: no
-Mentioned in #rice by spoonm: onodera: dunno wtf this is kek
-Mentioned in #rice by spoonm: onodera: romancescam is a thing? kek
-Mentioned in #rice by DANtheBEASTman: onodera: as far as block delimiters go, i don't worry about them because vim-endwise completes them for me
-Mentioned in ##windows by TheBard: onodera, windows 7?
-Mentioned in #crux by wildefyr: onodera, best bet is just grab a windows machine from a friend and create the media from that onodera
-Mentioned in #rice by spoonm: onodera: Wang
-Mentioned in #crux by abenz: onodera: there's a simpler way
-Mentioned in #rice by array: onodera, i remember that one
+Mentioned in #rice by mitya: onodera, that works I guess
+Mentioned in #rice by elmo: onodera: Where the hell is the arrow even coming from?
+Mentioned in #rice by mitya: onodera, true
+Mentioned in #rice by mikotohe: is that windows onodera 
+Mentioned in #rice by elmo: onodera: I have always admired your simplistic cuteness
+Mentioned in #rice by winny: onodera: ur not very good at arithmetic?
+Mentioned in #rice by enju: onodera~ dont remove the arrow, just make it a bit smakker
+Mentioned in #rice by enju: also onodera fak u, now i dont feel original because my todo popup looks p much the same
+Mentioned in #rice by enju: and onoderas notify script for notifications
+Mentioned in #plez by tepru: onodera: naisuu
+Mentioned in #rice by enju: onodera~ only display todo list if you have something to do
+Mentioned in #rice by comodo: onodera, your rice is consistent man, don't dare to say what we feel (?)
+Mentioned in #rice by RafiX: onodera: in Firefox you have Shift + f2
+Mentioned in #rice by enju: which one onodera ?
+Mentioned in #rice by enju: ye it is onodera its camling af
+Mentioned in #rice by Leliana: onodera: mpdscribble still hasn't fixed the timeout handling that mpdas has
+Mentioned in #rice by Leliana: onodera: it just stalls until restart
+Mentioned in #rice by enju: onodera~ y tho
+Mentioned in #rice by jiaxsun: onodera: yes?
+Mentioned in #rice by jiaxsun: onodera: what do you mean
+Mentioned in #rice by enju: onodera~ I just added 2 lemonbars with "mpc -f '%artist%' current" and %title%
+Mentioned in #rice by jiaxsun: .distro onodera 
+Mentioned in #rice by Aigis: CRUX version 3.2 [Linux 4.7.2-zen-punpun] [onodera]
+Mentioned in #rice by enju: onodera~ thats p dope
+Mentioned in #rice by comodo: onodera try to put that info on the lower side, not top
+Mentioned in #rice by enju: onodera~ true. I tried to do it with a conky, but fuck configuring conky to be pretty
+Mentioned in #rice by comodo: onodera something like this http://i.imgur.com/ph5TDkt.png
+Mentioned in #rice by Aigis: onodera: No results found for "zsh how create mutli line prompt"
+Mentioned in #code by kori: onodera: what's in /etc/fonts/conf.d?
+Mentioned in #code by kori: onodera: prolly just restart X
+Mentioned in #grape by Vista-Narvas: hi onodera 
+Mentioned in #rice by mitya: onodera, Jet is, you mean
+Mentioned in #rice by mitya: onoderaz
+Mentioned in #rice by metakirby5: onoderazly.io
+Mentioned in #code by kyubiko: onodera: neato
+Mentioned in #code by kori: onodera: you should use unifont
+Mentioned in #rice by Tomoko_A_Best: onodera: https://www.youtube.com/watch?v=aoXDe8HxHBA
+Mentioned in #plez by kori: yo onodera 
+Mentioned in #plez by Lajjla: onodera, poepje.
+Mentioned in #sqt by samcv: hi onodera 
+Mentioned in #sqt by samcv: onodera, you haven't told us your os
+Mentioned in #sqt by samcv: ok so what did you do to break it onodera
+Mentioned in #plez by Etiv: .desktop onodera
+Mentioned in #plez by Taigabot: onodera: https://sr.ht/r5b5.png https://sr.ht/-WiI.png https://sr.ht/GRDv.png
+Mentioned in #plez by tepru: onoderau should do rounded popups
+Mentioned in #plez by tepru: onodera i mean the likee
+Mentioned in #plez by Lajjla: onodera, vind je ook niet dat alle mensen met kort haar enorme faglords zijn/
+Mentioned in #sqt by samcv: onodera, even tho it 'loads' modules
+Mentioned in #sqt by tyil: onodera: are you sure it's not supposed to be GNU+Linux?
+Mentioned in #unix by greduan: also hey onodera, haven't see you in a while
+Mentioned in #sqt by tyil: onodera: if you could comprehend full sentences it might make more sense
+Mentioned in #plez by Lajjla: onodera, Lynn haat me. =(
+Mentioned in #rice by spoonm: onodera: what did you post?
+Mentioned in #rice by Khorne: onodera, was, last I checked
+Mentioned in #rice by Khorne: onodera, nevermind, onodera oneeesama, literally the same nick :')
+Mentioned in #rice by mikotohe: .flags onodera +V

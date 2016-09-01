@@ -8,6 +8,7 @@
     "goimports": true,
     "ignorecase": true,
     "indentchar": "┆",
+    "infobar": false,
     "linter": true,
     "ruler": true,
     "savecursor": true,

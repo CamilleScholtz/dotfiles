@@ -1,0 +1,17 @@
+#!/bin/fish
+
+## EXECUTE
+
+# Spawn initial icon (else it will only spawn after inotifywait says something)
+set count (grep -c '^.' $HOME/.todo)
+n30f -x 1886 -y 21 $HOME/.lemonbar/bubbles/$count.png &
+
+inotifywait -q -m -e CLOSE_WRITE $HOME/.todo | while read
+	set count (grep -c '^.' $HOME/.todo)
+
+	# Spawn new alert
+	n30f -x 1886 -y 21 $HOME/.lemonbar/bubbles/$count.png &
+
+	# Kill old alert
+	pkill -o -f 'n30f -x 1886'
+end

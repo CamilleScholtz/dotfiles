@@ -63,3 +63,16 @@
 ! White
 *color7:  #F2F1B9
 *color15: #F6F6C9
+
+
+!! MISC
+
+! Todo popup stuff
+todo.internalBorder: 17
+todo.geometry:       45x6
+todo.borderLess:     true
+todo.font:           xft:curefix,-freetype-baekmuksmall-medium-r-normal--9-90-75-75-p-38-iso10646-1
+todo.foreground:     #021B21
+todo.background:     #EEEEEE
+todo.cursorColor:    #021B21
+todo.color8:         #5394C9

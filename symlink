@@ -42,6 +42,7 @@ ln $o $d/openbox/theme $HOME/.themes/minato/openbox-3
 ln $o $d/punf $HOME/.punf
 ln $o $d/rootshuf $HOME/.rootshuf
 sudo ln $o $d/ssh $HOME/.ssh
+ln $o $d/todo $HOME/.todo
 ln $o $d/transmission $HOME/.config/transmission-daemon
 ln $o $d/xdg/user-dirs.dirs $HOME/.config/user-dirs.dirs
 ln $o $d/x11/xinit $HOME/.xinitrc

@@ -1,0 +1,18 @@
+#!/bin/fish
+
+## EXECUTE
+
+# Check if todo popup is open
+if test -z (pgrep -f "micro $HOME/.todo")
+	# Close music popup
+	if test (pgrep -f 'n30f -x 1587')
+		pkill -f 'n30f -x 1753'
+		pkill -f 'lemonbar -g 136x20'
+		pkill -f 'n30f -x 1587'
+		pkill -f -n 'mpc idleloop player'
+	end
+
+	urxvtc -name todo -e micro $HOME/.todo
+else
+	pkill -f "micro $HOME/.todo"
+end
